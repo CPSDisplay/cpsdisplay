@@ -1,0 +1,16 @@
+[
+  {
+    "modid": "${modid}",
+    "name": "CPSMod",
+    "description": "Display your cps with this mod",
+    "version": "${version}",
+    "mcversion": "${mcversion}",
+    "url": "",
+    "updateUrl": "",
+    "authorList": ["Dams4K"],
+    "credits": "",
+    "logoFile": "",
+    "screenshots": [],
+    "dependencies": []
+  }
+]
