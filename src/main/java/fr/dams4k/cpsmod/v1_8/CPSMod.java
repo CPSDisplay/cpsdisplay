@@ -2,6 +2,7 @@ package fr.dams4k.cpsmod.v1_8;
 
 import fr.dams4k.cpsmod.v1_8.commands.ConfigCommand;
 import fr.dams4k.cpsmod.v1_8.config.Config;
+import fr.dams4k.cpsmod.v1_8.gui.GuiConfig;
 import fr.dams4k.cpsmod.v1_8.gui.RenderGuiHandler;
 import fr.dams4k.cpsmod.v1_8.proxy.ClientProxy;
 import net.minecraftforge.client.ClientCommandHandler;
