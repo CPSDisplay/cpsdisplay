@@ -17,7 +17,6 @@ import net.minecraftforge.fml.client.config.GuiButtonExt;
 import net.minecraftforge.fml.client.config.GuiSlider;
 
 public class GuiConfig extends GuiScreen {
-	public static GuiConfig instance;
 	// Text
 	private GuiButtonExt showTextButton;
 	private GuiSlider scaleSlider;
@@ -29,7 +28,7 @@ public class GuiConfig extends GuiScreen {
 	// Rainbow
 	private GuiSlider rainbowSpeedSlider;
 	private GuiSlider rainbowPrecision;
-	
+
 	private MouseModeEnum mouseModeSelected;
 	private ColorsEnum colorSelected;
 	private ShowTextEnum showText;
@@ -37,7 +36,6 @@ public class GuiConfig extends GuiScreen {
 	private int top = 20;
 	
 	private boolean clickOnCPSOverlay = false;
-
 	private int diff_x = 0;
 	private int diff_y = 0;
 
