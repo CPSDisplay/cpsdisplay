@@ -4,8 +4,6 @@ import java.awt.Color;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import org.lwjgl.input.Mouse;
-
 import fr.dams4k.cpsmod.v1_8.config.Config;
 import fr.dams4k.cpsmod.v1_8.enums.ColorsEnum;
 import fr.dams4k.cpsmod.v1_8.enums.MouseModeEnum;
@@ -17,8 +15,6 @@ import net.minecraft.client.gui.GuiTextField;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.config.GuiButtonExt;
 import net.minecraftforge.fml.client.config.GuiSlider;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.InputEvent;
 
 public class GuiConfig extends GuiScreen {
 	public static GuiConfig instance;
@@ -26,7 +22,6 @@ public class GuiConfig extends GuiScreen {
 	private GuiButtonExt showTextButton;
 	private GuiSlider scaleSlider;
 	private GuiButtonExt baseColorChangerButton;
-	private GuiButtonExt moveButton;
 	private GuiButtonExt mouseModeChangerButton;
 	private GuiTextField textField;
 	private GuiTextField colorField;
@@ -41,7 +36,6 @@ public class GuiConfig extends GuiScreen {
 	
 	private int top = 20;
 	
-	private boolean overCPSOverlay = false;
 	private boolean clickOnCPSOverlay = false;
 
 	private int diff_x = 0;
@@ -65,7 +59,6 @@ public class GuiConfig extends GuiScreen {
 		textField = new GuiTextField(2, fontRendererObj,  width / 2 - 152, 85 + top, 150, 20);
 		textField.setMaxStringLength(999);
 		textField.setText(Config.text);
-		moveButton = new GuiButtonExt(3,  width / 2 - 152, 110 + top, 150, 20, "Move");
 		
 		baseColorChangerButton = new GuiButtonExt(10, width / 2 + 2, 10 + top, 150, 20, "Color: " + colorSelected.getName());
 		colorField = new GuiTextField(11, fontRendererObj, width / 2 + 2, 35 + top, 150, 20);
@@ -78,7 +71,6 @@ public class GuiConfig extends GuiScreen {
 		buttonList.add(showTextButton);
 		buttonList.add(scaleSlider);
 		buttonList.add(mouseModeChangerButton);
-		buttonList.add(moveButton);
 		
 		buttonList.add(baseColorChangerButton);
 		buttonList.add(rainbowSpeedSlider);
@@ -136,7 +128,6 @@ public class GuiConfig extends GuiScreen {
 
 		ArrayList<Integer> positions = GuiOverlay.getBackgroundPositions(mc, 0, 0, true);
 		if (positions.get(0) <= mouseX && mouseX <= positions.get(2) && positions.get(1) <= mouseY && mouseY <= positions.get(3)) {
-			overCPSOverlay = true;
 			Color color = new Color(Config.bg_color_r, Config.bg_color_g, Config.bg_color_b, (int) Math.round(Config.bg_color_a * 0.5));
 			new GuiOverlay(Minecraft.getMinecraft(), 0, 0, color);
 			
@@ -145,7 +136,6 @@ public class GuiConfig extends GuiScreen {
 			drawHorizontalLine(positions.get(0), positions.get(2), positions.get(1), Color.RED.getRGB());
 			drawHorizontalLine(positions.get(0), positions.get(2), positions.get(3), Color.RED.getRGB());
 		} else {
-			overCPSOverlay = false;
 			new GuiOverlay(Minecraft.getMinecraft(), 0, 0);
 		}
 
@@ -211,10 +201,6 @@ public class GuiConfig extends GuiScreen {
 			showTextButton.displayString = "Show text: " + showText.getText();
 		}
 		saveConfig();
-		
-		if (button == moveButton) {
-			Minecraft.getMinecraft().displayGuiScreen(new GuiMoveText());
-		}
 	}
 	
 	public void updateButtons() {
@@ -237,10 +223,8 @@ public class GuiConfig extends GuiScreen {
 		// Display mode
 		if (mouseModeSelected == MouseModeEnum.CUSTOM) {
 			textField.setVisible(true);
-			moveButton.yPosition = 110 + top;
 		} else {
 			textField.setVisible(false);
-			moveButton.yPosition = 85 + top;
 		}
 	}
 }
