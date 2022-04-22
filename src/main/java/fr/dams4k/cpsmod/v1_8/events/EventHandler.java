@@ -17,12 +17,12 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
 
-public class ClientEvents {
-	private List<Long> leftClicks = new ArrayList<>();
-	private List<Long> rightClicks = new ArrayList<>();
+
+public class EventHandler {
+	private List<Long> leftClicks = new ArrayList<Long>();
+	private List<Long> rightClicks = new ArrayList<Long>();
 
 	private GameSettings gs = Minecraft.getMinecraft().gameSettings;
-	
 	
 	@SubscribeEvent
 	public void onRenderGui(RenderGameOverlayEvent.Post game_overlay_event) {
@@ -32,29 +32,32 @@ public class ClientEvents {
 	}
 	
 	@SubscribeEvent
+	public void onNewTick(ClientTickEvent event) {
+		if (ClientProxy.CPS_OVERLAY_CONFIG.isKeyDown()) {
+			Minecraft.getMinecraft().displayGuiScreen(new GuiConfig());
+		}
+	}
+
+	@SubscribeEvent
 	public void onKeyPress(InputEvent.MouseInputEvent event) {
 		if (Mouse.getEventButtonState()) {
-			if (gs.keyBindAttack.isKeyDown() && Mouse.getEventButton() == gs.keyBindAttack.getKeyCode()+100) leftClicks.add(System.currentTimeMillis());
-			if (gs.keyBindUseItem.isKeyDown() && Mouse.getEventButton() == gs.keyBindUseItem.getKeyCode()+100) rightClicks.add(System.currentTimeMillis());
+			if (gs.keyBindAttack.isKeyDown() && Mouse.getEventButton() == gs.keyBindAttack.getKeyCode()+100)
+				leftClicks.add(System.currentTimeMillis());
+			
+			if (gs.keyBindUseItem.isKeyDown() && Mouse.getEventButton() == gs.keyBindUseItem.getKeyCode()+100)
+				rightClicks.add(System.currentTimeMillis());
 		}
 	}
 
 	public int getLeftCPS() {
 		long current_time = System.currentTimeMillis();
-		this.leftClicks.removeIf(e -> (e.longValue() + 1000L < current_time));
+		this.leftClicks.removeIf(e -> (e.longValue() + 1000l < current_time));
 		return leftClicks.size();
 	}
 
 	public int getRightCPS() {
 		long current_time = System.currentTimeMillis();
-		this.rightClicks.removeIf(e -> (e.longValue() + 1000L < current_time));
+		this.rightClicks.removeIf(e -> (e.longValue() + 1000l < current_time));
 		return rightClicks.size();
-	}
-	
-	@SubscribeEvent
-	public void onUpdate(ClientTickEvent event) {
-		if (ClientProxy.CPS_OVERLAY_CONFIG.isKeyDown()) {
-			Minecraft.getMinecraft().displayGuiScreen(new GuiConfig());
-		}
 	}
 }

@@ -1,6 +1,5 @@
 package fr.dams4k.cpsmod.v1_8;
 
-import fr.dams4k.cpsmod.v1_8.config.Config;
 import fr.dams4k.cpsmod.v1_8.proxy.ClientProxy;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -16,7 +15,6 @@ public class CPSMod {
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
-		Config.preInit();
 		proxy.preInit();
 	}
 	

@@ -5,29 +5,29 @@ import java.util.ArrayList;
 
 import org.lwjgl.opengl.GL11;
 
-import fr.dams4k.cpsmod.v1_8.config.Config;
+import fr.dams4k.cpsmod.v1_8.config.ModConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 
 public class GuiOverlay extends Gui {
 	public GuiOverlay(Minecraft mc, Integer l, Integer r, Color color) {
-		if (Config.show_text) {
-			String text = Config.text.replace("{0}", l.toString()).replace("{1}", r.toString()).replace("&", "§");
+		if (ModConfig.show_text) {
+			String text = ModConfig.text.replace("{0}", l.toString()).replace("{1}", r.toString()).replace("&", "§");
 			Integer text_color;
-			if (!Config.rainbow) {
+			if (!ModConfig.rainbow) {
 				try {
-					text_color = Integer.parseInt(Config.text_color, 16);
+					text_color = Integer.parseInt(ModConfig.text_color, 16);
 				} catch (Exception e) {
 					text_color = Integer.parseInt("ffffff", 16);
-					Config.text_color = "ffffff";
-					Config.syncConfig(false);
+					ModConfig.text_color = "ffffff";
+					ModConfig.syncConfig(false);
 				}
 			} else {
-				text_color = Config.getChroma();
+				text_color = ModConfig.getChroma();
 			}
 			
 			GL11.glPushMatrix();
-			GL11.glScaled(Config.text_scale, Config.text_scale, 1d);
+			GL11.glScaled(ModConfig.text_scale, ModConfig.text_scale, 1d);
 
 			ArrayList<Integer> positions = GuiOverlay.getBackgroundPositions(mc, l, r, false);
 
@@ -45,21 +45,23 @@ public class GuiOverlay extends Gui {
 	}
 
 	public GuiOverlay(Minecraft mc, Integer l, Integer r) {
-		this(mc, l, r, Config.background_color);
+		this(mc, l, r, ModConfig.background_color);
 	}
 
 	public static ArrayList<Integer> getBackgroundPositions(Minecraft mc, Integer l, Integer r, boolean scaled) {
 		ArrayList<Integer> list = new ArrayList<Integer>();
-		String text = Config.text.replace("{0}", l.toString()).replace("{1}", r.toString()).replace("&", "§");
+		String text = ModConfig.text.replace("{0}", l.toString()).replace("{1}", r.toString()).replace("&", "§");
 		
-		list.add((int) (Config.text_position[0] / Config.text_scale));
-		list.add((int) (Config.text_position[1] / Config.text_scale));
+		int[] text_position = ModConfig.getText_position();
+
+		list.add((int) (text_position[0] / ModConfig.text_scale));
+		list.add((int) (text_position[1] / ModConfig.text_scale));
 		list.add(list.get(0)+mc.fontRendererObj.getStringWidth(text));
 		list.add(list.get(1)+mc.fontRendererObj.FONT_HEIGHT);
 
 		if (scaled) {
 			for (int i = 0; i < list.size(); i++) {
-				list.set(i, (int) Math.round(list.get(i) * Config.text_scale));
+				list.set(i, (int) Math.round(list.get(i) * ModConfig.text_scale));
 			}
 		}
 

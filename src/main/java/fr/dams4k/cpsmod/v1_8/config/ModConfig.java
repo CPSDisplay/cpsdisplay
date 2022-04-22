@@ -3,11 +3,12 @@ package fr.dams4k.cpsmod.v1_8.config;
 import java.awt.Color;
 import java.io.File;
 
+import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 import net.minecraftforge.fml.common.Loader;
 
-public class Config {
+public class ModConfig {
 	private static Configuration config;
 	
 	public static final String CATEGORY_NAME_TEXT = "display";
@@ -16,7 +17,7 @@ public class Config {
 	
 	public static boolean show_text = true;
 	// Text
-	public static int[] text_position = {0, 0};
+	private static double[] text_position = {0, 0};
 	public static double text_scale = 1d;
 	public static String text_color = "ffffff";
 	public static String text = "{0} | {1} CPS";
@@ -72,7 +73,7 @@ public class Config {
 			backgroundColorBlueProperty = config.get(CATEGORY_NAME_BACKGROUND, "color_b", bg_color_b);
 			backgroundColorAlphaProperty = config.get(CATEGORY_NAME_BACKGROUND, "color_a", bg_color_a);
 
-			text_position = textPositionProperty.getIntList();
+			text_position = textPositionProperty.getDoubleList();
 			
 			text_scale = textScaleProperty.getDouble();
 			text_color = textColorProperty.getString();
@@ -112,9 +113,20 @@ public class Config {
 	}
 	
 	public static int getChroma() {
-		double precision = Config.rainbow_precision * 20000;
+		double precision = ModConfig.rainbow_precision * 20000;
 
 		int rgb = Color.HSBtoRGB((float) ((System.currentTimeMillis() * rainbow_speed) % ((long) precision)) / ((float) precision), 0.8F, 0.8F);
 		return rgb;
+	}
+
+	public static void setText_position(int[] text_position) {
+		double[] text_positionPercentage = {(double) text_position[0] / Minecraft.getMinecraft().displayWidth, (double) text_position[1] / Minecraft.getMinecraft().displayHeight};
+
+		ModConfig.text_position = text_positionPercentage;
+	}
+
+	public static int[] getText_position() {
+		int[] real_position = {(int) (text_position[0]*Minecraft.getMinecraft().displayWidth), (int) (text_position[1]*Minecraft.getMinecraft().displayHeight)};
+		return real_position;
 	}
 }

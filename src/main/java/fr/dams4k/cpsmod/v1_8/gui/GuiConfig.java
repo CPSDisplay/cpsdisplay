@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import fr.dams4k.cpsmod.v1_8.config.Config;
+import fr.dams4k.cpsmod.v1_8.config.ModConfig;
 import fr.dams4k.cpsmod.v1_8.enums.ColorsEnum;
 import fr.dams4k.cpsmod.v1_8.enums.MouseModeEnum;
 import fr.dams4k.cpsmod.v1_8.enums.ShowTextEnum;
@@ -35,7 +35,6 @@ public class GuiConfig extends GuiScreen {
 	
 	private int top = 20;
 	
-	private boolean clickOnCPSOverlay = false;
 	private int diff_x = 0;
 	private int diff_y = 0;
 
@@ -43,28 +42,28 @@ public class GuiConfig extends GuiScreen {
 	public void initGui() {
 		MinecraftForge.EVENT_BUS.register(this);
 
-		mouseModeSelected = MouseModeEnum.getByText(Config.text);
-		colorSelected = ColorsEnum.getByHex(Config.text_color);
-		showText = ShowTextEnum.getByBool(Config.show_text);
+		mouseModeSelected = MouseModeEnum.getByText(ModConfig.text);
+		colorSelected = ColorsEnum.getByHex(ModConfig.text_color);
+		showText = ShowTextEnum.getByBool(ModConfig.show_text);
 		
-		if (Config.rainbow) {
+		if (ModConfig.rainbow) {
 			colorSelected = ColorsEnum.getById(8);
 		}
 		
 		showTextButton = new GuiButtonExt(0, width / 2 - 152, 10 + top, 150, 20, "Show text: " + showText.getText());
-		scaleSlider = new GuiSlider(1, width / 2 - 152, 35 + top, 150, 20, "Scale : ", "%", 0.5 * 100, 5 * 100, Config.text_scale * 100, false, true);
+		scaleSlider = new GuiSlider(1, width / 2 - 152, 35 + top, 150, 20, "Scale : ", "%", 0.5 * 100, 4 * 100, ModConfig.text_scale * 100, false, true);
 		mouseModeChangerButton = new GuiButtonExt(3, width / 2 - 152, 60 + top, 150, 20, "Display mode: " + mouseModeSelected.getName());
 		textField = new GuiTextField(2, fontRendererObj,  width / 2 - 152, 85 + top, 150, 20);
 		textField.setMaxStringLength(999);
-		textField.setText(Config.text);
+		textField.setText(ModConfig.text);
 		
 		baseColorChangerButton = new GuiButtonExt(10, width / 2 + 2, 10 + top, 150, 20, "Color: " + colorSelected.getName());
 		colorField = new GuiTextField(11, fontRendererObj, width / 2 + 2, 35 + top, 150, 20);
 		colorField.setMaxStringLength(6);
-		colorField.setText(Config.text_color);
+		colorField.setText(ModConfig.text_color);
 		
-		rainbowSpeedSlider = new GuiSlider(13, width / 2 + 2, 60 + top, 150, 20, "Speed: ", "ms", 1, 500, Config.rainbow_speed, false, true);
-		rainbowPrecision = new GuiSlider(14, width / 2 + 2, 85 + top, 150, 20, "Precision: ", "", 0.01, 1, Config.rainbow_precision, true, true);
+		rainbowSpeedSlider = new GuiSlider(13, width / 2 + 2, 60 + top, 150, 20, "Speed: ", "ms", 1, 500, ModConfig.rainbow_speed, false, true);
+		rainbowPrecision = new GuiSlider(14, width / 2 + 2, 85 + top, 150, 20, "Precision: ", "", 0.01, 1, ModConfig.rainbow_precision, true, true);
 
 		buttonList.add(showTextButton);
 		buttonList.add(scaleSlider);
@@ -89,28 +88,19 @@ public class GuiConfig extends GuiScreen {
 		colorField.mouseClicked(mouseX, mouseY, mouseButton);
 		textField.mouseClicked(mouseX, mouseY, mouseButton);
 		
-		diff_x = Config.text_position[0] - mouseX;
-		diff_y = Config.text_position[1] - mouseY;
+		int[] text_position = ModConfig.getText_position();
+
+		diff_x = text_position[0] - mouseX;
+		diff_y = text_position[1] - mouseY;
 		
 		ArrayList<Integer> positions = GuiOverlay.getBackgroundPositions(mc, 0, 0, true);
 		if (positions.get(0) <= mouseX && mouseX <= positions.get(2) && positions.get(1) <= mouseY && mouseY <= positions.get(3)) {
-			clickOnCPSOverlay = true;
-		} else {
-			clickOnCPSOverlay = false;
+			mc.displayGuiScreen(new MoveOverlayGui(diff_x, diff_y));
 		}
 
 		super.mouseClicked(mouseX, mouseY, mouseButton);
 	}
 	
-	@Override
-	protected void mouseReleased(int mouseX, int mouseY, int state) {
-		if (clickOnCPSOverlay) {
-			clickOnCPSOverlay = false;
-			Config.syncConfig(false);
-		} 
-		super.mouseReleased(mouseX, mouseY, state);
-	}
-
 	@Override
 	public void updateScreen() {
 		colorField.updateCursorCounter();
@@ -126,7 +116,7 @@ public class GuiConfig extends GuiScreen {
 
 		ArrayList<Integer> positions = GuiOverlay.getBackgroundPositions(mc, 0, 0, true);
 		if (positions.get(0) <= mouseX && mouseX <= positions.get(2) && positions.get(1) <= mouseY && mouseY <= positions.get(3)) {
-			Color color = new Color(Config.bg_color_r, Config.bg_color_g, Config.bg_color_b, (int) Math.round(Config.bg_color_a * 0.5));
+			Color color = new Color(ModConfig.bg_color_r, ModConfig.bg_color_g, ModConfig.bg_color_b, (int) Math.round(ModConfig.bg_color_a * 0.5));
 			new GuiOverlay(Minecraft.getMinecraft(), 0, 0, color);
 			
 			drawVerticalLine(positions.get(0), positions.get(1), positions.get(3), Color.RED.getRGB());
@@ -140,31 +130,19 @@ public class GuiConfig extends GuiScreen {
 		saveConfig();
 	}
 	
-
-	@Override
-	protected void mouseClickMove(int mouseX, int mouseY, int clickedMouseButton, long timeSinceLastClick) {
-		if (clickOnCPSOverlay && clickedMouseButton == 0) {
-			clickOnCPSOverlay = true;
-			int[] new_pos = {diff_x+mouseX, diff_y+mouseY};
-			Config.text_position = new_pos;
-		}
-
-		super.mouseClickMove(mouseX, mouseY, clickedMouseButton, timeSinceLastClick);
-	}
-	
 	public void saveConfig() {
 		changeConfig();
-		Config.syncConfig(false);
+		ModConfig.syncConfig(false);
 		updateButtons();
 	}
 	
 	public void changeConfig() {
-		Config.text = textField.getText();
+		ModConfig.text = textField.getText();
 		if (colorField.getText().length() == 6) {
-			Config.text_color = colorField.getText();
+			ModConfig.text_color = colorField.getText();
 		}
-		Config.text_scale = Double.parseDouble(String.format("%.2f", scaleSlider.getValue() / 100).replace(",", "."));
-		Config.show_text = showText.getBool();
+		ModConfig.text_scale = Double.parseDouble(String.format("%.2f", scaleSlider.getValue() / 100).replace(",", "."));
+		ModConfig.show_text = showText.getBool();
 	}
 	
 	@Override
@@ -174,26 +152,26 @@ public class GuiConfig extends GuiScreen {
 			baseColorChangerButton.displayString = "Color: " + colorSelected.getName();
 			
 			if (colorSelected != ColorsEnum.CUSTOM && colorSelected != ColorsEnum.RAINBOW) {
-				Config.text_color = colorSelected.getHex();
+				ModConfig.text_color = colorSelected.getHex();
 			}
 			
 			if (colorSelected == ColorsEnum.RAINBOW) {
-				Config.rainbow = true;
+				ModConfig.rainbow = true;
 			} else {
-				Config.rainbow = false;
+				ModConfig.rainbow = false;
 			}
 			
 			
 			
-			colorField.setText(Config.text_color);
+			colorField.setText(ModConfig.text_color);
 		} else if (button == mouseModeChangerButton) {
 			mouseModeSelected = MouseModeEnum.getById(mouseModeSelected.getId() + 1);
 			mouseModeChangerButton.displayString = "Mode: " + mouseModeSelected.getName();
 
 			if (mouseModeSelected != MouseModeEnum.CUSTOM) {
-				Config.text = mouseModeSelected.getText();
+				ModConfig.text = mouseModeSelected.getText();
 			}
-			textField.setText(Config.text);
+			textField.setText(ModConfig.text);
 		} else if (button == showTextButton) {
 			showText = ShowTextEnum.getByBool(!showText.getBool());
 			showTextButton.displayString = "Show text: " + showText.getText();

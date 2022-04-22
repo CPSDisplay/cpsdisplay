@@ -1,6 +1,6 @@
 package fr.dams4k.cpsmod.v1_8.enums;
 
-import fr.dams4k.cpsmod.v1_8.config.Config;
+import fr.dams4k.cpsmod.v1_8.config.ModConfig;
 
 public enum ColorsEnum {
 	WHITE(0, "White", "ffffff"),
@@ -59,7 +59,7 @@ public enum ColorsEnum {
 				return color;
 			}
 		}
-		if (Config.rainbow == true) {
+		if (ModConfig.rainbow == true) {
 			return ColorsEnum.RAINBOW;
 		} else {
 			return ColorsEnum.CUSTOM;
