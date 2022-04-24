@@ -4,11 +4,14 @@ import java.awt.Color;
 import java.io.File;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 import net.minecraftforge.fml.common.Loader;
 
 public class ModConfig {
+	private static Minecraft mc = Minecraft.getMinecraft();
+
 	private static Configuration config;
 	
 	public static final String CATEGORY_NAME_TEXT = "display";
@@ -74,7 +77,6 @@ public class ModConfig {
 			backgroundColorAlphaProperty = config.get(CATEGORY_NAME_BACKGROUND, "color_a", bg_color_a);
 
 			text_position = textPositionProperty.getDoubleList();
-			
 			text_scale = textScaleProperty.getDouble();
 			text_color = textColorProperty.getString();
 			show_text = showTextProperty.getBoolean();
@@ -120,13 +122,22 @@ public class ModConfig {
 	}
 
 	public static void setText_position(int[] text_position) {
-		double[] text_positionPercentage = {(double) text_position[0] / Minecraft.getMinecraft().displayWidth, (double) text_position[1] / Minecraft.getMinecraft().displayHeight};
+		ScaledResolution scaledResolution = new ScaledResolution(mc);
+		int scaleFactor = scaledResolution.getScaleFactor();
+
+		System.out.println(text_position[0]);
+		System.out.println(mc.displayWidth / scaleFactor);
+
+		double[] text_positionPercentage = {(double) text_position[0] / (mc.displayWidth / scaleFactor), (double) text_position[1] / (mc.displayHeight / scaleFactor)};
 
 		ModConfig.text_position = text_positionPercentage;
 	}
 
 	public static int[] getText_position() {
-		int[] real_position = {(int) (text_position[0]*Minecraft.getMinecraft().displayWidth), (int) (text_position[1]*Minecraft.getMinecraft().displayHeight)};
+		ScaledResolution scaledResolution = new ScaledResolution(mc);
+		int scaleFactor = scaledResolution.getScaleFactor();
+
+		int[] real_position = {(int) (text_position[0] * (mc.displayWidth / scaleFactor)), (int) (text_position[1] * (mc.displayHeight / scaleFactor))};
 		return real_position;
 	}
 }
