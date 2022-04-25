@@ -27,7 +27,7 @@ public class GuiConfig extends GuiScreen {
 	
 	// Rainbow
 	private GuiSlider rainbowSpeedSlider;
-	private GuiSlider rainbowPrecision;
+	private GuiSlider rainbowPrecisionSlider;
 
 	private MouseModeEnum mouseModeSelected;
 	private ColorsEnum colorSelected;
@@ -62,8 +62,8 @@ public class GuiConfig extends GuiScreen {
 		colorField.setMaxStringLength(6);
 		colorField.setText(ModConfig.text_color);
 		
-		rainbowSpeedSlider = new GuiSlider(13, width / 2 + 2, 60 + top, 150, 20, "Speed: ", "ms", 1, 500, ModConfig.rainbow_speed, false, true);
-		rainbowPrecision = new GuiSlider(14, width / 2 + 2, 85 + top, 150, 20, "Precision: ", "", 0.01, 1, ModConfig.rainbow_precision, true, true);
+		rainbowSpeedSlider = new GuiSlider(13, width / 2 + 2, 60 + top, 150, 20, "Speed: ", "x", 0.1, 3f, ModConfig.rainbow_speed, true, true);
+		rainbowPrecisionSlider = new GuiSlider(14, width / 2 + 2, 85 + top, 150, 20, "Precision: ", "", 0.01, 1, ModConfig.rainbow_precision, true, true);
 
 		buttonList.add(showTextButton);
 		buttonList.add(scaleSlider);
@@ -71,7 +71,7 @@ public class GuiConfig extends GuiScreen {
 		
 		buttonList.add(baseColorChangerButton);
 		buttonList.add(rainbowSpeedSlider);
-		buttonList.add(rainbowPrecision);
+		buttonList.add(rainbowPrecisionSlider);
 
 		updateButtons();
 	}
@@ -142,6 +142,8 @@ public class GuiConfig extends GuiScreen {
 			ModConfig.text_color = colorField.getText();
 		}
 		ModConfig.text_scale = Double.parseDouble(String.format("%.2f", scaleSlider.getValue() / 100).replace(",", "."));
+		ModConfig.rainbow_speed = Double.parseDouble(String.format("%.2f", rainbowSpeedSlider.getValue()).replace(",", "."));
+		ModConfig.rainbow_precision = Double.parseDouble(String.format("%.2f", rainbowPrecisionSlider.getValue()).replace(",", "."));
 		ModConfig.show_text = showText.getBool();
 	}
 	
@@ -182,7 +184,7 @@ public class GuiConfig extends GuiScreen {
 	public void updateButtons() {
 		// Color
 		if (colorSelected != ColorsEnum.RAINBOW) {
-			rainbowPrecision.visible = false;
+			rainbowPrecisionSlider.visible = false;
 			rainbowSpeedSlider.visible = false;
 			
 			if (colorSelected == ColorsEnum.CUSTOM) {
@@ -192,7 +194,7 @@ public class GuiConfig extends GuiScreen {
 			}
 		} else {
 			colorField.setVisible(true);
-			rainbowPrecision.visible = true;
+			rainbowPrecisionSlider.visible = true;
 			rainbowSpeedSlider.visible = true;
 		}
 		

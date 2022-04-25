@@ -27,7 +27,7 @@ public class ModConfig {
 	
 	// Rainbow
 	public static boolean rainbow = false;
-	public static int rainbow_speed = 100;
+	public static double rainbow_speed = 1d;
 	public static double rainbow_precision = 0.1;
 	public static float rainbow_hue = 0f;
 	public static boolean play_rainbow;
@@ -82,7 +82,7 @@ public class ModConfig {
 			show_text = showTextProperty.getBoolean();
 			text = textProperty.getString();
 			rainbow = rainbowProperty.getBoolean();
-			rainbow_speed = rainbowSpeedProperty.getInt();
+			rainbow_speed = rainbowSpeedProperty.getDouble();
 
 			bg_color_r = backgroundColorRedProperty.getInt();
 			bg_color_g = backgroundColorGreenProperty.getInt();
@@ -116,17 +116,14 @@ public class ModConfig {
 	
 	public static int getChroma() {
 		double precision = ModConfig.rainbow_precision * 20000;
-
-		int rgb = Color.HSBtoRGB((float) ((System.currentTimeMillis() * rainbow_speed) % ((long) precision)) / ((float) precision), 0.8F, 0.8F);
+		
+		int rgb = Color.HSBtoRGB((float) ((System.currentTimeMillis() * ModConfig.rainbow_speed) % ((long) precision)) / ((float) precision), 0.8f, 0.8f);
 		return rgb;
 	}
 
 	public static void setText_position(int[] text_position) {
 		ScaledResolution scaledResolution = new ScaledResolution(mc);
 		int scaleFactor = scaledResolution.getScaleFactor();
-
-		System.out.println(text_position[0]);
-		System.out.println(mc.displayWidth / scaleFactor);
 
 		double[] text_positionPercentage = {(double) text_position[0] / (mc.displayWidth / scaleFactor), (double) text_position[1] / (mc.displayHeight / scaleFactor)};
 
