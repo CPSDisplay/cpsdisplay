@@ -47,7 +47,7 @@ public class GuiConfig extends GuiScreen {
 		showText = ShowTextEnum.getByBool(ModConfig.show_text);
 		
 		if (ModConfig.rainbow) {
-			colorSelected = ColorsEnum.getById(8);
+			colorSelected = ColorsEnum.getById(9);
 		}
 		
 		showTextButton = new GuiButtonExt(0, width / 2 - 152, 10 + top, 150, 20, "Show text: " + showText.getText());

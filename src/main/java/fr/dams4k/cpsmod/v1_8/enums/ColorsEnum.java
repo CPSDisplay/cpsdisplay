@@ -3,15 +3,16 @@ package fr.dams4k.cpsmod.v1_8.enums;
 import fr.dams4k.cpsmod.v1_8.config.ModConfig;
 
 public enum ColorsEnum {
-	WHITE(0, "White", "ffffff"),
-	RED(1, "§cRed", "ff0000"),
-	GREEN(2, "§aGreen", "00ff00"),
-	BLUE(3, "§9Blue", "0000ff"),
-	YELLOW(4, "§eYellow", "ffff00"),
-	PINK(5, "§dPink", "ff00ff"),
-	AQUA(6, "§bAqua", "00ffff"),
-	CUSTOM(7, "Custom", ""),
-	RAINBOW(8, "§cR§da§9i§bn§ab§eo§6w", "");
+	WHITE(	0, "White",	 "ffffff"),
+	BLACK(	1, "Black",	 "000000"),
+	RED(	2, "§cRed",	 "ff0000"),
+	GREEN(	3, "§aGreen",	 "00ff00"),
+	BLUE(	4, "§9Blue",	 "0000ff"),
+	YELLOW(	5, "§eYellow", "ffff00"),
+	PINK(	6, "§dPink",	 "ff00ff"),
+	AQUA(	7, "§bAqua",	 "00ffff"),
+	CUSTOM(	8, "Custom",	 ""),
+	RAINBOW(9, "§cR§da§9i§bn§ab§eo§6w", "");
 
 	private final int id;
 	private final String name;
