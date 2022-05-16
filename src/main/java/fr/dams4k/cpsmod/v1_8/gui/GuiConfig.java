@@ -4,27 +4,24 @@ import java.awt.Color;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import fr.dams4k.cpsmod.core.colorchooser.ColorChooserFrame;
 import fr.dams4k.cpsmod.v1_8.config.ModConfig;
 import fr.dams4k.cpsmod.v1_8.enums.ColorsEnum;
 import fr.dams4k.cpsmod.v1_8.enums.MouseModeEnum;
 import fr.dams4k.cpsmod.v1_8.enums.ShowTextEnum;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiPageButtonList.GuiResponder;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.GuiSlider.FormatHelper;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.client.config.GuiButtonExt;
 import net.minecraftforge.fml.client.config.GuiSlider;
-
 
 public class GuiConfig extends GuiScreen {
 	// Text
-	private GuiButton showTextButton;
+	private GuiButtonExt showTextButton;
 	private GuiSlider scaleSlider;
-	private GuiButton baseColorChangerButton;
-	private GuiButton mouseModeChangerButton;
+	private GuiButtonExt baseColorChangerButton;
+	private GuiButtonExt mouseModeChangerButton;
 	private GuiTextField textField;
 	private GuiTextField colorField;
 	
@@ -52,58 +49,21 @@ public class GuiConfig extends GuiScreen {
 		if (ModConfig.rainbow) {
 			colorSelected = ColorsEnum.getById(9);
 		}
-
-		showTextButton = new GuiButton(0, width / 2 - 152, 10 + top, 150, 20, "Show text: " + showText.getText());
+		
+		showTextButton = new GuiButtonExt(0, width / 2 - 152, 10 + top, 150, 20, "Show text: " + showText.getText());
 		scaleSlider = new GuiSlider(1, width / 2 - 152, 35 + top, 150, 20, "Scale : ", "%", 0.5 * 100, 4 * 100, ModConfig.text_scale * 100, false, true);
-		mouseModeChangerButton = new GuiButton(3, width / 2 - 152, 60 + top, 150, 20, "Display mode: " + mouseModeSelected.getName());
+		mouseModeChangerButton = new GuiButtonExt(3, width / 2 - 152, 60 + top, 150, 20, "Display mode: " + mouseModeSelected.getName());
 		textField = new GuiTextField(2, fontRendererObj,  width / 2 - 152, 85 + top, 150, 20);
 		textField.setMaxStringLength(999);
 		textField.setText(ModConfig.text);
 		
-		baseColorChangerButton = new GuiButton(10, width / 2 + 2, 10 + top, 150, 20, "Color: " + colorSelected.getName());
+		baseColorChangerButton = new GuiButtonExt(10, width / 2 + 2, 10 + top, 150, 20, "Color: " + colorSelected.getName());
 		colorField = new GuiTextField(11, fontRendererObj, width / 2 + 2, 35 + top, 150, 20);
 		colorField.setMaxStringLength(6);
 		colorField.setText(ModConfig.text_color);
 		
 		rainbowSpeedSlider = new GuiSlider(13, width / 2 + 2, 60 + top, 150, 20, "Speed: ", "x", 0.1, 3f, ModConfig.rainbow_speed, true, true);
 		rainbowPrecisionSlider = new GuiSlider(14, width / 2 + 2, 85 + top, 150, 20, "Precision: ", "", 0.01, 1, ModConfig.rainbow_precision, true, true);
-
-		net.minecraft.client.gui.GuiSlider testSlider = new net.minecraft.client.gui.GuiSlider(new GuiResponder() {
-
-			@Override
-			public void func_175321_a(int p_175321_1_, boolean p_175321_2_) {
-				System.out.println("- func_175321_a");
-				System.out.println(p_175321_1_);
-				System.out.println(p_175321_2_);
-			}
-
-			@Override
-			public void onTick(int id, float value) {
-				System.out.println("- onTick");
-				System.out.println(id);
-				System.out.println(value);
-			}
-
-			@Override
-			public void func_175319_a(int p_175319_1_, String p_175319_2_) {
-				System.out.println("- func_175319_a");
-				System.out.println(p_175319_1_);
-				System.out.println(p_175319_2_);
-			}
-			
-		}, 100, 0, 0, "Slider", 0, 100, 50, new FormatHelper() {
-
-			@Override
-			public String getText(int id, String name, float value) {
-				System.out.println("- getText");
-				System.out.println(id);
-				System.out.println(name);
-				System.out.println(value);
-				return null;
-			}
-			
-		});
-		buttonList.add(testSlider);
 
 		buttonList.add(showTextButton);
 		buttonList.add(scaleSlider);
@@ -112,8 +72,6 @@ public class GuiConfig extends GuiScreen {
 		buttonList.add(baseColorChangerButton);
 		buttonList.add(rainbowSpeedSlider);
 		buttonList.add(rainbowPrecisionSlider);
-
-		ColorChooserFrame colorWindow = new ColorChooserFrame();
 
 		updateButtons();
 	}
@@ -220,7 +178,6 @@ public class GuiConfig extends GuiScreen {
 			showText = ShowTextEnum.getByBool(!showText.getBool());
 			showTextButton.displayString = "Show text: " + showText.getText();
 		}
-
 		saveConfig();
 	}
 	
