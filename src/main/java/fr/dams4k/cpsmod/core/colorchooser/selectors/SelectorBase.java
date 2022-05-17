@@ -7,12 +7,16 @@ import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.WritableRaster;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.border.EmptyBorder;
 
 public class SelectorBase extends JLabel implements MouseMotionListener, MouseListener {
+    public List<SelectorListener> listeners = new ArrayList<SelectorListener>();
+
     private BufferedImage baseBufferedImage;
 
     private boolean showXAxis;
@@ -134,5 +138,9 @@ public class SelectorBase extends JLabel implements MouseMotionListener, MouseLi
 
     public BufferedImage getBaseBufferedImage() {
         return baseBufferedImage;
+    }
+
+    public void addListener(SelectorListener newListener) {
+        listeners.add(newListener);
     }
 }

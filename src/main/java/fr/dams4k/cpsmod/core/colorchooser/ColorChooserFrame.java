@@ -1,32 +1,40 @@
 package fr.dams4k.cpsmod.core.colorchooser;
 
+import java.awt.Color;
 import java.awt.Dimension;
 
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import fr.dams4k.cpsmod.core.colorchooser.selectors.HColorSelector;
-import fr.dams4k.cpsmod.core.colorchooser.selectors.SBColorSelector;
-import fr.dams4k.cpsmod.core.colorchooser.sliders.SlidersContainer;
+import fr.dams4k.cpsmod.core.colorchooser.panels.SelectorPanel;
+import fr.dams4k.cpsmod.core.colorchooser.panels.SlidersPanel;
+import fr.dams4k.cpsmod.core.colorchooser.selectors.SelectorListener;
+import fr.dams4k.cpsmod.core.colorchooser.sliders.SliderListener;
 
-public class ColorChooserFrame extends JFrame {
+public class ColorChooserFrame extends JFrame implements SelectorListener, SliderListener {
+    private float H = 0;
+    private float S = 0;
+    private float B = 0;
+
+    private SelectorPanel selectorPanel;
+    private SlidersPanel slidersPanel;
+
     public ColorChooserFrame() {
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 
-        JPanel colorWheelPanel = new JPanel();
-        colorWheelPanel.setLayout(new BoxLayout(colorWheelPanel, BoxLayout.X_AXIS));
+        selectorPanel = new SelectorPanel();
+        selectorPanel.hSelector.addListener(this);
+        selectorPanel.sbSelector.addListener(this);
 
-        SBColorSelector sbColorSelector = new SBColorSelector(ImageGenerators.sbColorSelector(0f));
-        HColorSelector hColorSelector = new HColorSelector(ImageGenerators.hColorSelector(), sbColorSelector, 0f);
-        colorWheelPanel.add(sbColorSelector);
-        colorWheelPanel.add(hColorSelector);
+        // slidersPanel = new SlidersPanel();
+        // slidersPanel.redSlider.addListener(this);
+        // slidersPanel.greenSlider.addListener(this);
+        // slidersPanel.blueSlider.addListener(this);
 
-        JPanel colorSliders = new SlidersContainer();
-
-        mainPanel.add(colorWheelPanel);
-        mainPanel.add(colorSliders);
+        mainPanel.add(selectorPanel);
+        // mainPanel.add(slidersPanel);
         
         add(mainPanel);
 
@@ -38,4 +46,58 @@ public class ColorChooserFrame extends JFrame {
         setVisible(true);
     }
 
+    public void onSelectorColorChanged(float H, float S, float B) {
+        this.H = H;
+        this.S = S;
+        this.B = B;
+
+        Color color = Color.getHSBColor(H, S, B);
+
+        // this.slidersPanel.redSlider.slider.setValue(color.getRed());
+        // this.slidersPanel.greenSlider.slider.setValue(color.getGreen());
+        // this.slidersPanel.blueSlider.slider.setValue(color.getBlue());
+    }
+
+    public void onSliderColorChanged(int Red, int Green, int Blue) {
+        float[] hsb = Color.RGBtoHSB(Red, Green, Blue, null);
+
+        this.H = hsb[0];
+        this.S = hsb[1];
+        this.B = hsb[2];
+
+        System.out.println(Red);
+        System.out.println(Green);
+        System.out.println(Blue);
+        System.out.println();
+
+        this.selectorPanel.hSelector.updateIcon(0, (int) H);
+        this.selectorPanel.sbSelector.updateIcon((int) S * 256, (int) B * 256);
+    }
+    
+    @Override
+    public void HColorChange(float H) { onSelectorColorChanged(H, S, B); }
+
+    @Override
+    public void SColorChange(float S) { onSelectorColorChanged(H, S, B); }
+
+    @Override
+    public void BColorChange(float B) { onSelectorColorChanged(H, S, B); }
+
+    @Override
+    public void RColorChange(int red) {
+        Color color = Color.getHSBColor(this.H, this.S, this.B);
+        onSliderColorChanged(red, color.getBlue(), color.getGreen());
+    }
+
+    @Override
+    public void GColorChange(int green) {
+        Color color = Color.getHSBColor(this.H, this.S, this.B);
+        onSliderColorChanged(color.getRed(), green, color.getBlue());
+    }
+
+    @Override
+    public void BColorChange(int blue) {
+        Color color = Color.getHSBColor(this.H, this.S, this.B);
+        onSliderColorChanged(color.getRed(), color.getGreen(), blue);
+    }
 }

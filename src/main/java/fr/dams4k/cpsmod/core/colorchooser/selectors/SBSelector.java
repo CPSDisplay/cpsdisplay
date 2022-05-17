@@ -5,11 +5,11 @@ import java.awt.image.BufferedImage;
 
 import fr.dams4k.cpsmod.core.colorchooser.ImageGenerators;
 
-public class SBColorSelector extends SelectorBase {
+public class SBSelector extends SelectorBase {
     float S;
     float B;
 
-    public SBColorSelector(BufferedImage baseBufferedImage) {
+    public SBSelector(BufferedImage baseBufferedImage) {
         super(baseBufferedImage, true, true);
         updateIcon(0, 0);
     }
@@ -23,6 +23,11 @@ public class SBColorSelector extends SelectorBase {
         super.updateIcon(event);
 
         this.S = this.clamp(event.getX(), 0, 255) / (float) this.getIcon().getIconWidth();
-        this.B = this.clamp(event.getY(), 0, 255) / (float) this.getIcon().getIconHeight();
+        this.B = this.clamp(255-event.getY(), 0, 255) / (float) this.getIcon().getIconHeight();
+
+        for (SelectorListener listener : listeners) {
+            listener.SColorChange(S);
+            listener.BColorChange(B);
+        }
     }
 }
