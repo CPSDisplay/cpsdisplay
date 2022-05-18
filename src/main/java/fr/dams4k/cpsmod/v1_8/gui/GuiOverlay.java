@@ -6,11 +6,18 @@ import java.util.ArrayList;
 import org.lwjgl.opengl.GL11;
 
 import fr.dams4k.cpsmod.v1_8.config.ModConfig;
+import fr.dams4k.cpsmod.v1_8.renderer.ModFontRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.util.ResourceLocation;
 
 public class GuiOverlay extends Gui {
+	private ModFontRenderer modFontRenderer;
+
 	public GuiOverlay(Minecraft mc, Integer l, Integer r, Color color) {
+		modFontRenderer = new ModFontRenderer(mc.gameSettings, new ResourceLocation("textures/font/ascii.png"), mc.renderEngine, mc.isUnicode());
+		modFontRenderer.onResourceManagerReload(null);
+
 		if (ModConfig.show_text) {
 			String text = ModConfig.text.replace("{0}", l.toString()).replace("{1}", r.toString()).replace("&", "§");
 			Integer text_color;
@@ -38,7 +45,8 @@ public class GuiOverlay extends Gui {
 				drawRect(x, y, positions.get(2), positions.get(3), color.getRGB());
 			}
 			
-			drawString(mc.fontRendererObj, text, x, y, text_color);
+			modFontRenderer.drawGradientString(text, x, y, 0xff0000, 0x0000ff, true, true);
+			// drawString(modFontRenderer, text, x, y, text_color);
 
 			GL11.glPopMatrix();
 		}

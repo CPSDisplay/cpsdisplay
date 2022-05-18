@@ -113,7 +113,7 @@ public class GuiConfig extends GuiScreen {
 		buttonList.add(rainbowSpeedSlider);
 		buttonList.add(rainbowPrecisionSlider);
 
-		ColorChooserFrame colorWindow = new ColorChooserFrame();
+		// ColorChooserFrame colorWindow = new ColorChooserFrame();
 
 		updateButtons();
 	}
