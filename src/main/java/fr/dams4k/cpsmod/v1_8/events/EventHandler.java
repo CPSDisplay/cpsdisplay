@@ -22,10 +22,16 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiIngameMenu;
 import net.minecraft.client.settings.GameSettings;
+import net.minecraft.event.ClickEvent;
+import net.minecraft.event.ClickEvent.Action;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatStyle;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IChatComponent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.fml.client.config.GuiConfigEntries.ChatColorEntry;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
@@ -50,7 +56,7 @@ public class EventHandler {
 				JsonParser parser = new JsonParser();
 				JsonArray json = (JsonArray) parser.parse(response);
 
-				VersionChecker modVersion = new VersionChecker("1.2.0");
+				VersionChecker modVersion = new VersionChecker("1.0.0"); // TODO: get real mod version with mcmod.info file
 
 				for (int i = 0; i < json.size(); i++) {
 					JsonObject object = (JsonObject) json.get(i);
@@ -58,7 +64,48 @@ public class EventHandler {
 					String objectVersion = object.get("name").getAsString();
 					if (modVersion.compareTo(objectVersion) == VersionChecker.LOWER) {
 						EntityPlayerSP player = (EntityPlayerSP) event.entity;
-						player.addChatMessage(new ChatComponentText("msg"));
+
+						// BRACKETS
+						ChatStyle bracketStyle = new ChatStyle();
+						bracketStyle.setBold(true);
+						bracketStyle.setColor(EnumChatFormatting.RED);
+
+						IChatComponent leftBracketMessage = new ChatComponentText("[");
+						IChatComponent rightBracketMessage = new ChatComponentText("] ");
+						leftBracketMessage.setChatStyle(bracketStyle);
+						rightBracketMessage.setChatStyle(bracketStyle);
+
+						// MOD NAME
+						ChatStyle modNameStyle = new ChatStyle();
+						modNameStyle.setColor(EnumChatFormatting.GRAY);
+						IChatComponent modNameMessage = new ChatComponentText("CPS Display");
+						modNameMessage.setChatStyle(modNameStyle);
+
+						// INFO
+						ChatStyle infoStyle = new ChatStyle();
+						infoStyle.setColor(EnumChatFormatting.YELLOW);
+						IChatComponent infoMessage = new ChatComponentText("Mod can be updated: ");
+						infoMessage.setChatStyle(infoStyle);
+
+						// LINK
+						IChatComponent link = new ChatComponentText("click here");
+						ChatStyle style = new ChatStyle().setChatClickEvent(new ClickEvent(Action.OPEN_URL, "https://www.curseforge.com/minecraft/mc-mods/cps-mod/files"));
+						style.setUnderlined(true);
+						style.setBold(true);
+						style.setColor(EnumChatFormatting.GREEN);
+						link.setChatStyle(style);
+
+
+						// WHOLE MESSAGE
+						IChatComponent message = new ChatComponentText("");
+						message.appendSibling(leftBracketMessage);
+						message.appendSibling(modNameMessage);
+						message.appendSibling(rightBracketMessage);
+						message.appendSibling(infoMessage);
+						message.appendSibling(link);
+
+						player.addChatMessage(message);
+						break;
 					}
 				}
 
