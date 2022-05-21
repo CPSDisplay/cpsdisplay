@@ -38,7 +38,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
 
 
 public class EventHandler {
-	private boolean upToDateMessageSent = false;
+	private boolean updateMessageSent = false;
 
 	private List<Long> leftClicks = new ArrayList<Long>();
 	private List<Long> rightClicks = new ArrayList<Long>();
@@ -47,7 +47,7 @@ public class EventHandler {
 	
 	@SubscribeEvent
 	public void onClientJoinWorld(EntityJoinWorldEvent event) {
-		if (event.entity instanceof EntityPlayerSP && !upToDateMessageSent) {
+		if (event.entity instanceof EntityPlayerSP && !updateMessageSent) {
 			try {
 				URL githubTagsURL = new URL("https://api.github.com/repos/Dams4K/Minecraft-CPSMod/tags");
 				
@@ -56,7 +56,7 @@ public class EventHandler {
 				JsonParser parser = new JsonParser();
 				JsonArray json = (JsonArray) parser.parse(response);
 
-				VersionChecker modVersion = new VersionChecker("1.0.0"); // TODO: get real mod version with mcmod.info file
+				VersionChecker modVersion = new VersionChecker("1.2.0"); // TODO: get real mod version with mcmod.info file
 
 				for (int i = 0; i < json.size(); i++) {
 					JsonObject object = (JsonObject) json.get(i);
@@ -84,11 +84,11 @@ public class EventHandler {
 						// INFO
 						ChatStyle infoStyle = new ChatStyle();
 						infoStyle.setColor(EnumChatFormatting.YELLOW);
-						IChatComponent infoMessage = new ChatComponentText("Mod can be updated: ");
+						IChatComponent infoMessage = new ChatComponentText("A newer version of this mod exist: ");
 						infoMessage.setChatStyle(infoStyle);
 
 						// LINK
-						IChatComponent link = new ChatComponentText("click here");
+						IChatComponent link = new ChatComponentText("download here");
 						ChatStyle style = new ChatStyle().setChatClickEvent(new ClickEvent(Action.OPEN_URL, "https://www.curseforge.com/minecraft/mc-mods/cps-mod/files"));
 						style.setUnderlined(true);
 						style.setBold(true);
@@ -108,25 +108,13 @@ public class EventHandler {
 						break;
 					}
 				}
-
-				// System.out.println(json);
-
-				// VersionChecker version = new VersionChecker("1.10.2");
-				// VersionChecker version2 = new VersionChecker("1-10-2", "-");
-				
-				// System.out.println(version.compareTo("1.10.2"));
-				// System.out.println(version.compareTo("1.10.3"));
-				// System.out.println(version.compareTo("1.11.2"));
-				// System.out.println(version.compareTo("1.9.5"));
-				// System.out.println(version2.compareTo("1-9-5"));
-
 			} catch (MalformedURLException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 
-			upToDateMessageSent = true;
+			updateMessageSent = true;
 		}
 	}
 
