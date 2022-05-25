@@ -83,6 +83,8 @@ public class ModFontRenderer extends FontRenderer {
 
     public int drawGradientString(String text, float x, float y, int topColor, int bottomColor, boolean dropShadow, boolean horizontal) {
         enableAlpha();
+
+        textColor = -1;
         resetStyles();
         int i;
 
@@ -264,26 +266,26 @@ public class ModFontRenderer extends FontRenderer {
         float endGreen = ((endColor >> 8) & 0xFF) / 255f;
         float endBlue = (endColor & 0xFF) / 255f;
 
+        GlStateManager.shadeModel(GL11.GL_SMOOTH);
         if (this.strikethroughStyle) {
-            // GlStateManager.shadeModel(GL11.GL_SMOOTH);
             Tessellator tessellator = Tessellator.getInstance();
             WorldRenderer worldrenderer = tessellator.getWorldRenderer();
             GlStateManager.disableTexture2D();
             worldrenderer.begin(7, DefaultVertexFormats.POSITION);
             worldrenderer.pos((double)this.posX, (double)(this.posY + (float)(this.FONT_HEIGHT / 2)), 0.0D).endVertex();
-            // if (horizontal) {
-            //     GlStateManager.color(startRed, startGreen, startBlue, startAlpha);
-            // } else {
-            //     GlStateManager.color(endRed, endGreen, endBlue, endAlpha);
-            // }
+            if (horizontal) {
+                GlStateManager.color(startRed, startGreen, startBlue, startAlpha);
+            } else {
+                GlStateManager.color(endRed, endGreen, endBlue, endAlpha);
+            }
             worldrenderer.pos((double)(this.posX + f), (double)(this.posY + (float)(this.FONT_HEIGHT / 2)), 0.0D).endVertex();
             worldrenderer.pos((double)(this.posX + f), (double)(this.posY + (float)(this.FONT_HEIGHT / 2) - 1.0F), 0.0D).endVertex();
 
-            // if (horizontal) {
-            //     GlStateManager.color(endRed, endGreen, endBlue, endAlpha);
-            // } else {
-            //     GlStateManager.color(startRed, startGreen, startBlue, startAlpha);
-            // }
+            if (horizontal) {
+                GlStateManager.color(endRed, endGreen, endBlue, endAlpha);
+            } else {
+                GlStateManager.color(startRed, startGreen, startBlue, startAlpha);
+            }
             worldrenderer.pos((double)this.posX, (double)(this.posY + (float)(this.FONT_HEIGHT / 2) - 1.0F), 0.0D).endVertex();
             tessellator.draw();
             GlStateManager.enableTexture2D();
@@ -302,6 +304,7 @@ public class ModFontRenderer extends FontRenderer {
             tessellator1.draw();
             GlStateManager.enableTexture2D();
         }
+        GlStateManager.shadeModel(GL11.GL_FLAT);
 
         this.posX += (float)((int)f);
     }
