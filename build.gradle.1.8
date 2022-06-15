@@ -12,7 +12,8 @@ buildscript {
     }
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
-sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = 1.8
+
+sourceCompatibility = targetCompatibility = "1.8"
 
 /*
 // for people who want stable - not yet functional for MC 1.8.8 - we require the forgegradle 2.1 snapshot
@@ -20,9 +21,9 @@ plugins {
     id "net.minecraftforge.gradle.forge" version "2.0.2"
 }
 */
-version = "1.1.0"
-group= "fr.dams4k.cpsmod.v1_8" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "cpsmod"
+version = "1.2.0"
+group= "fr.dams4k.cpsdisplay.v1_8" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = "cpsdisplay"
 
 minecraft {
     version = "1.8.9-11.15.1.1722"
@@ -64,7 +65,7 @@ dependencies {
 sourceSets {
     main {
         java {
-            exclude "fr/dams4k/cpsmod/v1_9"
+            exclude "fr/dams4k/cpsdisplay/v1_9"
         }
     }
 }
