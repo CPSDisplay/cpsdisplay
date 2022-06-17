@@ -1,2 +1,2 @@
 # ex: ./launch_client.sh 1.8
-./gradlew --build-file build.gradle.$1 runClient
+./gradlew --build-file build.$1.gradle runClient

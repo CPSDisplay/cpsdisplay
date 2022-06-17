@@ -1,1 +1,1 @@
-./gradlew --build-file build.gradle.$1 build
+./gradlew --build-file build.$1.gradle build
