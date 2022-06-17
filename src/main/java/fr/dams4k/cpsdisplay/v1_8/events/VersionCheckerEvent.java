@@ -35,7 +35,7 @@ public class VersionCheckerEvent {
 				JsonParser parser = new JsonParser();
 				JsonArray json = (JsonArray) parser.parse(response);
 
-				VersionChecker modVersion = new VersionChecker(References.MOD_VERSION); // TODO: get real mod version with mcmod.info file
+				VersionChecker modVersion = new VersionChecker(References.MOD_VERSION);
 
 				for (int i = 0; i < json.size(); i++) {
 					JsonObject object = (JsonObject) json.get(i);

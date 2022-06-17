@@ -1,9 +1,9 @@
-package fr.dams4k.cpsdisplay.core.colorchooser.selectors;
+package fr.dams4k.cpsdisplay.core.colorchooser_last.selectors;
 
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 
-import fr.dams4k.cpsdisplay.core.colorchooser.ImageGenerators;
+import fr.dams4k.cpsdisplay.core.colorchooser_last.ImageGenerators;
 
 public class SBSelector extends SelectorBase {
     float S;

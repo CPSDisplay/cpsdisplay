@@ -1,4 +1,4 @@
-package fr.dams4k.cpsdisplay.core.colorchooser.sliders;
+package fr.dams4k.cpsdisplay.core.colorchooser_last.sliders;
 
 import java.util.ArrayList;
 import java.util.List;

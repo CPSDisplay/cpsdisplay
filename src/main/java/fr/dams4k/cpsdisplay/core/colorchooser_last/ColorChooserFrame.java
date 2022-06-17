@@ -1,4 +1,4 @@
-package fr.dams4k.cpsdisplay.core.colorchooser;
+package fr.dams4k.cpsdisplay.core.colorchooser_last;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -7,10 +7,10 @@ import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import fr.dams4k.cpsdisplay.core.colorchooser.panels.SelectorPanel;
-import fr.dams4k.cpsdisplay.core.colorchooser.panels.SlidersPanel;
-import fr.dams4k.cpsdisplay.core.colorchooser.selectors.SelectorListener;
-import fr.dams4k.cpsdisplay.core.colorchooser.sliders.SliderListener;
+import fr.dams4k.cpsdisplay.core.colorchooser_last.panels.SelectorPanel;
+import fr.dams4k.cpsdisplay.core.colorchooser_last.panels.SlidersPanel;
+import fr.dams4k.cpsdisplay.core.colorchooser_last.selectors.SelectorListener;
+import fr.dams4k.cpsdisplay.core.colorchooser_last.sliders.SliderListener;
 
 public class ColorChooserFrame extends JFrame implements SelectorListener, SliderListener {
     private float H = 0;

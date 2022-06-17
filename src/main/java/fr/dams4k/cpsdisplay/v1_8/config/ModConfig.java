@@ -3,6 +3,7 @@ package fr.dams4k.cpsdisplay.v1_8.config;
 import java.awt.Color;
 import java.io.File;
 
+import fr.dams4k.cpsdisplay.v1_8.References;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraftforge.common.config.Configuration;
@@ -54,7 +55,7 @@ public class ModConfig {
 	public static Color background_color = new Color(bg_color_r, bg_color_g, bg_color_b, bg_color_a); // à sauvegarder séparement, var R var G var B var A
 	
 	public static void preInit() {
-		File configFile = new File(Loader.instance().getConfigDir(), "cpsdisplay.cfg");
+		File configFile = new File(Loader.instance().getConfigDir(), References.MOD_ID + ".cfg");
 		config = new Configuration(configFile);
 		config.load();
 		syncConfig(true);

@@ -1,4 +1,4 @@
-package fr.dams4k.cpsdisplay.core.colorchooser;
+package fr.dams4k.cpsdisplay.core.colorchooser_last;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;

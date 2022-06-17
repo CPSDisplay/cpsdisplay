@@ -22,14 +22,16 @@ plugins {
 }
 */
 group = "fr.dams4k.cpsdisplay.v1_8" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "cpsdisplay"
-version = "${mod_version}"
+archivesBaseName = mod_id
+version = "1.8.9-${mod_version}"
 
 minecraft {
     version = "1.8.9-11.15.1.1722"
     runDir = "run"
     
-    replace "@VERSION@", project.version
+    replace "{mod_id}", mod_id
+    replace "{mod_name}", mod_name
+    replace "{mod_version}", project.version
     replaceIn "References.java"
     // the mappings can be changed at any time, and must be in the following format.
     // snapshot_YYYYMMDD   snapshot are built nightly.
@@ -54,15 +56,17 @@ sourceSets {
 
 processResources {
     // this will ensure that this task is redone when the versions change.
+    inputs.property "modid", mod_id
     inputs.property "version", project.version
     inputs.property "mcversion", project.minecraft.version
+    inputs.property "modname", mod_name
 
     // replace stuff in mcmod.info, nothing else
     from(sourceSets.main.resources.srcDirs) {
         include 'mcmod.info'
                 
         // replace version and mcversion
-        expand 'version':project.version, 'mcversion':project.minecraft.version, "modid":project.archivesBaseName
+        expand 'version':project.version, 'mcversion':project.minecraft.version, "modid":project.archivesBaseName, "modname":mod_name
     }
         
     // copy everything else, thats not the mcmod.info

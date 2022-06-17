@@ -1,7 +1,7 @@
 [
   {
     "modid": "${modid}",
-    "name": "CPSDisplay",
+    "name": "${modname}",
     "description": "Display your cps with this mod",
     "version": "${version}",
     "mcversion": "${mcversion}",

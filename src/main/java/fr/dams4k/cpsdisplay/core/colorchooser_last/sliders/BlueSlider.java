@@ -1,11 +1,11 @@
-package fr.dams4k.cpsdisplay.core.colorchooser.sliders;
+package fr.dams4k.cpsdisplay.core.colorchooser_last.sliders;
 
 import javax.swing.event.ChangeEvent;
 
-public class RedSlider extends BaseSlider {
-    public int R = 0;
+public class BlueSlider extends BaseSlider {
+    public int B = 0;
 
-    public RedSlider(String label_name) {
+    public BlueSlider(String label_name) {
         super(label_name);
     }
 
@@ -13,10 +13,10 @@ public class RedSlider extends BaseSlider {
     public void stateChanged(ChangeEvent event) {
         super.stateChanged(event);
 
-        R = slider.getValue();
+        B = slider.getValue();
 
         for (SliderListener listener : listeners) {
-            listener.RColorChange(R);
+            listener.RColorChange(B);
         }
     }
     

@@ -1,11 +1,11 @@
-package fr.dams4k.cpsdisplay.core.colorchooser.panels;
+package fr.dams4k.cpsdisplay.core.colorchooser_last.panels;
 
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
-import fr.dams4k.cpsdisplay.core.colorchooser.ImageGenerators;
-import fr.dams4k.cpsdisplay.core.colorchooser.selectors.HSelector;
-import fr.dams4k.cpsdisplay.core.colorchooser.selectors.SBSelector;
+import fr.dams4k.cpsdisplay.core.colorchooser_last.ImageGenerators;
+import fr.dams4k.cpsdisplay.core.colorchooser_last.selectors.HSelector;
+import fr.dams4k.cpsdisplay.core.colorchooser_last.selectors.SBSelector;
 
 public class SelectorPanel extends JPanel {
     public SBSelector sbSelector;

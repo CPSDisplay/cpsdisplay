@@ -1,4 +1,4 @@
-package fr.dams4k.cpsdisplay.core.colorchooser.selectors;
+package fr.dams4k.cpsdisplay.core.colorchooser_last.selectors;
 
 public interface SelectorListener {
     void HColorChange(float H); 

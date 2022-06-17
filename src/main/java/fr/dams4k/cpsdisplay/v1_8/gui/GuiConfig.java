@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import fr.dams4k.cpsdisplay.core.colorchooser.ColorChooserFrame;
+import fr.dams4k.cpsdisplay.core.colorchooser_last.ColorChooserFrame;
 import fr.dams4k.cpsdisplay.v1_8.config.ModConfig;
 import fr.dams4k.cpsdisplay.v1_8.enums.ColorsEnum;
 import fr.dams4k.cpsdisplay.v1_8.enums.MouseModeEnum;
