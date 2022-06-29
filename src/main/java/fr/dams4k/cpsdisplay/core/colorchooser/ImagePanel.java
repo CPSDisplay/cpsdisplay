@@ -29,6 +29,12 @@ public class ImagePanel extends JPanel {
         this.brightness = brightness;
     }
 
+    public ImagePanel(BufferedImage bufferedImage, boolean tile, float brightness) {
+        this.tile = tile;
+        this.brightness = brightness;
+        this.image = bufferedImage;
+    }
+
 
     public BufferedImage resizeImage(BufferedImage inImage, float scale) {
         int outWidth = Math.round(inImage.getWidth() * scale);
