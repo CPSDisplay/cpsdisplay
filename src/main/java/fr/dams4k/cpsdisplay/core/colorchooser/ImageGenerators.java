@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 
 public class ImageGenerators {
     public static BufferedImage sbColorSelector(float h) {
-        return sbColorSelector(h, 255, 255);
+        return sbColorSelector(h, 256, 256);
     }
 
     public static BufferedImage sbColorSelector(float h, int size_x, int size_y) {
@@ -13,7 +13,7 @@ public class ImageGenerators {
 
         for (int y = 0; y < size_y; y++) {
             for (int x = 0; x < size_x; x++) {
-                int rgb = Color.HSBtoRGB(h, x/((float) size_x+1), 1f-y/((float) size_y+1));
+                int rgb = Color.HSBtoRGB(h, x/((float) size_x-1), 1f-y/((float) size_y-1));
                 imageOut.setRGB(x, y, rgb);
             }
         }
@@ -22,7 +22,7 @@ public class ImageGenerators {
     }
 
     public static BufferedImage hColorSelector() {
-        return hColorSelector(25, 255);
+        return hColorSelector(25, 256);
     }
 
     public static BufferedImage hColorSelector(int size_x, int size_y) {
@@ -30,7 +30,7 @@ public class ImageGenerators {
 
         for (int y = 0; y < size_y; y++) {
             for (int x = 0; x < size_x; x++) {
-                int rgb = Color.HSBtoRGB(y/((float) size_y+1), 1f, 1f);
+                int rgb = Color.HSBtoRGB(y/((float) size_y-1), 1f, 1f);
                 imageOut.setRGB(x, y, rgb);
             }
         }
