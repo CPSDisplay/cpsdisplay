@@ -6,14 +6,16 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.dams4k.cpsdisplay.core.colorchooser.borders.InventoryBorder;
 import fr.dams4k.cpsdisplay.core.colorchooser.panels.ImagePanel;
 
 public class SelectorPanel extends ImagePanel {
     protected List<SelectorListener> listeners = new ArrayList<>();
 
 
-    public SelectorPanel(BufferedImage bufferedImage, boolean tile, float brightness, float borderScale) {
-        super(bufferedImage, tile, brightness, borderScale);
+    public SelectorPanel(BufferedImage bufferedImage, boolean tile, float brightness) {
+        super(bufferedImage, tile, brightness);
+        addBorder(new InventoryBorder(4));
     }
 
 

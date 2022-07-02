@@ -14,14 +14,14 @@ public class SBSelectorPanel extends SelectorPanel implements MouseInputListener
     private int xPos = 0;
 
     public SBSelectorPanel() {
-        super(ImageGenerators.sbColorSelector(0f), false, 0f, 4);
+        super(ImageGenerators.sbColorSelector(0f), false, 0f);
         addMouseMotionListener(this);
         addMouseListener(this);
     }
 
     public void updateAxis(int posX, int posY) {
-        yPos = clamp(posY, topSideImage.getHeight(this), getHeight()-bottomSideImage.getHeight(this)-(int) (selectorLineScale/2));
-        xPos = clamp(posX, leftSideImage.getWidth(this), getWidth()-rightSideImage.getWidth(this)-(int) (selectorLineScale/2));
+        yPos = clamp(posY, border.topSideImage.getHeight(this), getHeight()-border.bottomSideImage.getHeight(this)-(int) (selectorLineScale/2));
+        xPos = clamp(posX, border.leftSideImage.getWidth(this), getWidth()-border.rightSideImage.getWidth(this)-(int) (selectorLineScale/2));
         repaint();
     }
 
@@ -30,16 +30,16 @@ public class SBSelectorPanel extends SelectorPanel implements MouseInputListener
         super.paintComponent(graphics);
 
         // make life easier
-        int minY = topSideImage.getHeight(this);
-        int maxY = getHeight()-bottomSideImage.getHeight(this); 
-        int minX = leftSideImage.getWidth(this);
-        int maxX = getWidth()-rightSideImage.getWidth(this);
+        int minY = border.topSideImage.getHeight(this);
+        int maxY = getHeight()-border.bottomSideImage.getHeight(this); 
+        int minX = border.leftSideImage.getWidth(this);
+        int maxX = getWidth()-border.rightSideImage.getWidth(this);
         
         // clamping as not to draw on borders
-        int x1 = leftSideImage.getWidth(this); 
-        int x2 = getWidth()-leftSideImage.getWidth(this)-rightSideImage.getWidth(this);
-        int y1 = topLeftImage.getHeight(this);
-        int y2 = getHeight()-topLeftImage.getWidth(this)-bottomSideImage.getHeight(this);
+        int x1 = border.leftSideImage.getWidth(this); 
+        int x2 = getWidth()-border.leftSideImage.getWidth(this)-border.rightSideImage.getWidth(this);
+        int y1 = border.topLeftImage.getHeight(this);
+        int y2 = getHeight()-border.topLeftImage.getWidth(this)-border.bottomSideImage.getHeight(this);
 
         // draw axis
         drawAxis(true, yPos, x1, x2, minY, maxY, selectorLineScale, graphics);

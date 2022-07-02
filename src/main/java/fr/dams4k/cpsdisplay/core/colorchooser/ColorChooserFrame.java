@@ -14,7 +14,7 @@ import fr.dams4k.cpsdisplay.core.colorchooser.panels.slides.SliderPanel;
 
 public class ColorChooserFrame extends JFrame {
     private Dimension baseDimension = new Dimension(480, 480);
-    private ImagePanel backgroundImagePanel = new ImagePanel("assets/minecraft/textures/gui/options_background.png", true, 4, 0.75f, 0);
+    private ImagePanel backgroundImagePanel = new ImagePanel("assets/minecraft/textures/gui/options_background.png", true, 4, 0.75f);
     private SBSelectorPanel SBColor = new SBSelectorPanel();
     private HSelectorPanel HColor = new HSelectorPanel();
 

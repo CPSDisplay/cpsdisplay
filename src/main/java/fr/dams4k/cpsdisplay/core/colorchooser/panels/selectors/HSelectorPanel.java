@@ -13,19 +13,19 @@ public class HSelectorPanel extends SelectorPanel implements MouseInputListener 
     private int yPos = 0;
 
     public HSelectorPanel() {
-        super(ImageGenerators.hColorSelector(), false, 0f, 4);
+        super(ImageGenerators.hColorSelector(), false, 0f);
         addMouseMotionListener(this);
         addMouseListener(this);
     }
 
     public float getHValue() {
-        float yPosInGradient = yPos-topSideImage.getHeight(this); // min value of yPos is not 0 cause of the topSideImage height
-        float gradientHeight = getHeight()-topSideImage.getHeight(this)-bottomSideImage.getHeight(this)-(int) (selectorLineScale/2); // remove borders
+        float yPosInGradient = yPos-border.topSideImage.getHeight(this); // min value of yPos is not 0 cause of the topSideImage height
+        float gradientHeight = getHeight()-border.topSideImage.getHeight(this)-border.bottomSideImage.getHeight(this)-(int) (selectorLineScale/2); // remove borders
         return clamp(yPosInGradient/gradientHeight, 0f, 1f); // prevent bugs
     }
 
     public void updateAxis(int posY, boolean alert) {
-        yPos = clamp(posY, topSideImage.getHeight(this), getHeight()-bottomSideImage.getHeight(this)-(int) (selectorLineScale/2));
+        yPos = clamp(posY, border.topSideImage.getHeight(this), getHeight()-border.bottomSideImage.getHeight(this)-(int) (selectorLineScale/2));
         if (alert) {
             for (SelectorListener listener : listeners) {
                 System.out.println(getHValue());
@@ -41,12 +41,12 @@ public class HSelectorPanel extends SelectorPanel implements MouseInputListener 
         super.paintComponent(graphics);
 
         // make life easier
-        int minY = topSideImage.getHeight(this);
-        int maxY = getHeight()-bottomSideImage.getHeight(this); 
+        int minY = border.topSideImage.getHeight(this);
+        int maxY = getHeight()-border.bottomSideImage.getHeight(this); 
         
         // clamping as not to draw on borders
-        int x1 = leftSideImage.getWidth(this); 
-        int x2 = getWidth()-leftSideImage.getWidth(this)-rightSideImage.getWidth(this);
+        int x1 = border.leftSideImage.getWidth(this); 
+        int x2 = getWidth()-border.leftSideImage.getWidth(this)-border.rightSideImage.getWidth(this);
     
         // draw axis
         drawAxis(true, yPos, x1, x2, minY, maxY, selectorLineScale, graphics);
