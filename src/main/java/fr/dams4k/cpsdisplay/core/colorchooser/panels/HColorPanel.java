@@ -2,28 +2,26 @@ package fr.dams4k.cpsdisplay.core.colorchooser.panels;
 
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
+
+import javax.swing.event.MouseInputListener;
 
 import fr.dams4k.cpsdisplay.core.colorchooser.ImageGenerators;
 
-public class HColorPanel extends ImagePanel implements MouseMotionListener {
-    private static float selectorLineScale = 1; // even numbers are preferred, cause i do (int) selectorLineScale/2 sometimes
+public class HColorPanel extends ImagePanel implements MouseInputListener {
+    private static float selectorLineScale = 1;
 
     private int yPos = 0;
 
     public HColorPanel() {
         super(ImageGenerators.hColorSelector(), false, 0f, 4);
         addMouseMotionListener(this);
+        addMouseListener(this);
     }
 
-    @Override
-    public void mouseDragged(MouseEvent event) {
-        yPos = SelectorsDrawer.clamp(event.getY(), topSideImage.getHeight(this), getHeight()-bottomSideImage.getHeight(this)-(int) (selectorLineScale/2));
+    public void updateAxis(int posY) {
+        yPos = SelectorsDrawer.clamp(posY, topSideImage.getHeight(this), getHeight()-bottomSideImage.getHeight(this)-(int) (selectorLineScale/2));
         repaint();
     }
-
-    @Override
-    public void mouseMoved(MouseEvent event) {}
 
     @Override
     protected void paintComponent(Graphics graphics) {
@@ -36,8 +34,36 @@ public class HColorPanel extends ImagePanel implements MouseMotionListener {
         // clamping as not to draw on borders
         int x1 = leftSideImage.getWidth(this); 
         int x2 = getWidth()-leftSideImage.getWidth(this)-rightSideImage.getWidth(this);
-
-        // SelectorsDrawer.drawXAxis(yPos, x1, x2, minY, maxY, selectorLineScale, graphics);        
+    
+        // draw axis
         SelectorsDrawer.drawAxis(true, yPos, x1, x2, minY, maxY, selectorLineScale, graphics);
     }
+
+    @Override
+    public void mouseDragged(MouseEvent event) {
+        updateAxis(event.getY());
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent event) {}
+
+    @Override
+    public void mouseClicked(MouseEvent event) {
+        updateAxis(event.getY());
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent event) {}
+
+    @Override
+    public void mouseExited(MouseEvent event) {}
+
+    @Override
+    public void mousePressed(MouseEvent event) {
+        // System.out.println(event.getX());
+        // System.out.println(event.getY());
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent event) {}
 }

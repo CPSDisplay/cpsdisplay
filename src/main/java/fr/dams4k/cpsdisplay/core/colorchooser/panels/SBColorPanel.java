@@ -2,12 +2,13 @@ package fr.dams4k.cpsdisplay.core.colorchooser.panels;
 
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
+
+import javax.swing.event.MouseInputListener;
 
 import fr.dams4k.cpsdisplay.core.colorchooser.ImageGenerators;
 
-public class SBColorPanel extends ImagePanel implements MouseMotionListener {
-    private static float selectorLineScale = 1; // even numbers are preferred, cause i do (int) selectorLineScale/2 sometimes
+public class SBColorPanel extends ImagePanel implements MouseInputListener {
+    private static float selectorLineScale = 1;
 
     private int yPos = 0;
     private int xPos = 0;
@@ -15,17 +16,14 @@ public class SBColorPanel extends ImagePanel implements MouseMotionListener {
     public SBColorPanel() {
         super(ImageGenerators.sbColorSelector(0f), false, 0f, 4);
         addMouseMotionListener(this);
+        addMouseListener(this);
     }
 
-    @Override
-    public void mouseDragged(MouseEvent event) {
-        yPos = SelectorsDrawer.clamp(event.getY(), topSideImage.getHeight(this), getHeight()-bottomSideImage.getHeight(this)-(int) (selectorLineScale/2));
-        xPos = SelectorsDrawer.clamp(event.getX(), leftSideImage.getWidth(this), getWidth()-rightSideImage.getWidth(this)-(int) (selectorLineScale/2));
+    public void updateAxis(int posX, int posY) {
+        yPos = SelectorsDrawer.clamp(posY, topSideImage.getHeight(this), getHeight()-bottomSideImage.getHeight(this)-(int) (selectorLineScale/2));
+        xPos = SelectorsDrawer.clamp(posX, leftSideImage.getWidth(this), getWidth()-rightSideImage.getWidth(this)-(int) (selectorLineScale/2));
         repaint();
     }
-
-    @Override
-    public void mouseMoved(MouseEvent event) {}
 
     @Override
     protected void paintComponent(Graphics graphics) {
@@ -43,9 +41,45 @@ public class SBColorPanel extends ImagePanel implements MouseMotionListener {
         int y1 = topLeftImage.getHeight(this);
         int y2 = getHeight()-topLeftImage.getWidth(this)-bottomSideImage.getHeight(this);
 
-
-        // SelectorsDrawer.drawXAxis(yPos, x1, x2, minY, maxY, selectorLineScale, graphics);        
+        // draw axis
         SelectorsDrawer.drawAxis(true, yPos, x1, x2, minY, maxY, selectorLineScale, graphics);
         SelectorsDrawer.drawAxis(false, xPos, y1, y2, minX, maxX, selectorLineScale, graphics);
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent event) {
+        updateAxis(event.getX(), event.getY());
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent event) {}
+
+    @Override
+    public void mouseClicked(MouseEvent event) {
+        updateAxis(event.getX(), event.getY());
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent event) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void mouseExited(MouseEvent event) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void mousePressed(MouseEvent event) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent event) {
+        // TODO Auto-generated method stub
+        
     }
 }
