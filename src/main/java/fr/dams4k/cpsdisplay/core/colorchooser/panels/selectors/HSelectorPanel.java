@@ -28,7 +28,6 @@ public class HSelectorPanel extends SelectorPanel implements MouseInputListener 
         yPos = clamp(posY, border.topSideImage.getHeight(this), getHeight()-border.bottomSideImage.getHeight(this)-(int) (selectorLineScale/2));
         if (alert) {
             for (SelectorListener listener : listeners) {
-                System.out.println(getHValue());
                 listener.HColorChanger(getHValue());
             }
         }

@@ -47,6 +47,7 @@ public class ColorChooserFrame extends JFrame {
         c.weighty = 0.2;
         c.insets = new Insets(25, 25, 25, 25);
 
+        System.out.println(redSlider.border);
         backgroundImagePanel.add(redSlider, c);
 
         add(backgroundImagePanel);

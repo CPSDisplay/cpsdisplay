@@ -16,21 +16,13 @@ import fr.dams4k.cpsdisplay.core.colorchooser.borders.BorderBase;
 public class ImagePanel extends JPanel {
     private Image image;
 
-    // protected Image topLeftImage;
-    // protected Image topRightImage;
-    // protected Image bottomLeftImage;
-    // protected Image bottomRightImage;
-    
-    // protected Image leftSideImage;
-    // protected Image rightSideImage;
-    // protected Image topSideImage;
-    // protected Image bottomSideImage;
-
-    // private float borderScale = 0;
     public BorderBase border = null;
 
-    private boolean tile;
-    private float brightness;
+    public boolean tile = false;
+    public float brightness = 0f;
+
+
+    public ImagePanel() {}
 
     public ImagePanel(String resourcePath, boolean tile, float scale, float brightness) {
         try {
@@ -60,38 +52,6 @@ public class ImagePanel extends JPanel {
         this.border = null;
     }
 
-    // public void enableBorder(float borderScale) {
-    //     if (borderScale == 0) return;
-
-    //     this.borderScalegraphics = borderScale;
-    //     URL iconURL = getClass().getClassLoader().getResource("assets/minecraft/textures/gui/widgets.png");
-    //     BufferedImage baseImage = null;
-    //     try {
-    //         baseImage = ImageIO.read(iconURL);
-    //         BufferedImage topLeftCorner = baseImage.getSubimage(0, 0, 3, 3);
-    //         BufferedImage topRightCorner = baseImage.getSubimage(179, 0, 3, 3);
-    //         BufferedImage bottomLeftCorner = baseImage.getSubimage(0, 19, 3, 3);
-    //         BufferedImage bottomRightCorner = baseImage.getSubimage(179, 19, 3, 3);
-
-    //         BufferedImage leftSideBufferedImage = baseImage.getSubimage(0, 3, 3, 16);
-    //         BufferedImage rightSideBufferedImage = baseImage.getSubimage(179, 3, 3, 16);
-    //         BufferedImage topSideBufferedImage = baseImage.getSubimage(4, 0, 16, 3);
-    //         BufferedImage bottomSideBufferedImage = baseImage.getSubimage(4, 19, 16, 3);
-
-    //         this.topLeftImage = resizeImage((BufferedImage) topLeftCorner, borderScale);
-    //         this.topRightImage = resizeImage((BufferedImage) topRightCorner, borderScale);
-    //         this.bottomLeftImage = resizeImage((BufferedImage) bottomLeftCorner, borderScale);
-    //         this.bottomRightImage = resizeImage((BufferedImage) bottomRightCorner, borderScale);
-
-    //         this.leftSideImage = resizeImage((BufferedImage) leftSideBufferedImage, borderScale);
-    //         this.rightSideImage = resizeImage((BufferedImage) rightSideBufferedImage, borderScale);
-    //         this.topSideImage = resizeImage((BufferedImage) topSideBufferedImage, borderScale);
-    //         this.bottomSideImage = resizeImage((BufferedImage) bottomSideBufferedImage, borderScale);
-    //     } catch (IOException e) {
-    //         e.printStackTrace();
-    //     }
-    // }
-
 
     public BufferedImage resizeImage(BufferedImage inImage, float scale) {
         int outWidth = Math.round(inImage.getWidth() * scale);
@@ -108,17 +68,20 @@ public class ImagePanel extends JPanel {
     @Override
     protected void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
+        int startX = 0;
+        int startY = 0;
         if (border != null) {
-            // draw sides before corners if sides walks on corners
-            border.drawBorder(graphics, this);
+            // change start pos
+            startX = border.topLeftImage.getWidth(this);
+            startY = border.topLeftImage.getHeight(this);
         }
         if (tile) {
             int iw = image.getWidth(this);
             int ih = image.getHeight(this);
 
             if (iw > 0 && ih > 0) {
-                for (int x = 0; x < getWidth(); x += iw) {
-                    for (int y = 0; y < getHeight(); y += ih) {
+                for (int x = startX; x < getWidth(); x += iw) {
+                    for (int y = startY; y < getHeight(); y += ih) {
                         graphics.drawImage(image, x, y, iw, ih, this);
                     }
                 }
@@ -127,8 +90,13 @@ public class ImagePanel extends JPanel {
             if (border != null) {
                 graphics.drawImage(image, border.topLeftImage.getWidth(this), border.topLeftImage.getHeight(this), getWidth()-border.topLeftImage.getWidth(this)-border.topRightImage.getWidth(this), getHeight()-border.topLeftImage.getHeight(this)-border.topRightImage.getHeight(this), this);
             } else {
-                graphics.drawImage(image, 0, 0, getWidth(), getHeight(), this);
+                graphics.drawImage(image, startX, startY, getWidth(), getHeight(), this);
             }
+        }
+
+        if (border != null) {
+            // draw sides before corners if sides walks on corners
+            border.drawBorder(graphics, this);
         }
 
         // make the background more darker if needed

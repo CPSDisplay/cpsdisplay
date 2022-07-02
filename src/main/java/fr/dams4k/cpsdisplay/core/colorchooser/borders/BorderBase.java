@@ -39,32 +39,32 @@ public class BorderBase {
             System.err.println("baseImage shouldn't be null");
             return;
         }
-        BufferedImage borderImage = baseImage.getSubimage(x, y, w, h);
+        BufferedImage borderImage = resizeImage(baseImage.getSubimage(x, y, w, h), scale);
 
         switch (borderType) {
             case TOP_LEFT_CORNER:
-                topLeftImage = resizeImage(borderImage, scale);
+                topLeftImage = borderImage;
                 break;
             case BOTTOM_LEFT_CORNER:
-                bottomLeftImage = resizeImage(borderImage, scale);
+                bottomLeftImage = borderImage;
                 break;
             case BOTTOM_RIGHT_CORNER:
-                bottomRightImage = resizeImage(borderImage, scale);
+                bottomRightImage = borderImage;
                 break;
             case TOP_RIGHT_CORNER:
-                topRightImage = resizeImage(borderImage, scale);
+                topRightImage = borderImage;
                 break;
             case LEFT_SIDE:
-                leftSideImage = resizeImage(borderImage, scale);
+                leftSideImage = borderImage;
                 break;
             case BOTTOM_SIDE:
-                bottomSideImage = resizeImage(borderImage, scale);
+                bottomSideImage = borderImage;
                 break;
             case RIGHT_SIDE:
-                rightSideImage = resizeImage(borderImage, scale);
+                rightSideImage = borderImage;
                 break;
             case TOP_SIDE:
-                topSideImage = resizeImage(borderImage, scale);
+                topSideImage = borderImage;
                 break;
         }
     }
