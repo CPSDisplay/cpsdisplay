@@ -7,17 +7,18 @@ import java.awt.Insets;
 
 import javax.swing.JFrame;
 
-import fr.dams4k.cpsdisplay.core.colorchooser.panels.HColorPanel;
 import fr.dams4k.cpsdisplay.core.colorchooser.panels.ImagePanel;
-import fr.dams4k.cpsdisplay.core.colorchooser.panels.SBColorPanel;
+import fr.dams4k.cpsdisplay.core.colorchooser.panels.selectors.HSelectorPanel;
+import fr.dams4k.cpsdisplay.core.colorchooser.panels.selectors.SBSelectorPanel;
 
 public class ColorChooserFrame extends JFrame {
     private Dimension baseDimension = new Dimension(480, 480);
     private ImagePanel backgroundImagePanel = new ImagePanel("assets/minecraft/textures/gui/options_background.png", true, 4, 0.75f, 0);
-    private ImagePanel SBColor = new SBColorPanel();
-    private ImagePanel HColor = new HColorPanel();
+    private SBSelectorPanel SBColor = new SBSelectorPanel();
+    private HSelectorPanel HColor = new HSelectorPanel();
 
     public ColorChooserFrame() {
+        HColor.addListener(SBColor);
 
         backgroundImagePanel.setLayout(new GridBagLayout());
 

@@ -175,4 +175,8 @@ public class ImagePanel extends JPanel {
             g.drawImage(bottomSideImage, x, getHeight()-bottomSideImage.getHeight(this), bs_width, bs_height, this);
         }
     }
+
+    public void setImage(Image image) {
+        this.image = image;
+    }
 }

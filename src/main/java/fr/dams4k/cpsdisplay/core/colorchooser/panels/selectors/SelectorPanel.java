@@ -1,9 +1,22 @@
-package fr.dams4k.cpsdisplay.core.colorchooser.panels;
+package fr.dams4k.cpsdisplay.core.colorchooser.panels.selectors;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 
-public class SelectorsDrawer {
+import fr.dams4k.cpsdisplay.core.colorchooser.panels.ImagePanel;
+
+public class SelectorPanel extends ImagePanel {
+    protected List<SelectorListener> listeners = new ArrayList<>();
+
+
+    public SelectorPanel(BufferedImage bufferedImage, boolean tile, float brightness, float borderScale) {
+        super(bufferedImage, tile, brightness, borderScale);
+    }
+
+
     public static void drawAxis(boolean xAxis, int pos, int edge1, int edge2, int min, int max, float scale, Graphics graphics) {
         int blackRectPos = clamp((int) (pos - scale/2), min, max);
         int whiteRectPos = clamp((int) (blackRectPos - scale), min, max);
@@ -24,6 +37,7 @@ public class SelectorsDrawer {
         }
     }
 
+
     public static void drawXAxis(int yPos, int x1, int x2, int minY, int maxY, float scale, Graphics graphics) {
         int blackRectYPos = clamp((int) (yPos - scale/2), minY, maxY); // rect should be in middle of your mouse, and clamping as not to draw on the borders
         int whiteRectYPos = clamp((int) (blackRectYPos - scale), minY, maxY); // only minY is important, maxY is only here cause we need a high value, but it can be anything else big enough
@@ -35,6 +49,7 @@ public class SelectorsDrawer {
         graphics.setColor(Color.BLACK);
         graphics.fillRect(x1, blackRectYPos, x2, (int) scale);
     }
+
 
     public static void drawYAxis(int xPos, int y1, int y2, int minX, int maxX, float scale, Graphics graphics) {
         int blackRectXPos = clamp((int) (xPos - scale/2), minX, maxX); // rect should be in middle of your mouse, and clamping as not to draw on the borders
@@ -51,5 +66,14 @@ public class SelectorsDrawer {
 
     public static int clamp(int value, int min, int max) {
         return Math.max(min, Math.min(max, value));
+    }
+
+    public static float clamp(float value, float min, float max) {
+        return Math.max(min, Math.min(max, value));
+    }
+
+
+    public void addListener(SelectorListener listener) {
+        listeners.add(listener);
     }
 }

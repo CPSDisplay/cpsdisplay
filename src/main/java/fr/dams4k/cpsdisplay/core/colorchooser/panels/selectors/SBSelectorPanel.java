@@ -1,4 +1,4 @@
-package fr.dams4k.cpsdisplay.core.colorchooser.panels;
+package fr.dams4k.cpsdisplay.core.colorchooser.panels.selectors;
 
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
@@ -7,21 +7,21 @@ import javax.swing.event.MouseInputListener;
 
 import fr.dams4k.cpsdisplay.core.colorchooser.ImageGenerators;
 
-public class SBColorPanel extends ImagePanel implements MouseInputListener {
+public class SBSelectorPanel extends SelectorPanel implements MouseInputListener, SelectorListener {
     private static float selectorLineScale = 1;
 
     private int yPos = 0;
     private int xPos = 0;
 
-    public SBColorPanel() {
+    public SBSelectorPanel() {
         super(ImageGenerators.sbColorSelector(0f), false, 0f, 4);
         addMouseMotionListener(this);
         addMouseListener(this);
     }
 
     public void updateAxis(int posX, int posY) {
-        yPos = SelectorsDrawer.clamp(posY, topSideImage.getHeight(this), getHeight()-bottomSideImage.getHeight(this)-(int) (selectorLineScale/2));
-        xPos = SelectorsDrawer.clamp(posX, leftSideImage.getWidth(this), getWidth()-rightSideImage.getWidth(this)-(int) (selectorLineScale/2));
+        yPos = clamp(posY, topSideImage.getHeight(this), getHeight()-bottomSideImage.getHeight(this)-(int) (selectorLineScale/2));
+        xPos = clamp(posX, leftSideImage.getWidth(this), getWidth()-rightSideImage.getWidth(this)-(int) (selectorLineScale/2));
         repaint();
     }
 
@@ -42,8 +42,8 @@ public class SBColorPanel extends ImagePanel implements MouseInputListener {
         int y2 = getHeight()-topLeftImage.getWidth(this)-bottomSideImage.getHeight(this);
 
         // draw axis
-        SelectorsDrawer.drawAxis(true, yPos, x1, x2, minY, maxY, selectorLineScale, graphics);
-        SelectorsDrawer.drawAxis(false, xPos, y1, y2, minX, maxX, selectorLineScale, graphics);
+        drawAxis(true, yPos, x1, x2, minY, maxY, selectorLineScale, graphics);
+        drawAxis(false, xPos, y1, y2, minX, maxX, selectorLineScale, graphics);
     }
 
     @Override
@@ -60,26 +60,20 @@ public class SBColorPanel extends ImagePanel implements MouseInputListener {
     }
 
     @Override
-    public void mouseEntered(MouseEvent event) {
-        // TODO Auto-generated method stub
-        
-    }
+    public void mouseEntered(MouseEvent event) {}
 
     @Override
-    public void mouseExited(MouseEvent event) {
-        // TODO Auto-generated method stub
-        
-    }
+    public void mouseExited(MouseEvent event) {}
 
     @Override
-    public void mousePressed(MouseEvent event) {
-        // TODO Auto-generated method stub
-        
-    }
+    public void mousePressed(MouseEvent event) {}
 
     @Override
-    public void mouseReleased(MouseEvent event) {
-        // TODO Auto-generated method stub
-        
+    public void mouseReleased(MouseEvent event) {}
+
+    @Override
+    public void HColorChanger(float h) {
+        setImage(ImageGenerators.sbColorSelector(h));
+        repaint();
     }
 }

@@ -1,4 +1,4 @@
-package fr.dams4k.cpsdisplay.core.colorchooser.panels;
+package fr.dams4k.cpsdisplay.core.colorchooser.panels.selectors;
 
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
@@ -7,19 +7,32 @@ import javax.swing.event.MouseInputListener;
 
 import fr.dams4k.cpsdisplay.core.colorchooser.ImageGenerators;
 
-public class HColorPanel extends ImagePanel implements MouseInputListener {
+public class HSelectorPanel extends SelectorPanel implements MouseInputListener {
     private static float selectorLineScale = 1;
 
     private int yPos = 0;
 
-    public HColorPanel() {
+    public HSelectorPanel() {
         super(ImageGenerators.hColorSelector(), false, 0f, 4);
         addMouseMotionListener(this);
         addMouseListener(this);
     }
 
-    public void updateAxis(int posY) {
-        yPos = SelectorsDrawer.clamp(posY, topSideImage.getHeight(this), getHeight()-bottomSideImage.getHeight(this)-(int) (selectorLineScale/2));
+    public float getHValue() {
+        float yPosInGradient = yPos-topSideImage.getHeight(this); // min value of yPos is not 0 cause of the topSideImage height
+        float gradientHeight = getHeight()-topSideImage.getHeight(this)-bottomSideImage.getHeight(this)-(int) (selectorLineScale/2); // remove borders
+        return clamp(yPosInGradient/gradientHeight, 0f, 1f); // prevent bugs
+    }
+
+    public void updateAxis(int posY, boolean alert) {
+        yPos = clamp(posY, topSideImage.getHeight(this), getHeight()-bottomSideImage.getHeight(this)-(int) (selectorLineScale/2));
+        if (alert) {
+            for (SelectorListener listener : listeners) {
+                System.out.println(getHValue());
+                listener.HColorChanger(getHValue());
+            }
+        }
+
         repaint();
     }
 
@@ -36,12 +49,12 @@ public class HColorPanel extends ImagePanel implements MouseInputListener {
         int x2 = getWidth()-leftSideImage.getWidth(this)-rightSideImage.getWidth(this);
     
         // draw axis
-        SelectorsDrawer.drawAxis(true, yPos, x1, x2, minY, maxY, selectorLineScale, graphics);
+        drawAxis(true, yPos, x1, x2, minY, maxY, selectorLineScale, graphics);
     }
 
     @Override
     public void mouseDragged(MouseEvent event) {
-        updateAxis(event.getY());
+        updateAxis(event.getY(), true);
     }
 
     @Override
@@ -49,7 +62,7 @@ public class HColorPanel extends ImagePanel implements MouseInputListener {
 
     @Override
     public void mouseClicked(MouseEvent event) {
-        updateAxis(event.getY());
+        updateAxis(event.getY(), true);
     }
 
     @Override
@@ -59,10 +72,7 @@ public class HColorPanel extends ImagePanel implements MouseInputListener {
     public void mouseExited(MouseEvent event) {}
 
     @Override
-    public void mousePressed(MouseEvent event) {
-        // System.out.println(event.getX());
-        // System.out.println(event.getY());
-    }
+    public void mousePressed(MouseEvent event) {}
 
     @Override
     public void mouseReleased(MouseEvent event) {}
