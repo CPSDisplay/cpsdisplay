@@ -10,12 +10,15 @@ import javax.swing.JFrame;
 import fr.dams4k.cpsdisplay.core.colorchooser.panels.ImagePanel;
 import fr.dams4k.cpsdisplay.core.colorchooser.panels.selectors.HSelectorPanel;
 import fr.dams4k.cpsdisplay.core.colorchooser.panels.selectors.SBSelectorPanel;
+import fr.dams4k.cpsdisplay.core.colorchooser.panels.slides.SliderPanel;
 
 public class ColorChooserFrame extends JFrame {
     private Dimension baseDimension = new Dimension(480, 480);
     private ImagePanel backgroundImagePanel = new ImagePanel("assets/minecraft/textures/gui/options_background.png", true, 4, 0.75f, 0);
     private SBSelectorPanel SBColor = new SBSelectorPanel();
     private HSelectorPanel HColor = new HSelectorPanel();
+
+    private SliderPanel redSlider = new SliderPanel();
 
     public ColorChooserFrame() {
         HColor.addListener(SBColor);
@@ -37,7 +40,15 @@ public class ColorChooserFrame extends JFrame {
         c.insets.right = 25;
         c.insets.left = 5;
         backgroundImagePanel.add(HColor, c);
-        
+
+        c.gridy = 1;
+        c.gridwidth = 2;
+        c.weightx = 1;
+        c.weighty = 0.2;
+        c.insets = new Insets(25, 25, 25, 25);
+
+        backgroundImagePanel.add(redSlider, c);
+
         add(backgroundImagePanel);
 
         setSize(baseDimension);
