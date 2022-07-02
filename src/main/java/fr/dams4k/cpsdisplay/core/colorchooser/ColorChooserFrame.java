@@ -6,15 +6,19 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
+
+import fr.dams4k.cpsdisplay.core.colorchooser.panels.HColorPanel;
+import fr.dams4k.cpsdisplay.core.colorchooser.panels.ImagePanel;
+import fr.dams4k.cpsdisplay.core.colorchooser.panels.SBColorPanel;
 
 public class ColorChooserFrame extends JFrame {
-    private Dimension baseDimension = new Dimension(288, 480);
-    private ImagePanel backgroundImagePanel = new ImagePanel("assets/minecraft/textures/gui/options_background.png", true, 4, 0.75f);
-    private ImagePanel SBColor = new ImagePanel(ImageGenerators.sbColorSelector(0f), false, 0f);
-    private ImagePanel HColor = new ImagePanel(ImageGenerators.hColorSelector(), false, 0f);
+    private Dimension baseDimension = new Dimension(480, 480);
+    private ImagePanel backgroundImagePanel = new ImagePanel("assets/minecraft/textures/gui/options_background.png", true, 4, 0.75f, 0);
+    private ImagePanel SBColor = new SBColorPanel();
+    private ImagePanel HColor = new HColorPanel();
 
     public ColorChooserFrame() {
+
         backgroundImagePanel.setLayout(new GridBagLayout());
 
         GridBagConstraints c = new GridBagConstraints();
@@ -23,12 +27,12 @@ public class ColorChooserFrame extends JFrame {
         c.insets = new Insets(25, 25, 25, 25);
 
         c.fill = GridBagConstraints.BOTH;
-        c.weightx = 0.90;
+        c.weightx = 0.85;
         c.insets.right = 5;
 
         backgroundImagePanel.add(SBColor, c);
 
-        c.weightx = 0.1;
+        c.weightx = 0.15;
         c.insets.right = 25;
         c.insets.left = 5;
         backgroundImagePanel.add(HColor, c);
