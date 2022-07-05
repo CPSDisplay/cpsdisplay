@@ -106,6 +106,16 @@ public class BorderBase {
         drawCorners(graphics, component);
     }
 
+    public int getCorrectXSize(int max_w, int iw) {
+        int w = Math.min(max_w-padding.left-padding.right, iw);
+        return Utils.clamp(w, 1, iw);
+    }
+
+    public int getCorrectYSize(int max_h, int ih) {
+        int h = Math.min(max_h-padding.top-padding.bottom, ih);
+        return Utils.clamp(h, 1, ih);
+    }
+
     public void drawBackground(Graphics graphics, JComponent component) {
         int startX = topLeftImage.getWidth(component) + padding.left;
         int startY = topLeftImage.getHeight(component) + padding.top;
@@ -113,17 +123,13 @@ public class BorderBase {
         int iw = backgroundImage.getWidth(component);
         int ih = backgroundImage.getHeight(component);
 
-        BufferedImage backgroundBufferedImage = (BufferedImage) backgroundImage;
-
         if (iw > 0 && ih > 0) {
             for (int x = startX; x < component.getWidth(); x += iw) {
                 for (int y = startY; y < component.getHeight(); y += ih) {
-                    int w = Math.min(component.getWidth()-x-padding.left-padding.right, iw);
-                    w = Utils.clamp(w, 1, iw);
-                    int h = Math.min(component.getHeight()-y-padding.top-padding.bottom, ih);
-                    h = Utils.clamp(h, 1, ih);
-                    
-                    Image usedImage = backgroundBufferedImage.getSubimage(0, 0, w, h);
+                    int w = getCorrectXSize(component.getWidth()-x, iw);
+                    int h = getCorrectYSize(component.getHeight()-y, ih);
+                    Image usedImage = ((BufferedImage) backgroundImage).getSubimage(0, 0, w, h);
+
                     graphics.drawImage(usedImage, x, y, w, h, component);
                 }
             }
@@ -144,7 +150,10 @@ public class BorderBase {
         int ls_width = leftSideImage.getWidth(component);
 
         for (int y = topLeftImage.getHeight(component); y < ls_max_height; y += ls_height) {
-            graphics.drawImage(leftSideImage, padding.left, y+padding.top, ls_width, ls_height, component);
+            int h = getCorrectYSize(component.getHeight()-y, ls_height);
+            Image usedLeftSideImage = ((BufferedImage) leftSideImage).getSubimage(0, 0, ls_width, h);
+
+            graphics.drawImage(usedLeftSideImage, padding.left, y+padding.top, ls_width, h, component);
         }
 
         //-- RIGHT SIDE
@@ -153,7 +162,10 @@ public class BorderBase {
         int rs_width = rightSideImage.getWidth(component);
 
         for (int y = topRightImage.getHeight(component); y < rs_max_height; y += rs_height) {
-            graphics.drawImage(rightSideImage, component.getWidth()-rightSideImage.getWidth(component)-padding.right, y+padding.top, rs_width, rs_height, component);
+            int h = getCorrectYSize(component.getHeight()-y, rs_height);
+            Image usedRightSideImage = ((BufferedImage) rightSideImage).getSubimage(0, 0, rs_width, h);
+
+            graphics.drawImage(usedRightSideImage, component.getWidth()-rightSideImage.getWidth(component)-padding.right, y+padding.top, rs_width, h, component);
         }
 
         //-- TOP SIDE
@@ -162,7 +174,10 @@ public class BorderBase {
         int ts_width = topSideImage.getWidth(component);
 
         for (int x = topLeftImage.getWidth(component); x < ts_max_width; x += ts_width) {
-            graphics.drawImage(topSideImage, x+padding.left, padding.top, ts_width, ts_height, component);
+            int w = getCorrectXSize(component.getWidth()-x, ts_width);
+            Image usedTopSideImage = ((BufferedImage) topSideImage).getSubimage(0, 0, w, ts_height);
+
+            graphics.drawImage(usedTopSideImage, x+padding.left, padding.top, w, ts_height, component);
         }
 
         //-- BOTTOM SIDE
@@ -171,7 +186,10 @@ public class BorderBase {
         int bs_width = bottomSideImage.getWidth(component);
 
         for (int x = bottomLeftImage.getWidth(component); x < bs_max_width; x += bs_width) {
-            graphics.drawImage(bottomSideImage, x+padding.left, component.getHeight()-bottomSideImage.getHeight(component)-padding.bottom, bs_width, bs_height, component);
+            int w = getCorrectXSize(component.getWidth()-x, bs_width);
+            Image usedBottomSideImage = ((BufferedImage) bottomSideImage).getSubimage(0, 0, w, bs_height);
+
+            graphics.drawImage(usedBottomSideImage, x+padding.left, component.getHeight()-bottomSideImage.getHeight(component)-padding.bottom, w, bs_height, component);
         }
     }
 }
