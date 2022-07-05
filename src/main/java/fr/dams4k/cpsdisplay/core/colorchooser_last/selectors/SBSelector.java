@@ -4,6 +4,7 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 
 import fr.dams4k.cpsdisplay.core.colorchooser_last.ImageGenerators;
+import fr.dams4k.cpsdisplay.core.utils.Utils;
 
 public class SBSelector extends SelectorBase {
     float S;
@@ -22,8 +23,8 @@ public class SBSelector extends SelectorBase {
     public void updateIcon(MouseEvent event) {
         super.updateIcon(event);
 
-        this.S = this.clamp(event.getX(), 0, 255) / (float) this.getIcon().getIconWidth();
-        this.B = this.clamp(255-event.getY(), 0, 255) / (float) this.getIcon().getIconHeight();
+        this.S = Utils.clamp(event.getX(), 0, 255) / (float) this.getIcon().getIconWidth();
+        this.B = Utils.clamp(255-event.getY(), 0, 255) / (float) this.getIcon().getIconHeight();
 
         for (SelectorListener listener : listeners) {
             listener.SColorChange(S);

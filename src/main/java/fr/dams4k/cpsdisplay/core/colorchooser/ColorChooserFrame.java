@@ -10,7 +10,8 @@ import javax.swing.JFrame;
 import fr.dams4k.cpsdisplay.core.colorchooser.panels.ImagePanel;
 import fr.dams4k.cpsdisplay.core.colorchooser.panels.selectors.HSelectorPanel;
 import fr.dams4k.cpsdisplay.core.colorchooser.panels.selectors.SBSelectorPanel;
-import fr.dams4k.cpsdisplay.core.colorchooser.panels.slides.SliderPanel;
+import fr.dams4k.cpsdisplay.core.colorchooser.panels.sliders.MinecraftSlider;
+import fr.dams4k.cpsdisplay.core.colorchooser.panels.sliders.SliderPanel;
 
 public class ColorChooserFrame extends JFrame {
     private Dimension baseDimension = new Dimension(480, 480);
@@ -19,6 +20,7 @@ public class ColorChooserFrame extends JFrame {
     private HSelectorPanel HColor = new HSelectorPanel();
 
     private SliderPanel redSlider = new SliderPanel();
+    private MinecraftSlider greenSlider = new MinecraftSlider();
 
     public ColorChooserFrame() {
         HColor.addListener(SBColor);
@@ -47,8 +49,9 @@ public class ColorChooserFrame extends JFrame {
         c.weighty = 0.2;
         c.insets = new Insets(25, 25, 25, 25);
 
-        System.out.println(redSlider.border);
-        backgroundImagePanel.add(redSlider, c);
+        // System.out.println(redSlider.border);
+        // backgroundImagePanel.add(redSlider, c);
+        backgroundImagePanel.add(greenSlider, c);
 
         add(backgroundImagePanel);
 

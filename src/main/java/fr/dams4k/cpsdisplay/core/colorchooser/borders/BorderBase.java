@@ -3,17 +3,21 @@ package fr.dams4k.cpsdisplay.core.colorchooser.borders;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Insets;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 
 import javax.imageio.ImageIO;
-import javax.swing.JPanel;
+import javax.swing.JComponent;
+
+import fr.dams4k.cpsdisplay.core.utils.Utils;
 
 public class BorderBase {
     private BufferedImage baseImage;
 
     private float scale = 1;
+    private Insets padding = new Insets(0, 0, 0, 0);
 
     public Image topLeftImage;
     public Image bottomLeftImage;
@@ -24,8 +28,16 @@ public class BorderBase {
     public Image rightSideImage;
     public Image topSideImage;
 
+    public Image backgroundImage;
+
     public BorderBase(String resourcePath, float scale) {
+        this(resourcePath, scale, null);
+    }
+
+    public BorderBase(String resourcePath, float scale, Insets padding) {
         this.scale = scale;
+        if (padding != null) this.padding = padding;
+
         try {
             URL iconURL = getClass().getClassLoader().getResource(resourcePath);
             baseImage = ImageIO.read(iconURL);
@@ -66,6 +78,9 @@ public class BorderBase {
             case TOP_SIDE:
                 topSideImage = borderImage;
                 break;
+            case BACKGROUND:
+                backgroundImage = borderImage;
+                break;
         }
     }
 
@@ -80,54 +95,83 @@ public class BorderBase {
         return outImage;
     }
 
-    public void drawBorder(Graphics graphics, JPanel panel) {
+    public void drawBorder(Graphics graphics, JComponent component) {
+        drawBorder(graphics, component, false);
+    }
+
+    public void drawBorder(Graphics graphics, JComponent component, boolean drawBackground) {
         // draw sides before corners if sides walks on corners
-        drawSides(graphics, panel);
-        drawCorners(graphics, panel);
+        if (drawBackground) drawBackground(graphics, component);
+        drawSides(graphics, component);
+        drawCorners(graphics, component);
     }
 
-    public void drawCorners(Graphics graphics, JPanel panel) {
-        graphics.drawImage(topLeftImage, 0, 0, topLeftImage.getWidth(panel), topLeftImage.getHeight(panel), panel);
-        graphics.drawImage(bottomLeftImage, 0, panel.getHeight()-bottomLeftImage.getHeight(panel), bottomLeftImage.getWidth(panel), bottomLeftImage.getHeight(panel), panel);
-        graphics.drawImage(bottomRightImage, panel.getWidth()-bottomRightImage.getWidth(panel), panel.getHeight()-bottomRightImage.getHeight(panel), bottomRightImage.getWidth(panel), bottomRightImage.getHeight(panel), panel);
-        graphics.drawImage(topRightImage, panel.getWidth()-topRightImage.getWidth(panel), 0, topRightImage.getWidth(panel), topRightImage.getHeight(panel), panel);
+    public void drawBackground(Graphics graphics, JComponent component) {
+        int startX = topLeftImage.getWidth(component) + padding.left;
+        int startY = topLeftImage.getHeight(component) + padding.top;
+        
+        int iw = backgroundImage.getWidth(component);
+        int ih = backgroundImage.getHeight(component);
+
+        BufferedImage backgroundBufferedImage = (BufferedImage) backgroundImage;
+
+        if (iw > 0 && ih > 0) {
+            for (int x = startX; x < component.getWidth(); x += iw) {
+                for (int y = startY; y < component.getHeight(); y += ih) {
+                    int w = Math.min(component.getWidth()-x-padding.left-padding.right, iw);
+                    w = Utils.clamp(w, 1, iw);
+                    int h = Math.min(component.getHeight()-y-padding.top-padding.bottom, ih);
+                    h = Utils.clamp(h, 1, ih);
+                    
+                    Image usedImage = backgroundBufferedImage.getSubimage(0, 0, w, h);
+                    graphics.drawImage(usedImage, x, y, w, h, component);
+                }
+            }
+        }
     }
 
-    public void drawSides(Graphics graphics, JPanel panel) {
+    public void drawCorners(Graphics graphics, JComponent component) {
+        graphics.drawImage(topLeftImage, padding.left, padding.top, topLeftImage.getWidth(component), topLeftImage.getHeight(component), component);
+        graphics.drawImage(bottomLeftImage, padding.left, component.getHeight()-bottomLeftImage.getHeight(component)-padding.bottom, bottomLeftImage.getWidth(component), bottomLeftImage.getHeight(component), component);
+        graphics.drawImage(bottomRightImage, component.getWidth()-bottomRightImage.getWidth(component)-padding.right, component.getHeight()-bottomRightImage.getHeight(component)-padding.bottom, bottomRightImage.getWidth(component), bottomRightImage.getHeight(component), component);
+        graphics.drawImage(topRightImage, component.getWidth()-topRightImage.getWidth(component)-padding.right, padding.top, topRightImage.getWidth(component), topRightImage.getHeight(component), component);
+    }
+
+    public void drawSides(Graphics graphics, JComponent component) {
         //-- LEFT SIDE
-        int ls_max_height = panel.getHeight() - bottomLeftImage.getHeight(panel); // height of the panel - bottom left corner height
-        int ls_height = leftSideImage.getHeight(panel);
-        int ls_width = leftSideImage.getWidth(panel);
+        int ls_max_height = component.getHeight() - bottomLeftImage.getHeight(component); // height of the component - bottom left corner height
+        int ls_height = leftSideImage.getHeight(component);
+        int ls_width = leftSideImage.getWidth(component);
 
-        for (int y = topLeftImage.getHeight(panel); y < ls_max_height; y += ls_height) {
-            graphics.drawImage(leftSideImage, 0, y, ls_width, ls_height, panel);
+        for (int y = topLeftImage.getHeight(component); y < ls_max_height; y += ls_height) {
+            graphics.drawImage(leftSideImage, padding.left, y+padding.top, ls_width, ls_height, component);
         }
 
         //-- RIGHT SIDE
-        int rs_max_height = panel.getHeight() - bottomRightImage.getHeight(panel); // height of the panel - bottom left corner height
-        int rs_height = rightSideImage.getHeight(panel);
-        int rs_width = rightSideImage.getWidth(panel);
+        int rs_max_height = component.getHeight() - bottomRightImage.getHeight(component); // height of the component - bottom left corner height
+        int rs_height = rightSideImage.getHeight(component);
+        int rs_width = rightSideImage.getWidth(component);
 
-        for (int y = topRightImage.getHeight(panel); y < rs_max_height; y += rs_height) {
-            graphics.drawImage(rightSideImage, panel.getWidth()-rightSideImage.getWidth(panel), y, rs_width, rs_height, panel);
+        for (int y = topRightImage.getHeight(component); y < rs_max_height; y += rs_height) {
+            graphics.drawImage(rightSideImage, component.getWidth()-rightSideImage.getWidth(component)-padding.right, y+padding.top, rs_width, rs_height, component);
         }
 
         //-- TOP SIDE
-        int ts_max_width = panel.getWidth() - topRightImage.getWidth(panel); // height of the panel - bottom left corner height
-        int ts_height = topSideImage.getHeight(panel);
-        int ts_width = topSideImage.getWidth(panel);
+        int ts_max_width = component.getWidth() - topRightImage.getWidth(component); // height of the component - bottom left corner height
+        int ts_height = topSideImage.getHeight(component);
+        int ts_width = topSideImage.getWidth(component);
 
-        for (int x = topLeftImage.getWidth(panel); x < ts_max_width; x += ts_width) {
-            graphics.drawImage(topSideImage, x, 0, ts_width, ts_height, panel);
+        for (int x = topLeftImage.getWidth(component); x < ts_max_width; x += ts_width) {
+            graphics.drawImage(topSideImage, x+padding.left, padding.top, ts_width, ts_height, component);
         }
 
         //-- BOTTOM SIDE
-        int bs_max_width = panel.getWidth() - bottomRightImage.getWidth(panel); // height of the panel - bottom left corner height
-        int bs_height = bottomSideImage.getHeight(panel);
-        int bs_width = bottomSideImage.getWidth(panel);
+        int bs_max_width = component.getWidth() - bottomRightImage.getWidth(component); // height of the component - bottom left corner height
+        int bs_height = bottomSideImage.getHeight(component);
+        int bs_width = bottomSideImage.getWidth(component);
 
-        for (int x = bottomLeftImage.getWidth(panel); x < bs_max_width; x += bs_width) {
-            graphics.drawImage(bottomSideImage, x, panel.getHeight()-bottomSideImage.getHeight(panel), bs_width, bs_height, panel);
+        for (int x = bottomLeftImage.getWidth(component); x < bs_max_width; x += bs_width) {
+            graphics.drawImage(bottomSideImage, x+padding.left, component.getHeight()-bottomSideImage.getHeight(component)-padding.bottom, bs_width, bs_height, component);
         }
     }
 }

@@ -14,6 +14,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.border.EmptyBorder;
 
+import fr.dams4k.cpsdisplay.core.utils.Utils;
+
 public class SelectorBase extends JLabel implements MouseMotionListener, MouseListener {
     public List<SelectorListener> listeners = new ArrayList<SelectorListener>();
 
@@ -89,14 +91,14 @@ public class SelectorBase extends JLabel implements MouseMotionListener, MouseLi
 
         if (this.showXAxis) {
             for (int x = 0; x < newBufferedImage.getWidth(); x++) {
-                newBufferedImage.setRGB(x, clamp(event_y, 0, newBufferedImage.getHeight() - 1), inlineColor.getRGB());
+                newBufferedImage.setRGB(x, Utils.clamp(event_y, 0, newBufferedImage.getHeight() - 1), inlineColor.getRGB());
 
                 if (event_y - 1 >= 0 && (x != event_x || !this.showYAxis)) {
-                    newBufferedImage.setRGB(x, clamp(event_y - 1, 0, newBufferedImage.getHeight() - 1),
+                    newBufferedImage.setRGB(x, Utils.clamp(event_y - 1, 0, newBufferedImage.getHeight() - 1),
                             outlineColor.getRGB());
                 }
                 if (event_y + 1 < newBufferedImage.getHeight() - 1 && (x != event_x || !this.showYAxis)) {
-                    newBufferedImage.setRGB(x, clamp(event_y + 1, 0, newBufferedImage.getHeight() - 1),
+                    newBufferedImage.setRGB(x, Utils.clamp(event_y + 1, 0, newBufferedImage.getHeight() - 1),
                             outlineColor.getRGB());
                 }
             }
@@ -104,14 +106,14 @@ public class SelectorBase extends JLabel implements MouseMotionListener, MouseLi
 
         if (this.showYAxis) {
             for (int y = 0; y < newBufferedImage.getWidth(); y++) {
-                newBufferedImage.setRGB(clamp(event_x, 0, newBufferedImage.getWidth() - 1), y, inlineColor.getRGB());
+                newBufferedImage.setRGB(Utils.clamp(event_x, 0, newBufferedImage.getWidth() - 1), y, inlineColor.getRGB());
 
                 if (event_x - 1 >= 0 && (y != event_y || !this.showXAxis)) {
-                    newBufferedImage.setRGB(clamp(event_x - 1, 0, newBufferedImage.getWidth() - 1), y,
+                    newBufferedImage.setRGB(Utils.clamp(event_x - 1, 0, newBufferedImage.getWidth() - 1), y,
                             outlineColor.getRGB());
                 }
                 if (event_x + 1 < newBufferedImage.getWidth() - 1 && (y != event_y || !this.showXAxis)) {
-                    newBufferedImage.setRGB(clamp(event_x + 1, 0, newBufferedImage.getWidth() - 1), y,
+                    newBufferedImage.setRGB(Utils.clamp(event_x + 1, 0, newBufferedImage.getWidth() - 1), y,
                             outlineColor.getRGB());
                 }
             }
@@ -127,9 +129,7 @@ public class SelectorBase extends JLabel implements MouseMotionListener, MouseLi
         return new BufferedImage(colorModel, raster, isAlphaPremultiplied, null);
     }
 
-    public int clamp(int value, int min, int max) {
-        return Math.max(min, Math.min(max, value));
-    }
+    
 
     public void setBaseBufferedImage(BufferedImage baseBufferedImage) {
         this.baseBufferedImage = baseBufferedImage;

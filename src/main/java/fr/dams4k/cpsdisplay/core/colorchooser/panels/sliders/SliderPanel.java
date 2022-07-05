@@ -1,20 +1,21 @@
-package fr.dams4k.cpsdisplay.core.colorchooser.panels.slides;
+package fr.dams4k.cpsdisplay.core.colorchooser.panels.sliders;
 
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 
 import javax.imageio.ImageIO;
 
-import fr.dams4k.cpsdisplay.core.colorchooser.borders.ButtonBorder;
+import fr.dams4k.cpsdisplay.core.colorchooser.borders.buttonborder.ButtonBorder;
+import fr.dams4k.cpsdisplay.core.colorchooser.borders.buttonborder.ButtonMode;
 import fr.dams4k.cpsdisplay.core.colorchooser.panels.ImagePanel;
 
 public class SliderPanel extends ImagePanel {
+    public SliderButton button = new SliderButton();
 
     public SliderPanel() {
-        // super("assets/minecraft/textures/gui/options_background.png", false, 1, 0);
-        super();
-        
         try {
             URL url = getClass().getClassLoader().getResource("assets/minecraft/textures/gui/widgets.png");
             BufferedImage baseImage = ImageIO.read(url);
@@ -23,6 +24,13 @@ public class SliderPanel extends ImagePanel {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        addBorder(new ButtonBorder(4));
+        addBorder(new ButtonBorder(4, ButtonMode.BACKGROUND));
+        
+        setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+        c.fill = GridBagConstraints.BOTH;
+        c.weighty = 1;
+
+        add(button, c);
     }
 }

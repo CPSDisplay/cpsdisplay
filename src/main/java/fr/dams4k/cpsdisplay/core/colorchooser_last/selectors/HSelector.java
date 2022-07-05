@@ -3,6 +3,8 @@ package fr.dams4k.cpsdisplay.core.colorchooser_last.selectors;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 
+import fr.dams4k.cpsdisplay.core.utils.Utils;
+
 public class HSelector extends SelectorBase {
     private SBSelector sbColorSelector;
     private float H = 0f;
@@ -20,7 +22,7 @@ public class HSelector extends SelectorBase {
     public void updateIcon(MouseEvent event) {
         super.updateIcon(event);
 
-        H = this.clamp(event.getY(), 0, 255) / (float) getIcon().getIconHeight();
+        H = Utils.clamp(event.getY(), 0, 255) / (float) getIcon().getIconHeight();
         sbColorSelector.refreshIcon(H);
         
         for (SelectorListener listener : listeners) {

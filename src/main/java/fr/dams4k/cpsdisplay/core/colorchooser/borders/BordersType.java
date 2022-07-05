@@ -8,5 +8,6 @@ public enum BordersType {
     LEFT_SIDE,
     BOTTOM_SIDE,
     RIGHT_SIDE,
-    TOP_SIDE;
+    TOP_SIDE,
+    BACKGROUND;
 }

@@ -20,6 +20,7 @@ public class ImagePanel extends JPanel {
 
     public boolean tile = false;
     public float brightness = 0f;
+    public float scale = 1f;
 
 
     public ImagePanel() {}
@@ -28,10 +29,12 @@ public class ImagePanel extends JPanel {
         try {
             URL iconURL = getClass().getClassLoader().getResource(resourcePath);
             Image baseImage = ImageIO.read(iconURL);
-            this.image = resizeImage((BufferedImage) baseImage, scale);
+            this.image = baseImage;
+            // this.image = resizeImage((BufferedImage) baseImage, scale);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        this.scale = scale;
         this.tile = tile;
         this.brightness = brightness;
     }
@@ -76,8 +79,8 @@ public class ImagePanel extends JPanel {
             startY = border.topLeftImage.getHeight(this);
         }
         if (tile) {
-            int iw = image.getWidth(this);
-            int ih = image.getHeight(this);
+            int iw = (int) (image.getWidth(this) * scale);
+            int ih = (int) (image.getHeight(this) * scale);
 
             if (iw > 0 && ih > 0) {
                 for (int x = startX; x < getWidth(); x += iw) {
