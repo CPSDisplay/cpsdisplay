@@ -9,12 +9,12 @@ public class ButtonBorder extends BorderBase {
     private int buttonHeight = 20;
 
     public ButtonBorder(float scale, ButtonMode buttonMode) {
-        this(scale, buttonMode, new Insets(0, 0, 0, 0));
+        this(scale, buttonMode, new Insets(0, 0, 0, 0)); // no insets
     }
-
-    public ButtonBorder(float scale, ButtonMode buttonMode, Insets padding) {
-        super("assets/minecraft/textures/gui/widgets.png", scale, padding);
-        int offset = buttonMode.ordinal() * buttonHeight;
+    
+    public ButtonBorder(float scale, ButtonMode buttonMode, Insets insets) {
+        super("assets/minecraft/textures/gui/widgets.png", scale, insets);
+        int offset = buttonMode.ordinal() * buttonHeight; // switch to different button texture
         
         setBorder(BordersType.TOP_LEFT_CORNER, 0, 46 + offset,       3, 3);
         setBorder(BordersType.BOTTOM_LEFT_CORNER, 0, 63 + offset,    3, 3);

@@ -17,7 +17,7 @@ public class BorderBase {
     private BufferedImage baseImage;
 
     private float scale = 1;
-    private Insets padding = new Insets(0, 0, 0, 0);
+    private Insets insets = new Insets(0, 0, 0, 0);
 
     public Image topLeftImage;
     public Image bottomLeftImage;
@@ -34,9 +34,9 @@ public class BorderBase {
         this(resourcePath, scale, null);
     }
 
-    public BorderBase(String resourcePath, float scale, Insets padding) {
+    public BorderBase(String resourcePath, float scale, Insets insets) {
         this.scale = scale;
-        if (padding != null) this.padding = padding;
+        if (insets != null) this.insets = insets;
 
         try {
             URL iconURL = getClass().getClassLoader().getResource(resourcePath);
@@ -107,18 +107,18 @@ public class BorderBase {
     }
 
     public int getCorrectXSize(int max_w, int iw) {
-        int w = Math.min(max_w-padding.left-padding.right, iw);
+        int w = Math.min(max_w-insets.left-insets.right, iw);
         return Utils.clamp(w, 1, iw);
     }
 
     public int getCorrectYSize(int max_h, int ih) {
-        int h = Math.min(max_h-padding.top-padding.bottom, ih);
+        int h = Math.min(max_h-insets.top-insets.bottom, ih);
         return Utils.clamp(h, 1, ih);
     }
 
     public void drawBackground(Graphics graphics, JComponent component) {
-        int startX = topLeftImage.getWidth(component) + padding.left;
-        int startY = topLeftImage.getHeight(component) + padding.top;
+        int startX = topLeftImage.getWidth(component) + insets.left;
+        int startY = topLeftImage.getHeight(component) + insets.top;
         
         int iw = backgroundImage.getWidth(component);
         int ih = backgroundImage.getHeight(component);
@@ -137,10 +137,10 @@ public class BorderBase {
     }
 
     public void drawCorners(Graphics graphics, JComponent component) {
-        graphics.drawImage(topLeftImage, padding.left, padding.top, topLeftImage.getWidth(component), topLeftImage.getHeight(component), component);
-        graphics.drawImage(bottomLeftImage, padding.left, component.getHeight()-bottomLeftImage.getHeight(component)-padding.bottom, bottomLeftImage.getWidth(component), bottomLeftImage.getHeight(component), component);
-        graphics.drawImage(bottomRightImage, component.getWidth()-bottomRightImage.getWidth(component)-padding.right, component.getHeight()-bottomRightImage.getHeight(component)-padding.bottom, bottomRightImage.getWidth(component), bottomRightImage.getHeight(component), component);
-        graphics.drawImage(topRightImage, component.getWidth()-topRightImage.getWidth(component)-padding.right, padding.top, topRightImage.getWidth(component), topRightImage.getHeight(component), component);
+        graphics.drawImage(topLeftImage, insets.left, insets.top, topLeftImage.getWidth(component), topLeftImage.getHeight(component), component);
+        graphics.drawImage(bottomLeftImage, insets.left, component.getHeight()-bottomLeftImage.getHeight(component)-insets.bottom, bottomLeftImage.getWidth(component), bottomLeftImage.getHeight(component), component);
+        graphics.drawImage(bottomRightImage, component.getWidth()-bottomRightImage.getWidth(component)-insets.right, component.getHeight()-bottomRightImage.getHeight(component)-insets.bottom, bottomRightImage.getWidth(component), bottomRightImage.getHeight(component), component);
+        graphics.drawImage(topRightImage, component.getWidth()-topRightImage.getWidth(component)-insets.right, insets.top, topRightImage.getWidth(component), topRightImage.getHeight(component), component);
     }
 
     public void drawSides(Graphics graphics, JComponent component) {
@@ -153,7 +153,7 @@ public class BorderBase {
             int h = getCorrectYSize(component.getHeight()-y, ls_height);
             Image usedLeftSideImage = ((BufferedImage) leftSideImage).getSubimage(0, 0, ls_width, h);
 
-            graphics.drawImage(usedLeftSideImage, padding.left, y+padding.top, ls_width, h, component);
+            graphics.drawImage(usedLeftSideImage, insets.left, y+insets.top, ls_width, h, component);
         }
 
         //-- RIGHT SIDE
@@ -165,7 +165,7 @@ public class BorderBase {
             int h = getCorrectYSize(component.getHeight()-y, rs_height);
             Image usedRightSideImage = ((BufferedImage) rightSideImage).getSubimage(0, 0, rs_width, h);
 
-            graphics.drawImage(usedRightSideImage, component.getWidth()-rightSideImage.getWidth(component)-padding.right, y+padding.top, rs_width, h, component);
+            graphics.drawImage(usedRightSideImage, component.getWidth()-rightSideImage.getWidth(component)-insets.right, y+insets.top, rs_width, h, component);
         }
 
         //-- TOP SIDE
@@ -177,7 +177,7 @@ public class BorderBase {
             int w = getCorrectXSize(component.getWidth()-x, ts_width);
             Image usedTopSideImage = ((BufferedImage) topSideImage).getSubimage(0, 0, w, ts_height);
 
-            graphics.drawImage(usedTopSideImage, x+padding.left, padding.top, w, ts_height, component);
+            graphics.drawImage(usedTopSideImage, x+insets.left, insets.top, w, ts_height, component);
         }
 
         //-- BOTTOM SIDE
@@ -189,7 +189,7 @@ public class BorderBase {
             int w = getCorrectXSize(component.getWidth()-x, bs_width);
             Image usedBottomSideImage = ((BufferedImage) bottomSideImage).getSubimage(0, 0, w, bs_height);
 
-            graphics.drawImage(usedBottomSideImage, x+padding.left, component.getHeight()-bottomSideImage.getHeight(component)-padding.bottom, w, bs_height, component);
+            graphics.drawImage(usedBottomSideImage, x+insets.left, component.getHeight()-bottomSideImage.getHeight(component)-insets.bottom, w, bs_height, component);
         }
     }
 }
