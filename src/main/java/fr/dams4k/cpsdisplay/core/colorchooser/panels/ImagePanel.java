@@ -17,6 +17,7 @@ public class ImagePanel extends JPanel {
     private Image image;
 
     public BorderBase border = null;
+    public boolean drawBorderBackground = true;
 
     public boolean tile = false;
     public float brightness = 0f;
@@ -91,7 +92,7 @@ public class ImagePanel extends JPanel {
             }
         } else {
             if (border != null) {
-                graphics.drawImage(image, border.topLeftImage.getWidth(this), border.topLeftImage.getHeight(this), getWidth()-border.topLeftImage.getWidth(this)-border.topRightImage.getWidth(this), getHeight()-border.topLeftImage.getHeight(this)-border.topRightImage.getHeight(this), this);
+                graphics.drawImage(image, startX, startY, getWidth()-startX-border.topRightImage.getWidth(this), getHeight()-startY-border.topRightImage.getHeight(this), this);
             } else {
                 graphics.drawImage(image, startX, startY, getWidth(), getHeight(), this);
             }
@@ -99,7 +100,7 @@ public class ImagePanel extends JPanel {
 
         if (border != null) {
             // draw sides before corners if sides walks on corners
-            border.drawBorder(graphics, this);
+            border.drawBorder(graphics, this, drawBorderBackground);
         }
 
         // make the background more darker if needed

@@ -8,6 +8,7 @@ import fr.dams4k.cpsdisplay.v1_8.config.ModConfig;
 import fr.dams4k.cpsdisplay.v1_8.enums.ColorsEnum;
 import fr.dams4k.cpsdisplay.v1_8.enums.MouseModeEnum;
 import fr.dams4k.cpsdisplay.v1_8.enums.ShowTextEnum;
+import fr.dams4k.cpsdisplay.v1_8.gui.buttons.ColorButton;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiPageButtonList.GuiResponder;
@@ -34,7 +35,11 @@ public class GuiConfig extends GuiScreen {
 	private MouseModeEnum mouseModeSelected;
 	private ColorsEnum colorSelected;
 	private ShowTextEnum showText;
+
+	private ColorButton testColorButton;
 	
+	private double scaleValue = ModConfig.text_scale * 100;
+
 	private int top = 20;
 	
 	private int diff_x = 0;
@@ -53,7 +58,6 @@ public class GuiConfig extends GuiScreen {
 		}
 
 		showTextButton = new GuiButton(0, width / 2 - 152, 10 + top, 150, 20, "Show text: " + showText.getText());
-		scaleSlider = new GuiSlider(1, width / 2 - 152, 35 + top, 150, 20, "Scale : ", "%", 0.5 * 100, 4 * 100, ModConfig.text_scale * 100, false, true);
 		mouseModeChangerButton = new GuiButton(3, width / 2 - 152, 60 + top, 150, 20, "Display mode: " + mouseModeSelected.getName());
 		textField = new GuiTextField(2, fontRendererObj,  width / 2 - 152, 85 + top, 150, 20);
 		textField.setMaxStringLength(999);
@@ -64,9 +68,13 @@ public class GuiConfig extends GuiScreen {
 		colorField.setMaxStringLength(6);
 		colorField.setText(ModConfig.text_color);
 		
+
+		testColorButton = new ColorButton(999, 50, 50, 150, 20, "Color : ", 20, 5);
+
 		rainbowSpeedSlider = new GuiSlider(13, width / 2 + 2, 60 + top, 150, 20, "Speed: ", "x", 0.1, 3f, ModConfig.rainbow_speed, true, true);
 		rainbowPrecisionSlider = new GuiSlider(14, width / 2 + 2, 85 + top, 150, 20, "Precision: ", "", 0.01, 1, ModConfig.rainbow_precision, true, true);
 
+		scaleSlider = new GuiSlider(1, width / 2 - 152, 35 + top, 150, 20, "Scale : ", "%", 0.5 * 100, 4 * 100, ModConfig.text_scale * 100, false, true);
 		net.minecraft.client.gui.GuiSlider testSlider = new net.minecraft.client.gui.GuiSlider(new GuiResponder() {
 
 			@Override
@@ -81,6 +89,7 @@ public class GuiConfig extends GuiScreen {
 				System.out.println("- onTick");
 				System.out.println(id);
 				System.out.println(value);
+				scaleValue = value;
 			}
 
 			@Override
@@ -90,7 +99,7 @@ public class GuiConfig extends GuiScreen {
 				System.out.println(p_175319_2_);
 			}
 			
-		}, 100, 0, 0, "Slider", 0, 100, 50, new FormatHelper() {
+		}, 100, width / 2 - 152, 35 + top, "Slider", (int) 0.5 * 100, 4 * 100, (int) ModConfig.text_scale * 100, new FormatHelper() {
 
 			@Override
 			public String getText(int id, String name, float value) {
@@ -98,11 +107,12 @@ public class GuiConfig extends GuiScreen {
 				System.out.println(id);
 				System.out.println(name);
 				System.out.println(value);
-				return null;
+				return "Slider : " + value + "%";
 			}
 			
 		});
-		buttonList.add(testSlider);
+		// buttonList.add(testSlider);
+		buttonList.add(testColorButton);
 
 		buttonList.add(showTextButton);
 		buttonList.add(scaleSlider);
@@ -113,7 +123,7 @@ public class GuiConfig extends GuiScreen {
 		buttonList.add(rainbowPrecisionSlider);
 
 		// ColorChooserFrame colorWindow = new ColorChooserFrame();
-		new fr.dams4k.cpsdisplay.core.colorchooser.ColorChooserFrame();
+		// new fr.dams4k.cpsdisplay.core.colorchooser.ColorChooserFrame();
 
 		updateButtons();
 	}

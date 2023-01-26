@@ -15,6 +15,7 @@ public class SelectorPanel extends ImagePanel {
 
     public SelectorPanel(BufferedImage bufferedImage, boolean tile, float brightness) {
         super(bufferedImage, tile, brightness);
+        this.drawBorderBackground = false;
         addBorder(new InventoryBorder(4));
     }
 

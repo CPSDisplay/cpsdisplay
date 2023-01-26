@@ -46,6 +46,13 @@ public class BorderBase {
         }
     }
 
+    public void setInsets(Insets insets) {
+        this.insets = insets;
+    }
+    public Insets getInsets() {
+        return insets;
+    }
+
     public void setBorder(BordersType borderType, int x, int y, int w, int h) {
         if (baseImage == null) {
             System.err.println("baseImage shouldn't be null");
@@ -95,10 +102,6 @@ public class BorderBase {
         return outImage;
     }
 
-    public void drawBorder(Graphics graphics, JComponent component) {
-        drawBorder(graphics, component, false);
-    }
-
     public void drawBorder(Graphics graphics, JComponent component, boolean drawBackground) {
         // draw sides before corners if sides walks on corners
         if (drawBackground) drawBackground(graphics, component);
@@ -107,12 +110,13 @@ public class BorderBase {
     }
 
     public int getCorrectXSize(int max_w, int iw) {
-        int w = Math.min(max_w-insets.left-insets.right, iw);
+        int w = max_w-insets.left-insets.right;
         return Utils.clamp(w, 1, iw);
     }
 
     public int getCorrectYSize(int max_h, int ih) {
-        int h = Math.min(max_h-insets.top-insets.bottom, ih);
+        int h = max_h - insets.top-insets.bottom;
+        
         return Utils.clamp(h, 1, ih);
     }
 
@@ -124,12 +128,11 @@ public class BorderBase {
         int ih = backgroundImage.getHeight(component);
 
         if (iw > 0 && ih > 0) {
-            for (int x = startX; x < component.getWidth(); x += iw) {
-                for (int y = startY; y < component.getHeight(); y += ih) {
+            for (int x = startX; x < component.getWidth()-insets.right; x += iw) {
+                for (int y = startY; y < component.getHeight()-insets.bottom; y += ih) {
                     int w = getCorrectXSize(component.getWidth()-x, iw);
-                    int h = getCorrectYSize(component.getHeight()-y, ih);
+                    int h = getCorrectYSize(component.getHeight()-y+insets.top, ih);
                     Image usedImage = ((BufferedImage) backgroundImage).getSubimage(0, 0, w, h);
-
                     graphics.drawImage(usedImage, x, y, w, h, component);
                 }
             }

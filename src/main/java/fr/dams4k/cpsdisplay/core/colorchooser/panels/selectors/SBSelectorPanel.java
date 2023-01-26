@@ -19,11 +19,33 @@ public class SBSelectorPanel extends SelectorPanel implements MouseInputListener
         addMouseListener(this);
     }
 
-    public void updateAxis(int posX, int posY) {
+    public void updateAxis(int posX, int posY, boolean alert) {
         yPos = clamp(posY, border.topSideImage.getHeight(this), getHeight()-border.bottomSideImage.getHeight(this)-(int) (selectorLineScale/2));
         xPos = clamp(posX, border.leftSideImage.getWidth(this), getWidth()-border.rightSideImage.getWidth(this)-(int) (selectorLineScale/2));
+        
+        if (alert) { // for listeners
+            for (SelectorListener listener : listeners) {
+                listener.SColorChanger(getSValue());
+                listener.BColorChanger(getBValue());
+            }
+        }
+
         repaint();
     }
+
+
+    public float getSValue() {
+        float realPos = xPos-border.leftSideImage.getWidth(this);
+        float size = getWidth()-border.leftSideImage.getWidth(this)-border.rightSideImage.getWidth(this)-(int) (selectorLineScale/2); // remove borders
+        return clamp(realPos/size, 0f, 1f); // prevent bugs
+    }
+
+    public float getBValue() {
+        float realPos = yPos-border.topSideImage.getHeight(this);
+        float size = getHeight()-border.topSideImage.getHeight(this)-border.bottomSideImage.getHeight(this)-(int) (selectorLineScale/2); // remove borders
+        return 1-clamp(realPos/size, 0f, 1f); // prevent bugs
+    }
+
 
     @Override
     protected void paintComponent(Graphics graphics) {
@@ -48,7 +70,7 @@ public class SBSelectorPanel extends SelectorPanel implements MouseInputListener
 
     @Override
     public void mouseDragged(MouseEvent event) {
-        updateAxis(event.getX(), event.getY());
+        updateAxis(event.getX(), event.getY(), true);
     }
 
     @Override
@@ -56,7 +78,7 @@ public class SBSelectorPanel extends SelectorPanel implements MouseInputListener
 
     @Override
     public void mouseClicked(MouseEvent event) {
-        updateAxis(event.getX(), event.getY());
+        updateAxis(event.getX(), event.getY(), true);
     }
 
     @Override
@@ -75,5 +97,17 @@ public class SBSelectorPanel extends SelectorPanel implements MouseInputListener
     public void HColorChanger(float h) {
         setImage(ImageGenerators.sbColorSelector(h));
         repaint();
+    }
+
+    @Override
+    public void SColorChanger(float s) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void BColorChanger(float b) {
+        // TODO Auto-generated method stub
+        
     }
 }

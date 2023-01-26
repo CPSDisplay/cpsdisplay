@@ -9,18 +9,21 @@ import fr.dams4k.cpsdisplay.core.colorchooser.borders.BorderBase;
 
 public class MinecraftSliderUI extends BasicSliderUI {
     private BorderBase border;
+    private BorderBase thumbBorder;
 
-    public MinecraftSliderUI(JSlider slider, BorderBase border) {
+    public MinecraftSliderUI(JSlider slider, BorderBase border, BorderBase thumbBorder) {
         super(slider);
         this.border = border;
+        this.thumbBorder = thumbBorder;
     }
     
     @Override
-    public void paintTrack(Graphics graphics) {
-        super.paintTrack(graphics);
-        border.drawBorder(graphics, slider, true);
-        // Graphics2D graphics2d = (Graphics2D) graphics;
+    public void paintTrack(Graphics g) {
+        border.drawBorder(g, slider, true);
+    }
 
-        
+    @Override
+    public void paintThumb(Graphics g) {
+        thumbBorder.drawBorder(g, slider, true);
     }
 }

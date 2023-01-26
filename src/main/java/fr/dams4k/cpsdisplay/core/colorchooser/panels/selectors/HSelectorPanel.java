@@ -11,11 +11,18 @@ public class HSelectorPanel extends SelectorPanel implements MouseInputListener 
     private static float selectorLineScale = 1;
 
     private int yPos = 0;
-
+    
     public HSelectorPanel() {
         super(ImageGenerators.hColorSelector(), false, 0f);
         addMouseMotionListener(this);
         addMouseListener(this);
+    }
+
+    public void setHValue(float h) {
+        int gradientSize = getHeight() - border.topSideImage.getHeight(this)-border.bottomSideImage.getHeight(this);
+        System.out.println(gradientSize);
+        System.out.println(gradientSize * h);
+        updateAxis((int) (gradientSize * h), true);
     }
 
     public float getHValue() {
@@ -26,7 +33,7 @@ public class HSelectorPanel extends SelectorPanel implements MouseInputListener 
 
     public void updateAxis(int posY, boolean alert) {
         yPos = clamp(posY, border.topSideImage.getHeight(this), getHeight()-border.bottomSideImage.getHeight(this)-(int) (selectorLineScale/2));
-        if (alert) {
+        if (alert) { // for listeners
             for (SelectorListener listener : listeners) {
                 listener.HColorChanger(getHValue());
             }

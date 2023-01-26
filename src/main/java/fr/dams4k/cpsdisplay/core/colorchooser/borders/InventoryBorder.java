@@ -4,6 +4,7 @@ public class InventoryBorder extends BorderBase {
 
     public InventoryBorder(float scale) {
         super("assets/minecraft/textures/gui/widgets.png", scale);
+        
         setBorder(BordersType.TOP_LEFT_CORNER, 0, 0, 3, 3);
         setBorder(BordersType.BOTTOM_LEFT_CORNER, 0, 19, 3, 3);
         setBorder(BordersType.BOTTOM_RIGHT_CORNER, 179, 19, 3, 3);
