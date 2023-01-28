@@ -256,8 +256,6 @@ public class ModFontRenderer extends FontRenderer {
     }
 
     protected void doDraw(float f, int startColor, int endColor, boolean horizontal) {
-        System.out.println(f);
-
         float startAlpha = ((startColor >> 24) & 0xFF) / 255f;
         float startRed = ((startColor >> 16) & 0xFF) / 255f;
         float startGreen = ((startColor >> 8) & 0xFF) / 255f;
