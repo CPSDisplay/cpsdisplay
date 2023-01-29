@@ -2,10 +2,10 @@
   {
     "modid": "${modid}",
     "name": "${modname}",
-    "description": "Display your cps with this mod",
-    "version": "${version}",
+    "description": "You can see your Clicks Per Seconds and customize the appearance the text",
+    "version": "${modversion}",
     "mcversion": "${mcversion}",
-    "url": "",
+    "url": "https://dams4k.github.io/minecraft-cpsdisplay/",
     "updateUrl": "",
     "authorList": ["Dams4K"],
     "credits": "",
