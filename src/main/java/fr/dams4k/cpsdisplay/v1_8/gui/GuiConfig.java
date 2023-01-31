@@ -3,9 +3,8 @@ package fr.dams4k.cpsdisplay.v1_8.gui;
 import java.awt.Color;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
-import fr.dams4k.cpsdisplay.core.colorpicker.ColorPicker;
-import fr.dams4k.cpsdisplay.core_last.colorchooser.ColorChooserFrame;
 import fr.dams4k.cpsdisplay.v1_8.config.ModConfig;
 import fr.dams4k.cpsdisplay.v1_8.enums.ColorsEnum;
 import fr.dams4k.cpsdisplay.v1_8.enums.MouseModeEnum;
@@ -17,6 +16,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
+import net.minecraft.client.resources.ResourcePackListEntry;
+import net.minecraft.client.resources.ResourcePackRepository;
 import net.minecraftforge.common.MinecraftForge;
 
 

@@ -10,6 +10,10 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 import fr.dams4k.cpsdisplay.core.colorpicker.border.Border;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.IResourcePack;
+import net.minecraft.client.resources.ResourcePackRepository;
+import net.minecraft.util.ResourceLocation;
 
 public class ImagePanel extends JPanel {
     private Image image;
@@ -45,6 +49,22 @@ public class ImagePanel extends JPanel {
             this.image = image;
         } catch (IOException e) {
             e.printStackTrace();
+        }
+        this.imageType = imageType;
+        this.scale = scale;
+    }
+
+    public ImagePanel(ResourceLocation resourceLocation, ImageType imageType, float scale) {
+        Minecraft mc = Minecraft.getMinecraft();
+        ResourcePackRepository rpr = mc.getResourcePackRepository();
+        IResourcePack resourcePack = rpr.getRepositoryEntries().get(0).getResourcePack();
+        
+        if (resourcePack.resourceExists(resourceLocation)) {
+            try {
+                this.image = ImageIO.read(resourcePack.getInputStream(resourceLocation));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         this.imageType = imageType;
         this.scale = scale;
