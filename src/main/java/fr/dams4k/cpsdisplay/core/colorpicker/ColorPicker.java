@@ -29,7 +29,6 @@ import fr.dams4k.cpsdisplay.core.colorpicker.imagepanel.pointer.SVPointerListene
 import fr.dams4k.cpsdisplay.core.colorpicker.imagepanel.pointer.SVPointerPanel;
 import fr.dams4k.cpsdisplay.core.colorpicker.imagepanel.pointer.slider.Slider;
 import fr.dams4k.cpsdisplay.core.colorpicker.imagepanel.pointer.slider.SliderListener;
-import net.minecraft.util.ResourceLocation;
 
 public class ColorPicker extends JFrame implements HPointerListener, SVPointerListener, SliderListener {
     private List<ColorPickerListener> listeners = new ArrayList<>();
@@ -64,7 +63,7 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
 
         Border inventoryImageBorder = new InventoryBorder(4f);
 
-        ImagePanel background = new ImagePanel(new ResourceLocation("textures/gui/options_background.png"), ImageType.TILING, 4f);
+        ImagePanel background = new ImagePanel("assets/minecraft/textures/gui/options_background.png", ImageType.TILING, 4f);
         background.setDarkness(0.4f);
         background.setLayout(new BoxLayout(background, BoxLayout.PAGE_AXIS));
         background.setBorder(new EmptyBorder(borderSize, borderSize, borderSize, borderSize));

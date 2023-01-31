@@ -12,11 +12,6 @@ import java.net.URL;
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.IResourcePack;
-import net.minecraft.client.resources.ResourcePackRepository;
-import net.minecraft.util.ResourceLocation;
-
 
 public class Border {
     private BufferedImage baseImage;
@@ -48,21 +43,6 @@ public class Border {
             baseImage = ImageIO.read(iconURL);
         } catch (IOException e) {
             e.printStackTrace();
-        }
-    }
-
-    public Border(ResourceLocation resourceLocation, float scale) {
-        this.scale = scale;
-        Minecraft mc = Minecraft.getMinecraft();
-        ResourcePackRepository rpr = mc.getResourcePackRepository();
-        IResourcePack resourcePack = rpr.getRepositoryEntries().get(0).getResourcePack();
-        
-        if (resourcePack.resourceExists(resourceLocation)) {
-            try {
-                this.baseImage = ImageIO.read(resourcePack.getInputStream(resourceLocation));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
     }
 

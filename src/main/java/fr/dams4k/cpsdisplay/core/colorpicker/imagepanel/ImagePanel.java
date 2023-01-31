@@ -54,22 +54,6 @@ public class ImagePanel extends JPanel {
         this.scale = scale;
     }
 
-    public ImagePanel(ResourceLocation resourceLocation, ImageType imageType, float scale) {
-        Minecraft mc = Minecraft.getMinecraft();
-        ResourcePackRepository rpr = mc.getResourcePackRepository();
-        IResourcePack resourcePack = rpr.getRepositoryEntries().get(0).getResourcePack();
-        
-        if (resourcePack.resourceExists(resourceLocation)) {
-            try {
-                this.image = ImageIO.read(resourcePack.getInputStream(resourceLocation));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        this.imageType = imageType;
-        this.scale = scale;
-    }
-
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);

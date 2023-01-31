@@ -1,11 +1,9 @@
 package fr.dams4k.cpsdisplay.core.colorpicker.border;
 
-import net.minecraft.util.ResourceLocation;
-
 public class InventoryBorder extends Border {
 
     public InventoryBorder(float scale) {
-        super(new ResourceLocation("textures/gui/widgets.png"), scale);
+        super("assets/minecraft/textures/gui/widgets.png", scale);
         
         setBorder(BorderType.TOP_LEFT_CORNER, 0, 0, 3, 3);
         setBorder(BorderType.BOTTOM_LEFT_CORNER, 0, 19, 3, 3);
