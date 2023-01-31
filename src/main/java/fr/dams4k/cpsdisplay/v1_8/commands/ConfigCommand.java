@@ -1,7 +1,5 @@
 package fr.dams4k.cpsdisplay.v1_8.commands;
 
-import java.lang.ref.Reference;
-
 import fr.dams4k.cpsdisplay.v1_8.References;
 import fr.dams4k.cpsdisplay.v1_8.gui.GuiConfig;
 import net.minecraft.client.Minecraft;

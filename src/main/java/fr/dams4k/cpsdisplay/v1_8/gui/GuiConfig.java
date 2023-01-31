@@ -4,10 +4,13 @@ import java.awt.Color;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import fr.dams4k.cpsdisplay.core.colorpicker.ColorPicker;
+import fr.dams4k.cpsdisplay.core_last.colorchooser.ColorChooserFrame;
 import fr.dams4k.cpsdisplay.v1_8.config.ModConfig;
 import fr.dams4k.cpsdisplay.v1_8.enums.ColorsEnum;
 import fr.dams4k.cpsdisplay.v1_8.enums.MouseModeEnum;
 import fr.dams4k.cpsdisplay.v1_8.enums.ShowTextEnum;
+import fr.dams4k.cpsdisplay.v1_8.gui.buttons.ColorButton;
 import fr.dams4k.cpsdisplay.v1_8.gui.buttons.GuiSlider;
 import fr.dams4k.cpsdisplay.v1_8.gui.buttons.GuiSlider.FormatHelper;
 import net.minecraft.client.Minecraft;
@@ -26,6 +29,8 @@ public class GuiConfig extends GuiScreen {
 	private GuiTextField textField;
 	private GuiTextField colorField;
 	
+	private ColorButton colorButton;
+
 	// Rainbow
 	private GuiSlider rainbowSpeedSlider;
 	private GuiSlider rainbowPrecisionSlider;
@@ -90,6 +95,9 @@ public class GuiConfig extends GuiScreen {
 		buttonList.add(baseColorChangerButton);
 		buttonList.add(rainbowSpeedSlider);
 		buttonList.add(rainbowPrecisionSlider);
+
+		colorButton = new ColorButton(1000, width / 2 - 152, 110 + top, 150, 20, "Coucou");
+		buttonList.add(colorButton);
 
 		updateButtons();
 	}

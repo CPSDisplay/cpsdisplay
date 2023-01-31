@@ -45,8 +45,8 @@ public class GuiOverlay extends Gui {
 				drawRect(x, y, positions.get(2), positions.get(3), color.getRGB());
 			}
 			
-			modFontRenderer.drawGradientString(text, x, y, 0x00ffff, 0x0000ff, true, true);
-			// drawString(mc.fontRendererObj, text, x, y, text_color);
+			// modFontRenderer.drawGradientString(text, x, y, 0x00ffff, 0x0000ff, true, true);
+			drawString(mc.fontRendererObj, text, x, y, text_color);
 
 			GL11.glPopMatrix();
 		}

@@ -2,14 +2,14 @@ package fr.dams4k.cpsdisplay.v1_8.gui.buttons;
 
 import java.awt.Color;
 
-import fr.dams4k.cpsdisplay.core.colorchooser.ColorChooserFrame;
-import fr.dams4k.cpsdisplay.core.colorchooser.ColorChooserListener;
+import fr.dams4k.cpsdisplay.core.colorpicker.ColorPicker;
+import fr.dams4k.cpsdisplay.core.colorpicker.ColorPickerListener;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 
-public class ColorButton extends GuiButton implements ColorChooserListener {
+public class ColorButton extends GuiButton implements ColorPickerListener {
     private Color color = Color.GREEN;
-    private ColorChooserFrame colorChooserFrame = new ColorChooserFrame();
+    private ColorPicker colorPicker;
     
     private int x_gap = 0;
     private int y_gap = 0;
@@ -26,7 +26,9 @@ public class ColorButton extends GuiButton implements ColorChooserListener {
         super(id, x, y, width, height, text);
         this.x_gap = x_gap;
         this.y_gap = y_gap;
-        colorChooserFrame.addListener(this);
+
+        colorPicker = new ColorPicker(color);
+        this.colorPicker.addListener(this);
     }
     
     @Override
@@ -40,15 +42,13 @@ public class ColorButton extends GuiButton implements ColorChooserListener {
     }
     
     @Override
-    public void mouseReleased(int p_mouseReleased_1_, int p_mouseReleased_2_) {
-        super.mouseReleased(p_mouseReleased_1_, p_mouseReleased_2_);
-        colorChooserFrame.setVisible(true);
-        colorChooserFrame.setColor(color);
+    public void mouseReleased(int x, int y) {
+        super.mouseReleased(x, y);
+        colorPicker.popup();
     }
 
     @Override
-    public void colorChanged(Color color) {
+    public void newColor(Color color) {
         this.color = color;
-        System.out.println(color);
     }
 }
