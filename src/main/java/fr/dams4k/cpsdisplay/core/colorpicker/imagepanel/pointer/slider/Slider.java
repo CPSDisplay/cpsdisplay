@@ -52,7 +52,9 @@ public class Slider extends JPanel implements PointerListener {
     }
     public void setValue(int value) {
         this.value = this.clampValue(value);
-        this.pointerPanel.setPointerX(this.value/(float) (max));
+        float fValue = this.value/(float) (max);
+        this.pointerPanel.defaultX = fValue;
+        this.pointerPanel.setPointerX(fValue);
     }
 
     public void setGradient(List<Color> colors) {

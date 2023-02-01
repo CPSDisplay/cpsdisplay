@@ -18,6 +18,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import com.mojang.realmsclient.dto.BackupList;
+
 import fr.dams4k.cpsdisplay.core.colorpicker.border.Border;
 import fr.dams4k.cpsdisplay.core.colorpicker.border.InventoryBorder;
 import fr.dams4k.cpsdisplay.core.colorpicker.imagepanel.ImagePanel;
@@ -58,7 +60,7 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
 
         Dimension size = new Dimension(280+48+4*borderSize, 600);
         this.setSize(size);
-        this.setMinimumSize(size);
+        // this.setMinimumSize(size);
         // this.setResizable(false);
 
         Border inventoryImageBorder = new InventoryBorder(4f);
@@ -90,7 +92,7 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
         colorsPanel.add(this.hPointerPanel);
 
 
-        JPanel sliders = new JPanel(new GridLayout(3, 0));
+        JPanel sliders = new JPanel(new FlowLayout(FlowLayout.CENTER));
         sliders.setOpaque(false);
         background.add(sliders, BorderLayout.CENTER);
 
@@ -109,18 +111,24 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
         this.updateVGradient();
         sliders.add(this.vSlider);
 
-        JPanel colorsPreview = new JPanel();
-        BoxLayout boxLayout = new BoxLayout(colorsPreview, BoxLayout.X_AXIS);
-        colorsPreview.setLayout(boxLayout); 
+        JPanel colorsPreview = new JPanel(new FlowLayout());
         colorsPreview.setOpaque(false);
+        colorsPreview.setPreferredSize(new Dimension(size.width, 64));
+        colorsPreview.setMaximumSize(new Dimension(size.width, 64));
 
         oldColorPreview.setColor(oldColor);
         updateColorPreview();
+        int colorPreviewWidth = (int) (size.width/2)-16;
+        newColorPreview.setPreferredSize(new Dimension(colorPreviewWidth, 48));
+        newColorPreview.setMaximumSize(new Dimension(colorPreviewWidth, 48));
+        oldColorPreview.setPreferredSize(new Dimension(colorPreviewWidth, 48));
+        oldColorPreview.setMaximumSize(new Dimension(colorPreviewWidth, 48));
+
         colorsPreview.add(newColorPreview);
-        colorsPreview.add(Box.createRigidArea(new Dimension(16, 16)));
         colorsPreview.add(oldColorPreview);
-        
-        background.add(colorsPreview, BorderLayout.PAGE_END);
+
+
+        background.add(colorsPreview);
         
         this.addWindowListener(new WindowAdapter() {
             @Override
