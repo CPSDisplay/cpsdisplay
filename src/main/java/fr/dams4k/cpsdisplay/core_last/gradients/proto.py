@@ -28,4 +28,4 @@ def draw_gradient(w, h, *colors):
 
     img.show()
 
-draw_gradient(100, 20, (1, 1, 1), (0, 0, 0))
+draw_gradient(100, 20, (1, 0.7, 1), (0, 0, 0), (.7, .2, .3))

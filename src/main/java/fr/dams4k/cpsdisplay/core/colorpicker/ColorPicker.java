@@ -221,6 +221,10 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
         return Color.getHSBColor(this.h, this.s, this.v);
     }
 
+    public void setOldColor(Color oldColor) {
+        this.oldColorPreview.setColor(oldColor);
+    }
+
     public void addListener(ColorPickerListener listener) {
         this.listeners.add(listener);
     }

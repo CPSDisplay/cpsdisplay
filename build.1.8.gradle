@@ -13,7 +13,8 @@ buildscript {
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
 
-sourceCompatibility = targetCompatibility = "1.8"
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 group = "fr.dams4k.cpsdisplay.v1_8"
 version = "1.8.9-${mod_version}"
