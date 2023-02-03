@@ -157,9 +157,10 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
         this.svPointerPanel.setImage(ColorPickerImages.svColorSelector(this.h, SVPointerPanel.sizeX, SVPointerPanel.sizeY));
         this.hSlider.setValue((int) (this.h*360));
 
-        this.updateColorPreview();
         this.updateSGradient();
         this.updateVGradient();
+        this.updateAGradient();
+        this.updateColorPreview();
     }
 
     @Override
@@ -169,6 +170,7 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
 
         this.updateHGradient();
         this.updateVGradient();
+        this.updateAGradient();
         this.updateColorPreview();
     }
 
@@ -179,6 +181,7 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
 
         this.updateHGradient();
         this.updateSGradient();
+        this.updateAGradient();
         this.updateColorPreview();
     }
 

@@ -43,6 +43,7 @@ public class Slider extends JPanel implements PointerListener {
         this.pointerPanel.setImageBorder(border);
         this.pointerPanel.setPreferredSize(new Dimension(256, 44));
         this.pointerPanel.addListener(this);
+        this.pointerPanel.setOpaque(false);
 
         this.add(this.pointerPanel);
     }
