@@ -8,9 +8,9 @@ import fr.dams4k.cpsdisplay.core.colorpicker.imagepanel.ImagePanel;
 
 public class ColorPreview extends ImagePanel {
     private Color color = Color.WHITE;
-    public ColorPreview(Color color) {
+    public ColorPreview(Color color, float textureScale) {
         this.color = color;
-        this.setImageBorder(new InventoryBorder(4f));
+        this.setImageBorder(new InventoryBorder(textureScale));
         this.setOpaque(false);
     }
 

@@ -14,7 +14,6 @@ import java.util.List;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 
 import fr.dams4k.cpsdisplay.core.colorpicker.border.Border;
 import fr.dams4k.cpsdisplay.core.colorpicker.border.InventoryBorder;
@@ -31,23 +30,25 @@ import fr.dams4k.cpsdisplay.core.colorpicker.imagepanel.pointer.slider.SliderLis
 public class ColorPicker extends JFrame implements HPointerListener, SVPointerListener, SliderListener {
     private List<ColorPickerListener> listeners = new ArrayList<>();
 
+    private final float texturesSize = 3f;
+
     private SVPointerPanel svPointerPanel = new SVPointerPanel();
     private HPointerPanel hPointerPanel = new HPointerPanel();
 
-    private Slider hSlider = new Slider("H", 0, 360);
-    private Slider sSlider = new Slider("S", 0, 100);
-    private Slider vSlider = new Slider("V", 0, 100);
-    private Slider aSlider = new Slider("A", 0, 100);
+    private Slider hSlider = new Slider("H", 0, 360, this.texturesSize);
+    private Slider sSlider = new Slider("S", 0, 100, this.texturesSize);
+    private Slider vSlider = new Slider("V", 0, 100, this.texturesSize);
+    private Slider aSlider = new Slider("A", 0, 100, this.texturesSize);
 
-    private ColorPreview oldColorPreview = new ColorPreview(Color.WHITE);
-    private ColorPreview newColorPreview = new ColorPreview(Color.WHITE);
+    private ColorPreview oldColorPreview = new ColorPreview(Color.WHITE, this.texturesSize);
+    private ColorPreview newColorPreview = new ColorPreview(Color.WHITE, this.texturesSize);
 
     private float h = 0f;
     private float s = 1f;
     private float v = 1f;
     private float a = 1f;
 
-    public ColorPicker(Color oldColor) {
+    public ColorPicker(Color oldColor, boolean alphaCanal) {
         float[] hsb =  Color.RGBtoHSB(oldColor.getRed(), oldColor.getGreen(), oldColor.getBlue(), null);
         this.h = hsb[0];
         this.s = hsb[1];
@@ -57,17 +58,16 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
         this.setTitle("ColorPicker");
         int borderSize = 8;
 
-        Dimension size = new Dimension(280+48+4*borderSize, 600);
+        int sizeY = alphaCanal == true ? 550 : 510;
+        Dimension size = new Dimension(300, sizeY);
         this.setSize(size);
-        // this.setMinimumSize(size);
-        // this.setResizable(false);
+        this.setMinimumSize(size);
 
-        Border inventoryImageBorder = new InventoryBorder(4f);
+        Border inventoryImageBorder = new InventoryBorder(texturesSize);
 
-        ImagePanel background = new ImagePanel("assets/minecraft/textures/gui/options_background.png", ImageType.TILING, 4f);
-        background.setDarkness(0.4f);
+        ImagePanel background = new ImagePanel("assets/minecraft/textures/gui/options_background.png", ImageType.TILING, texturesSize);
+        background.setDarkness(0.5f);
         background.setLayout(new BoxLayout(background, BoxLayout.PAGE_AXIS));
-        background.setBorder(new EmptyBorder(borderSize, borderSize, borderSize, borderSize));
         this.getContentPane().add(background);
 
 
@@ -77,14 +77,14 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
         background.add(colorsPanel, BorderLayout.PAGE_START);
 
         this.svPointerPanel.setImage(ColorPickerImages.svColorSelector(this.h, SVPointerPanel.sizeX, SVPointerPanel.sizeY));
-        this.svPointerPanel.setPreferredSize(new Dimension(280, 280));
+        this.svPointerPanel.setPreferredSize(new Dimension(250, 250));
         this.svPointerPanel.setImageBorder(inventoryImageBorder);
         this.svPointerPanel.addListener(this);
         this.svPointerPanel.defaultX = this.s;
         this.svPointerPanel.defaultY = 1f-this.v;
         colorsPanel.add(this.svPointerPanel);
 
-        this.hPointerPanel.setPreferredSize(new Dimension(48, 280));
+        this.hPointerPanel.setPreferredSize(new Dimension(32, 250));
         this.hPointerPanel.setImageBorder(inventoryImageBorder);
         this.hPointerPanel.addListener(this);
         this.hPointerPanel.defaultY = this.h;
@@ -110,10 +110,12 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
         this.updateVGradient();
         sliders.add(this.vSlider);
 
-        this.aSlider.addListener(this);
-        this.aSlider.setValue((int) (this.a * 100));
-        this.updateAGradient();
-        sliders.add(this.aSlider);
+        if (alphaCanal) {
+            this.aSlider.addListener(this);
+            this.aSlider.setValue((int) (this.a * 100));
+            this.updateAGradient();
+            sliders.add(this.aSlider);
+        }
 
 
         JPanel colorsPreview = new JPanel(new FlowLayout());
@@ -123,11 +125,12 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
 
         oldColorPreview.setColor(oldColor);
         updateColorPreview();
-        int colorPreviewWidth = (int) (size.width/2)-16;
-        newColorPreview.setPreferredSize(new Dimension(colorPreviewWidth, 48));
-        newColorPreview.setMaximumSize(new Dimension(colorPreviewWidth, 48));
-        oldColorPreview.setPreferredSize(new Dimension(colorPreviewWidth, 48));
-        oldColorPreview.setMaximumSize(new Dimension(colorPreviewWidth, 48));
+        int colorPreviewHeight = 36;
+        int colorPreviewWidth = (int) (size.width/2)-48;
+        newColorPreview.setPreferredSize(new Dimension(colorPreviewWidth, colorPreviewHeight));
+        newColorPreview.setMaximumSize(new Dimension(colorPreviewWidth, colorPreviewHeight));
+        oldColorPreview.setPreferredSize(new Dimension(colorPreviewWidth, colorPreviewHeight));
+        oldColorPreview.setMaximumSize(new Dimension(colorPreviewWidth, colorPreviewHeight));
 
         colorsPreview.add(newColorPreview);
         colorsPreview.add(oldColorPreview);

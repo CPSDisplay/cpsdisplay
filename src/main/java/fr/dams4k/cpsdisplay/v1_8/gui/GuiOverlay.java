@@ -65,7 +65,7 @@ public class GuiOverlay extends Gui {
 		list.add((int) (text_position[0] / ModConfig.text_scale));
 		list.add((int) (text_position[1] / ModConfig.text_scale));
 		list.add(list.get(0)+mc.fontRendererObj.getStringWidth(text));
-		list.add(list.get(1)+mc.fontRendererObj.FONT_HEIGHT);
+		list.add(list.get(1)+mc.fontRendererObj.FONT_HEIGHT-1);
 
 		if (scaled) {
 			for (int i = 0; i < list.size(); i++) {

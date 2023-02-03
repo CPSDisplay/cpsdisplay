@@ -13,6 +13,8 @@ public class GuiColorButton extends GuiButton implements ColorPickerListener {
     private int x_gap = 0;
     private int y_gap = 0;
 
+    private boolean alphaCanal = false;
+
     public GuiColorButton(int id, int x, int y, int width, int height) {
         this(id, x, y, width, height, "", width / 4, height / 4);
     }
@@ -43,7 +45,7 @@ public class GuiColorButton extends GuiButton implements ColorPickerListener {
     @Override
     public void mouseReleased(int x, int y) {
         super.mouseReleased(x, y);
-        ColorPicker colorPicker = new ColorPicker(color);
+        ColorPicker colorPicker = new ColorPicker(color, this.alphaCanal);
         colorPicker.addListener(this);
         colorPicker.popup();
     }

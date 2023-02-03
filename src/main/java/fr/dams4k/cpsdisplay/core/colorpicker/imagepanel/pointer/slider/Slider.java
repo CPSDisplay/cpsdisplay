@@ -25,7 +25,7 @@ public class Slider extends JPanel implements PointerListener {
     private int min = 0;
     private int max = 0;
 
-    public Slider(String name, int min, int max) {
+    public Slider(String name, int min, int max, float textureScale) {
         this.setName(name);
         this.setOpaque(false);
         this.setLayout(new FlowLayout());
@@ -33,7 +33,7 @@ public class Slider extends JPanel implements PointerListener {
         this.min = min;
         this.max = max;
 
-        InventoryBorder border = new InventoryBorder(4f);
+        InventoryBorder border = new InventoryBorder(textureScale);
         
         List<Color> colors = new ArrayList<>();
         colors.add(new Color(1f, 1f, 1f));
@@ -41,7 +41,7 @@ public class Slider extends JPanel implements PointerListener {
 
         this.pointerPanel = new PointerPanel(ColorPickerImages.createGradient(this.gradientSizeX, this.gradientSizeY, colors), ImageType.STRETCHING, 1f, true, false);
         this.pointerPanel.setImageBorder(border);
-        this.pointerPanel.setPreferredSize(new Dimension(256, 44));
+        this.pointerPanel.setPreferredSize(new Dimension(256, 32));
         this.pointerPanel.addListener(this);
         this.pointerPanel.setOpaque(false);
 
