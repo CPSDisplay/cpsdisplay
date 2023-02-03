@@ -52,6 +52,7 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
         this.h = hsb[0];
         this.s = hsb[1];
         this.v = hsb[2];
+        this.a = (float) oldColor.getAlpha() / 255;
 
         this.setTitle("ColorPicker");
         int borderSize = 8;
@@ -113,6 +114,7 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
         this.aSlider.setValue((int) (this.a * 100));
         this.updateAGradient();
         sliders.add(this.aSlider);
+
 
         JPanel colorsPreview = new JPanel(new FlowLayout());
         colorsPreview.setOpaque(false);
@@ -201,11 +203,15 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
                 this.v = value / 100f;
                 this.svPointerPanel.setPointerY(1f-this.v);
                 break;
+            case "A":
+                this.a = value / 100f;
+                break;
         }
 
         this.updateHGradient();
         this.updateSGradient();
         this.updateVGradient();
+        this.updateAGradient();
         this.updateColorPreview();
     }
 
@@ -233,7 +239,7 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
     public void updateAGradient() {
         Color color = this.getColor();
         Color colorAlpha0 = new Color(color.getRed(), color.getGreen(), color.getBlue(), 0);
-        List<Color> colors = Arrays.asList(colorAlpha0, this.getColor());
+        List<Color> colors = Arrays.asList(colorAlpha0, this.getColorNoAlpha());
         this.aSlider.setAGradient(colors);
     }
 
@@ -243,7 +249,7 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
 
     public Color getColor() {
         Color hsb_color = this.getColorNoAlpha();
-        Color color = new Color(hsb_color.getRed(), hsb_color.getGreen(), hsb_color.getBlue(), (int) this.a * 255);
+        Color color = new Color(hsb_color.getRed(), hsb_color.getGreen(), hsb_color.getBlue(), (int) (this.a * 255));
         return color;
     }
 

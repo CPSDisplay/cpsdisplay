@@ -86,11 +86,11 @@ public class ImagePanel extends JPanel {
                 default:
                     break;
             }
+            if (!this.imageType.equals(ImageType.TILING)) {
+                g.drawImage(this.image, topX, topY, width, height, this);
+            }
         }
 
-        if (!this.imageType.equals(ImageType.TILING)) {
-            g.drawImage(this.image, topX, topY, width, height, this);
-        }
         if (this.imageBorder != null) {
             this.imageBorder.drawBorder(g, this, this.drawBackground);
         }
