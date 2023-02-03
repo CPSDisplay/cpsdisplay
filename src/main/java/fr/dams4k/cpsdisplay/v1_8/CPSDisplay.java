@@ -1,5 +1,6 @@
 package fr.dams4k.cpsdisplay.v1_8;
 
+import fr.dams4k.cpsdisplay.core.References;
 import fr.dams4k.cpsdisplay.v1_8.proxy.ClientProxy;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;

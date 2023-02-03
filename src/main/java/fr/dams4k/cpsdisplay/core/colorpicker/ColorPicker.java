@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.GridLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
@@ -12,13 +11,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
-import com.mojang.realmsclient.dto.BackupList;
 
 import fr.dams4k.cpsdisplay.core.colorpicker.border.Border;
 import fr.dams4k.cpsdisplay.core.colorpicker.border.InventoryBorder;
@@ -41,6 +37,7 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
     private Slider hSlider = new Slider("H", 0, 360);
     private Slider sSlider = new Slider("S", 0, 100);
     private Slider vSlider = new Slider("V", 0, 100);
+    private Slider aSlider = new Slider("A", 0, 100);
 
     private ColorPreview oldColorPreview = new ColorPreview(Color.WHITE);
     private ColorPreview newColorPreview = new ColorPreview(Color.WHITE);
@@ -48,6 +45,7 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
     private float h = 0f;
     private float s = 1f;
     private float v = 1f;
+    private float a = 1f;
 
     public ColorPicker(Color oldColor) {
         float[] hsb =  Color.RGBtoHSB(oldColor.getRed(), oldColor.getGreen(), oldColor.getBlue(), null);
@@ -110,6 +108,11 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
         this.vSlider.setValue((int) (this.v * 100));
         this.updateVGradient();
         sliders.add(this.vSlider);
+
+        this.aSlider.addListener(this);
+        this.aSlider.setValue((int) (this.a * 100));
+        this.updateAGradient();
+        sliders.add(this.aSlider);
 
         JPanel colorsPreview = new JPanel(new FlowLayout());
         colorsPreview.setOpaque(false);
@@ -216,17 +219,29 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
     }
 
     public void updateSGradient() {
-        List<Color> vColors = Arrays.asList(Color.WHITE, Color.getHSBColor(this.h, 1f, 1f));
-        this.sSlider.setGradient(vColors, 1f-this.v, 0f);
+        List<Color> colors = Arrays.asList(Color.WHITE, Color.getHSBColor(this.h, 1f, 1f));
+        this.sSlider.setGradient(colors, 1f-this.v, 0f);
     }
 
     public void updateVGradient() {
-        List<Color> vColors = Arrays.asList(Color.BLACK, Color.getHSBColor(this.h, this.s, 1f));
-        this.vSlider.setGradient(vColors);
+        List<Color> colors = Arrays.asList(Color.BLACK, Color.getHSBColor(this.h, this.s, 1f));
+        this.vSlider.setGradient(colors);
+    }
+    public void updateAGradient() {
+        Color color = this.getColor();
+        Color colorAlpha0 = new Color(color.getRed(), color.getGreen(), color.getBlue(), 0);
+        List<Color> colors = Arrays.asList(colorAlpha0, this.getColor());
+        this.aSlider.setAGradient(colors);
+    }
+
+    public Color getColorNoAlpha() {
+        return Color.getHSBColor(this.h, this.s, this.v);
     }
 
     public Color getColor() {
-        return Color.getHSBColor(this.h, this.s, this.v);
+        Color hsb_color = this.getColorNoAlpha();
+        Color color = new Color(hsb_color.getRed(), hsb_color.getGreen(), hsb_color.getBlue(), (int) this.a * 255);
+        return color;
     }
 
     public void setOldColor(Color oldColor) {

@@ -1,6 +1,7 @@
 package fr.dams4k.cpsdisplay.core.colorpicker;
 
 import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
@@ -69,19 +70,43 @@ public class ColorPickerImages {
 
         return imageOut;
     }
+    public static BufferedImage createAGradient(int sizeX, int sizeY, List<Color> colors) {
+        BufferedImage imageOut = new BufferedImage(sizeX, sizeY, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D graphics2D = imageOut.createGraphics();
+        
+        int gradientWidth = (int) (sizeX/(colors.size()-1));
+
+        for (int i = 0; i < colors.size()-1; i++) {
+            Color startColor = colors.get(i);
+            Color endColor = colors.get(i+1);
+
+            for (int x = 0; x < gradientWidth; x++) {
+                float diff = (1f / gradientWidth) * x;
+                Color color = ColorPickerImages.lerp(diff, startColor, endColor);
+                graphics2D.setColor(color);
+                graphics2D.drawRect(x, 0, 1, sizeY);
+            }
+        }
+        graphics2D.dispose();
+
+        return imageOut;
+    }
 
     public static Color lerp(float value, Color startColor, Color endColor) {
-        float startR = startColor.getRed()/256f;
-        float startG = startColor.getGreen()/256f;
-        float startB = startColor.getBlue()/256f;
-        float endR = endColor.getRed()/256f;
-        float endG = endColor.getGreen()/256f;
-        float endB = endColor.getBlue()/256f;
+        float startR = startColor.getRed()/255f;
+        float startG = startColor.getGreen()/255f;
+        float startB = startColor.getBlue()/255f;
+        float startA = startColor.getAlpha()/255f;
+        float endR = endColor.getRed()/255f;
+        float endG = endColor.getGreen()/255f;
+        float endB = endColor.getBlue()/255f;
+        float endA = endColor.getAlpha()/255f;
 
         float r = startR + (endR - startR) * value;
         float g = startG + (endG - startG) * value;
         float b = startB + (endB - startB) * value;
+        float a = startA + (endA - startA) * value;
 
-        return new Color(r, g, b);
+        return new Color(r, g, b, a);
     }
 }

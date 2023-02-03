@@ -3,7 +3,7 @@ package fr.dams4k.cpsdisplay.v1_8.config;
 import java.awt.Color;
 import java.io.File;
 
-import fr.dams4k.cpsdisplay.v1_8.References;
+import fr.dams4k.cpsdisplay.core.References;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraftforge.common.config.Configuration;

@@ -10,10 +10,6 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 import fr.dams4k.cpsdisplay.core.colorpicker.border.Border;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.IResourcePack;
-import net.minecraft.client.resources.ResourcePackRepository;
-import net.minecraft.util.ResourceLocation;
 
 public class ImagePanel extends JPanel {
     private Image image;

@@ -60,6 +60,9 @@ public class Slider extends JPanel implements PointerListener {
     public void setGradient(List<Color> colors) {
         this.pointerPanel.setImage(ColorPickerImages.createGradient(this.gradientSizeX, this.gradientSizeY, colors));
     }
+    public void setAGradient(List<Color> colors) {
+        this.pointerPanel.setImage(ColorPickerImages.createAGradient(this.gradientSizeX, this.gradientSizeY, colors));
+    }
     public void setGradient(List<Color> colors, float darkness, float brightness) {
         this.pointerPanel.setImage(ColorPickerImages.createGradient(this.gradientSizeX, this.gradientSizeY, colors));
         this.pointerPanel.setDarkness(darkness);
