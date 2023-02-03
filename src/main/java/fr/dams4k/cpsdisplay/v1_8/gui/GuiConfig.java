@@ -126,7 +126,8 @@ public class GuiConfig extends GuiScreen {
 	
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-		drawDefaultBackground();
+		// drawDefaultBackground();
+		this.drawBackground();
 		textField.drawTextBox();
 		super.drawScreen(mouseX, mouseY, partialTicks);
 
@@ -144,6 +145,20 @@ public class GuiConfig extends GuiScreen {
 		}
 
 		saveConfig();
+	}
+	public void drawBackground() {
+		ArrayList<Integer> positions = GuiOverlay.getBackgroundPositions(mc, 0, 0, true);
+
+		int color = -1072689136;
+		int padding = (int) (this.height / 10 * ModConfig.text_scale);
+		// TOP
+		this.drawGradientRect(0, 0, this.width, positions.get(1)-padding, color, color);
+		// BOTTOM
+		this.drawGradientRect(0, positions.get(3)+padding, this.width, this.height, color, color);
+		// LEFT
+		this.drawGradientRect(0, positions.get(1)-padding, positions.get(0)-padding, positions.get(3)+padding, color, color);
+		// RIGHT
+		this.drawGradientRect(positions.get(2)+padding, positions.get(1)-padding, this.width, positions.get(3)+padding, color, color);
 	}
 	
 	public void saveConfig() {
