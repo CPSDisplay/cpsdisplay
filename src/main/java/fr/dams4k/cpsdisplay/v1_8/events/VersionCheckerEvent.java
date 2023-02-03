@@ -9,8 +9,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import fr.dams4k.cpsdisplay.core.References;
 import fr.dams4k.cpsdisplay.core.VersionChecker;
-import fr.dams4k.cpsdisplay.v1_8.References;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.event.ClickEvent;
 import net.minecraft.event.ClickEvent.Action;

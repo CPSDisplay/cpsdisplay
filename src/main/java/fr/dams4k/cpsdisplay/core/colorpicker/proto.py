@@ -2,7 +2,6 @@ from PIL import Image
 
 
 def lerp(value, *colors):
-    print(colors[0][0] + (colors[1][0] - colors[0][0]) * value)
     return [
         colors[0][0] + (colors[1][0] - colors[0][0]) * value,
         colors[0][1] + (colors[1][1] - colors[0][1]) * value,
@@ -28,4 +27,4 @@ def draw_gradient(w, h, *colors):
 
     img.show()
 
-draw_gradient(100, 20, (1, 0.7, 1), (0, 0, 0), (.7, .2, .3))
+draw_gradient(100, 20, (15.3/100, 11.8/255, 23.9/100), (23.1/100, 15.3/100, 32.9/100), (16.9/100, .4/100, 47.1/100))
