@@ -20,8 +20,6 @@ public class GuiColorButton extends GuiButton implements ColorPickerListener {
 
     private boolean alphaChannel = false;
 
-    private WindowDisplay windowDisplay = new WindowDisplay();
-
     private boolean wasOriginallyFullscreen;
     private ColorPicker colorPicker;
 
@@ -49,7 +47,7 @@ public class GuiColorButton extends GuiButton implements ColorPickerListener {
         if (colorPicker == null && wasOriginallyFullscreen) {
             wasOriginallyFullscreen = false;
             try {
-                windowDisplay.enableFullscreen();
+                WindowDisplay.enableFullscreen();
             } catch (LWJGLException e) {
                 e.printStackTrace();
             }
@@ -63,7 +61,7 @@ public class GuiColorButton extends GuiButton implements ColorPickerListener {
         if (mc.isFullScreen()) {
             this.wasOriginallyFullscreen = true;
             try {
-                windowDisplay.disableFullscreen();
+                WindowDisplay.disableFullscreen();
             } catch (LWJGLException e) {
                 e.printStackTrace();
             }

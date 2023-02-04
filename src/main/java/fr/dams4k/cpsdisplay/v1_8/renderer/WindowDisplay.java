@@ -17,14 +17,11 @@ import net.minecraft.util.Util;
 
 // I need to rewrote an existing code of minecraft because mc.toggleFullscreen(); do weird things lol
 public class WindowDisplay {
-    private final Minecraft mc = Minecraft.getMinecraft();
+    private static final Minecraft mc = Minecraft.getMinecraft();
     
     private static final List<DisplayMode> macDisplayModes = Lists.newArrayList(new DisplayMode[] {new DisplayMode(2560, 1600), new DisplayMode(2880, 1800)});
     
-    public int displayWidth;
-    public int displayHeight;
-
-    public void updateDisplayMode() throws LWJGLException {
+    public static void updateDisplayMode() throws LWJGLException {
         Set<DisplayMode> set = Sets.<DisplayMode>newHashSet();
         Collections.addAll(set, Display.getAvailableDisplayModes());
         DisplayMode displaymode = Display.getDesktopDisplayMode();
@@ -64,43 +61,23 @@ public class WindowDisplay {
         }
 
         Display.setDisplayMode(displaymode);
-        this.displayWidth = displaymode.getWidth();
-        this.displayHeight = displaymode.getHeight();
     }
 
-    public void enableFullscreen() throws LWJGLException {
-        this.updateDisplayMode();
-        this.displayWidth = Display.getDisplayMode().getWidth();
-        this.displayHeight = Display.getDisplayMode().getHeight();
-
-        if (this.displayWidth <= 0) {
-            this.displayWidth = 1;
-        }
-
-        if (this.displayHeight <= 0) {
-            this.displayHeight = 1;
-        }
+    public static void enableFullscreen() throws LWJGLException {
+        WindowDisplay.updateDisplayMode();
 
         Display.setFullscreen(true);
         Display.setVSyncEnabled(mc.gameSettings.enableVsync);
         mc.updateDisplay();
     }
 
-    public void disableFullscreen() throws LWJGLException {
-        displayWidth = Display.getDisplayMode().getWidth();
-        displayHeight = Display.getDisplayMode().getHeight();
+    public static void disableFullscreen() throws LWJGLException {
+        int displayWidth = Display.getDisplayMode().getWidth();
+        int displayHeight = Display.getDisplayMode().getHeight();
 
-        Display.setDisplayMode(new DisplayMode(this.displayWidth, this.displayHeight));
-        mc.displayWidth = this.displayWidth;
-        mc.displayHeight = this.displayHeight;
-
-        if (this.displayWidth <= 0) {
-            this.displayWidth = 1;
-        }
-
-        if (this.displayHeight <= 0) {
-            this.displayHeight = 1;
-        }
+        Display.setDisplayMode(new DisplayMode(displayWidth, displayHeight));
+        mc.displayWidth = displayWidth;
+        mc.displayHeight = displayHeight;
 
         Display.setFullscreen(false);
         Display.setVSyncEnabled(mc.gameSettings.enableVsync);
