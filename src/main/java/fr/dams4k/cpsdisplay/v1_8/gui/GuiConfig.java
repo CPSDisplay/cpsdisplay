@@ -25,7 +25,8 @@ public class GuiConfig extends GuiScreen {
 	private GuiButton baseColorChangerButton;
 	private GuiButton mouseModeChangerButton;
 	private GuiTextField textField;
-	private GuiColorButton colorButton;
+	private GuiColorButton textColorButton;
+	private GuiColorButton backgroundColorButton;
 	
 
 	// Rainbow
@@ -60,8 +61,11 @@ public class GuiConfig extends GuiScreen {
 		textField.setText(ModConfig.text);
 		
 		baseColorChangerButton = new GuiButton(10, width / 2 + 2, 10 + top, 150, 20, "Color: " + colorSelected.getName());
-		colorButton = new GuiColorButton(11, width / 2 + 2, 35 + top, 150, 20);
-		colorButton.setColor(ModConfig.getTextColor());
+		textColorButton = new GuiColorButton(11, width / 2 + 2, 35 + top, 150, 20, "Text Color:", false);
+		textColorButton.setColor(ModConfig.getTextColor());
+
+		backgroundColorButton = new GuiColorButton(12, width / 2 + 2, 60 + top, 150, 20, "Background Color:", true);
+		backgroundColorButton.setColor(ModConfig.getBackgroundColor());
 
 		rainbowSpeedSlider = new GuiSlider(13, width / 2 + 2, 60 + top, 150, 20, "", 0.1f, 3f, 0.1f, (float) ModConfig.rainbowSpeed, 10);
 		rainbowSpeedSlider.setFormatHelper(new FormatHelper() {
@@ -91,7 +95,8 @@ public class GuiConfig extends GuiScreen {
 		buttonList.add(baseColorChangerButton);
 		buttonList.add(rainbowSpeedSlider);
 		buttonList.add(rainbowPrecisionSlider);
-		buttonList.add(colorButton);
+		buttonList.add(textColorButton);
+		buttonList.add(backgroundColorButton);
 
 		updateButtons();
 	}
@@ -167,8 +172,11 @@ public class GuiConfig extends GuiScreen {
 	
 	public void changeConfig() {
 		ModConfig.text = textField.getText();
-		ModConfig.textHexColor = Integer.toHexString(colorButton.getColor().getRGB()).substring(2);
+		ModConfig.setTextColor(textColorButton.getColor());
 		ModConfig.textScale = scaleSlider.getValue() / 100d;
+
+		ModConfig.setBackgroundColor(backgroundColorButton.getColor());
+
 		ModConfig.rainbowSpeed = rainbowSpeedSlider.getValue();
 		ModConfig.rainbowPrecision = rainbowPrecisionSlider.getValue();
 		ModConfig.showText = showText.getBool();
@@ -190,8 +198,7 @@ public class GuiConfig extends GuiScreen {
 				ModConfig.rainbow = false;
 			}
 			
-			
-			colorButton.setColor(ModConfig.getTextColor());
+			textColorButton.setColor(ModConfig.getTextColor());
 		} else if (button == mouseModeChangerButton) {
 			mouseModeSelected = MouseModeEnum.getById(mouseModeSelected.getId() + 1);
 			mouseModeChangerButton.displayString = "Mode: " + mouseModeSelected.getName();
@@ -215,12 +222,12 @@ public class GuiConfig extends GuiScreen {
 			rainbowSpeedSlider.visible = false;
 			
 			if (colorSelected == ColorsEnum.CUSTOM) {
-				colorButton.visible = true;
+				textColorButton.visible = true;
 			} else {
-				colorButton.visible = false;
+				textColorButton.visible = false;
 			}
 		} else {
-			colorButton.visible = true;
+			textColorButton.visible = true;
 			rainbowPrecisionSlider.visible = true;
 			rainbowSpeedSlider.visible = true;
 		}

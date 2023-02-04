@@ -48,7 +48,7 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
     private float v = 1f;
     private float a = 1f;
 
-    public ColorPicker(Color oldColor, boolean alphaCanal) {
+    public ColorPicker(Color oldColor, boolean alphaChannel) {
         float[] hsb =  Color.RGBtoHSB(oldColor.getRed(), oldColor.getGreen(), oldColor.getBlue(), null);
         this.h = hsb[0];
         this.s = hsb[1];
@@ -58,7 +58,7 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
         this.setTitle("ColorPicker");
         int borderSize = 8;
 
-        int sizeY = alphaCanal == true ? 550 : 510;
+        int sizeY = alphaChannel == true ? 550 : 510;
         Dimension size = new Dimension(300, sizeY);
         this.setSize(size);
         this.setMinimumSize(size);
@@ -110,7 +110,7 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
         this.updateVGradient();
         sliders.add(this.vSlider);
 
-        if (alphaCanal) {
+        if (alphaChannel) {
             this.aSlider.addListener(this);
             this.aSlider.setValue((int) (this.a * 100));
             this.updateAGradient();
