@@ -1,8 +1,10 @@
 package fr.dams4k.cpsdisplay.v1_8.enums;
 
+import net.minecraft.client.resources.I18n;
+
 public enum ShowTextEnum {
-	ENABLE(true, "§aEnable"),
-	DISABLE(false, "§cDisable");
+	ENABLE(true, "cpsdisplay.button.enable"),
+	DISABLE(false, "cpsdisplay.button.disable");
 
 	private final boolean enable;
 	private final String text;
@@ -17,7 +19,7 @@ public enum ShowTextEnum {
 	}
 	
 	public String getText() {
-		return text;
+		return I18n.format(text, new Object[0]);
 	}
 	
 	public static ShowTextEnum getByBool(boolean bool) {

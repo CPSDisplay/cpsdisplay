@@ -15,6 +15,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.MinecraftForge;
 
 
@@ -26,8 +28,9 @@ public class GuiConfig extends GuiScreen {
 	private GuiButton mouseModeChangerButton;
 	private GuiTextField textField;
 	private GuiColorButton textColorButton;
+
+	// Background
 	private GuiColorButton backgroundColorButton;
-	
 
 	// Rainbow
 	private GuiSlider rainbowSpeedSlider;
@@ -54,8 +57,12 @@ public class GuiConfig extends GuiScreen {
 			colorSelected = ColorsEnum.getById(9);
 		}
 
-		showTextButton = new GuiButton(0, width / 2 - 152, 10 + top, 150, 20, "Show text: " + showText.getText());
-		mouseModeChangerButton = new GuiButton(3, width / 2 - 152, 60 + top, 150, 20, "Display mode: " + mouseModeSelected.getName());
+		showTextButton = new GuiButton(0, width / 2 - 152, 10 + top, 150, 20, "");
+		updateShowTextButton();
+
+		mouseModeChangerButton = new GuiButton(3, width / 2 - 152, 60 + top, 150, 20, "");
+		updateMouseModeButton();
+
 		textField = new GuiTextField(2, fontRendererObj,  width / 2 - 152, 85 + top, 150, 20);
 		textField.setMaxStringLength(999);
 		textField.setText(ModConfig.text);
@@ -202,20 +209,27 @@ public class GuiConfig extends GuiScreen {
 			textColorButton.setColor(ModConfig.getTextColor());
 		} else if (button == mouseModeChangerButton) {
 			mouseModeSelected = MouseModeEnum.getById(mouseModeSelected.getId() + 1);
-			mouseModeChangerButton.displayString = "Mode: " + mouseModeSelected.getName();
+			updateMouseModeButton();
 
 			if (mouseModeSelected != MouseModeEnum.CUSTOM) {
-				ModConfig.text = mouseModeSelected.getText();
+				ModConfig.text = I18n.format(mouseModeSelected.getText(), new Object[0]);
 			}
 			textField.setText(ModConfig.text);
 		} else if (button == showTextButton) {
 			showText = ShowTextEnum.getByBool(!showText.getBool());
-			showTextButton.displayString = "Show text: " + showText.getText();
+			updateShowTextButton();
 		}
 
 		saveConfig();
 	}
 	
+	public void updateShowTextButton() {
+		showTextButton.displayString = I18n.format("cpsdisplay.button.show_text", new Object[0]) + showText.getText();
+	}
+	public void updateMouseModeButton() {
+		mouseModeChangerButton.displayString = I18n.format("cpsdisplay.button.display_mode", new Object[0]) + mouseModeSelected.getName();
+	}
+
 	public void updateButtons() {
 		// Color
 		if (colorSelected == ColorsEnum.RAINBOW) {

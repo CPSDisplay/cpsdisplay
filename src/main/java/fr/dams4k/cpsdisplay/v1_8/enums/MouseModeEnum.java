@@ -1,10 +1,12 @@
 package fr.dams4k.cpsdisplay.v1_8.enums;
 
+import net.minecraft.client.resources.I18n;
+
 public enum MouseModeEnum {
-	LEFT(0, "Left", "{0} CPS"),
-	RIGHT(1, "Right", "{1} CPS"),
-	LEFT_RIGHT(2, "Left & Right", "[{0} | {1}] CPS"),
-	CUSTOM(3, "Custom", "");
+	LEFT(0, "cpsdisplay.button.display_left", "cpsdisplay.display_template.left"),
+	RIGHT(1, "cpsdisplay.button.display_right", "cpsdisplay.display_template.right"),
+	LEFT_RIGHT(2, "cpsdisplay.button.display_left_right", "cpsdisplay.display_template.left_right"),
+	CUSTOM(3, "cpsdisplay.button.display_custom", "cpsdisplay.display_template.custom");
 
 	private final int id;
 	private final String name;
@@ -21,11 +23,11 @@ public enum MouseModeEnum {
 	}
 	
 	public String getName() {
-		return name;
+		return I18n.format(name, new Object[0]);
 	}
 	
 	public String getText() {
-		return text;
+		return I18n.format(text, new Object[0]);
 	}
 	
 	public static MouseModeEnum getById(int id) {

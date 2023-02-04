@@ -1,0 +1,15 @@
+command.cpsdisplay.usage=/cpsdisplay
+key.opengui=Ouvrir l'interface de configuration
+category.cpsdisplay=CPS Display
+cpsdisplay.button.show_text=Afficher le texte : 
+cpsdisplay.button.enable=§aActivé
+cpsdisplay.button.disable=§cDésactivé
+cpsdisplay.button.display_mode=Mode : 
+cpsdisplay.button.display_left=Gauche
+cpsdisplay.button.display_right=Droite
+cpsdisplay.button.display_left_right=Gauche & Droite
+cpsdisplay.button.display_custom=Personnalisé
+cpsdisplay.display_template.left={0} CPS
+cpsdisplay.display_template.right={1} CPS
+cpsdisplay.display_template.left_right=[{0} | {1}] CPS
+cpsdisplay.display_template.custom=

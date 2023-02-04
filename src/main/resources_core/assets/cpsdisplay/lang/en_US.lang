@@ -1,3 +1,15 @@
 command.cpsdisplay.usage=/cpsdisplay
 key.opengui=Open Config Gui
 category.cpsdisplay=CPS Display
+cpsdisplay.button.show_text=Show text: 
+cpsdisplay.button.enable=§aEnable
+cpsdisplay.button.disable=§cDisable
+cpsdisplay.button.display_mode=Mode: 
+cpsdisplay.button.display_left=Left
+cpsdisplay.button.display_right=Right
+cpsdisplay.button.display_left_right=Left & Right
+cpsdisplay.button.display_custom=Custom
+cpsdisplay.display_template.left={0} CPS
+cpsdisplay.display_template.right={1} CPS
+cpsdisplay.display_template.left_right=[{0} | {1}] CPS
+cpsdisplay.display_template.custom=""
