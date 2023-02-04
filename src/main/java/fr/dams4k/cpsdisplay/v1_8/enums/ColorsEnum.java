@@ -56,7 +56,7 @@ public enum ColorsEnum {
 	
 	public static ColorsEnum getByHex(String hex) {
 		for (ColorsEnum color : ColorsEnum.values()) {
-			if (color.getHex() == hex) {
+			if (color.getHex().equals(hex)) {
 				return color;
 			}
 		}
