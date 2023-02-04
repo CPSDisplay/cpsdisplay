@@ -1,0 +1,4 @@
+you can overwrite the default display template (left, right, left n right, even custom):
+    create a new resource pack and create a lang file (us_US.lang) in assets/cpsdisplay/lang folder
+    "cpsdisplay" folder must not be anything else, cpsdisplay is the modid of the mode, so it's needed to
+    overwrite lang files of the mod
