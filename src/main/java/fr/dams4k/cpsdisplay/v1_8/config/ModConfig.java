@@ -25,7 +25,7 @@ public class ModConfig {
 	public static double textScale = 1d;
 	public static String textColor = "ffffff";
 	public static String text = "{0} | {1} CPS";
-	public static String backgroundColor = "2b2a2a80";
+	public static String backgroundHexColor = "2b2a2a80";
 	
 	// Rainbow
 	public static boolean rainbow = false;
@@ -47,7 +47,7 @@ public class ModConfig {
 	// private static Property backgroundColorBlueProperty;
 	// private static Property backgroundColorAlphaProperty;
 
-	public static Color background_color = new Color(Integer.parseInt(ModConfig.backgroundColor, 16)); // à sauvegarder séparement, var R var G var B var A
+	public static Color backgroundColor = new Color(Integer.parseInt(ModConfig.backgroundHexColor, 16)); // à sauvegarder séparement, var R var G var B var A
 	
 	public static void preInit() {
 		File configFile = new File(Loader.instance().getConfigDir(), References.MOD_ID + ".cfg");

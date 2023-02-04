@@ -132,8 +132,7 @@ public class GuiConfig extends GuiScreen {
 		if (GuiOverlay.positionInOverlay(mouseX, mouseY)) {
 			ArrayList<Integer> positions = GuiOverlay.getBackgroundPositions(0, 0, true);
 			// Color color = new Color(ModConfig.bg_color_r, ModConfig.bg_color_g, ModConfig.bg_color_b, (int) Math.round(ModConfig.bg_color_a * 0.5));
-			Color color = new Color(Integer.parseInt(ModConfig.backgroundColor, 16));
-			new GuiOverlay(Minecraft.getMinecraft(), 0, 0, color);
+			new GuiOverlay(Minecraft.getMinecraft(), 0, 0, ModConfig.backgroundColor);
 			
 			drawVerticalLine(positions.get(0), positions.get(1), positions.get(3), Color.RED.getRGB());
 			drawVerticalLine(positions.get(2), positions.get(1), positions.get(3), Color.RED.getRGB());

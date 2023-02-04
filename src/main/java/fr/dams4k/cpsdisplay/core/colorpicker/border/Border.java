@@ -109,15 +109,14 @@ public class Border {
         drawCorners(graphics, component);
     }
 
-    public int getCorrectXSize(int max_w, int iw) {
-        int w = max_w-insets.left-insets.right;
-        return this.clamp(w, 1, iw);
+    public int getCorrectXSize(int maxW, int imageWidth) {
+        int w = maxW-insets.left-insets.right;
+        return this.clamp(w, 1, imageWidth);
     }
 
-    public int getCorrectYSize(int max_h, int ih) {
-        int h = max_h - insets.top-insets.bottom;
-        
-        return this.clamp(h, 1, ih);
+    public int getCorrectYSize(int maxH, int imageH) {
+        int h = maxH - insets.top-insets.bottom;
+        return this.clamp(h, 1, imageH);
     }
 
     public void drawBackground(Graphics graphics, JComponent component) {
@@ -149,51 +148,51 @@ public class Border {
 
     public void drawSides(Graphics graphics, JComponent component) {
         //-- LEFT SIDE
-        int ls_max_height = component.getHeight() - bottomLeftImage.getHeight(component); // height of the component - bottom left corner height
-        int ls_height = leftSideImage.getHeight(component);
-        int ls_width = leftSideImage.getWidth(component);
+        int lsMaxHeight = component.getHeight() - bottomLeftImage.getHeight(component); // height of the component - bottom left corner height
+        int lsHeight = leftSideImage.getHeight(component);
+        int lsWidth = leftSideImage.getWidth(component);
 
-        for (int y = topLeftImage.getHeight(component); y < ls_max_height; y += ls_height) {
-            int h = getCorrectYSize(component.getHeight()-y, ls_height);
-            Image usedLeftSideImage = ((BufferedImage) leftSideImage).getSubimage(0, 0, ls_width, h);
+        for (int y = topLeftImage.getHeight(component); y < lsMaxHeight; y += lsHeight) {
+            int h = getCorrectYSize(component.getHeight()-y, lsHeight);
+            Image usedLeftSideImage = ((BufferedImage) leftSideImage).getSubimage(0, 0, lsWidth, h);
 
-            graphics.drawImage(usedLeftSideImage, insets.left, y+insets.top, ls_width, h, component);
+            graphics.drawImage(usedLeftSideImage, insets.left, y+insets.top, lsWidth, h, component);
         }
 
         //-- RIGHT SIDE
-        int rs_max_height = component.getHeight() - bottomRightImage.getHeight(component); // height of the component - bottom left corner height
-        int rs_height = rightSideImage.getHeight(component);
-        int rs_width = rightSideImage.getWidth(component);
+        int rsMaxHeight = component.getHeight() - bottomRightImage.getHeight(component); // height of the component - bottom left corner height
+        int rsHeight = rightSideImage.getHeight(component);
+        int rsWidth = rightSideImage.getWidth(component);
 
-        for (int y = topRightImage.getHeight(component); y < rs_max_height; y += rs_height) {
-            int h = getCorrectYSize(component.getHeight()-y, rs_height);
-            Image usedRightSideImage = ((BufferedImage) rightSideImage).getSubimage(0, 0, rs_width, h);
+        for (int y = topRightImage.getHeight(component); y < rsMaxHeight; y += rsHeight) {
+            int h = getCorrectYSize(component.getHeight()-y, rsHeight);
+            Image usedRightSideImage = ((BufferedImage) rightSideImage).getSubimage(0, 0, rsWidth, h);
 
-            graphics.drawImage(usedRightSideImage, component.getWidth()-rightSideImage.getWidth(component)-insets.right, y+insets.top, rs_width, h, component);
+            graphics.drawImage(usedRightSideImage, component.getWidth()-rightSideImage.getWidth(component)-insets.right, y+insets.top, rsWidth, h, component);
         }
 
         //-- TOP SIDE
-        int ts_max_width = component.getWidth() - topRightImage.getWidth(component); // height of the component - bottom left corner height
-        int ts_height = topSideImage.getHeight(component);
-        int ts_width = topSideImage.getWidth(component);
+        int tsMaxWidth = component.getWidth() - topRightImage.getWidth(component); // height of the component - bottom left corner height
+        int tsHeight = topSideImage.getHeight(component);
+        int tsWidth = topSideImage.getWidth(component);
 
-        for (int x = topLeftImage.getWidth(component); x < ts_max_width; x += ts_width) {
-            int w = getCorrectXSize(component.getWidth()-x, ts_width);
-            Image usedTopSideImage = ((BufferedImage) topSideImage).getSubimage(0, 0, w, ts_height);
+        for (int x = topLeftImage.getWidth(component); x < tsMaxWidth; x += tsWidth) {
+            int w = getCorrectXSize(component.getWidth()-x, tsWidth);
+            Image usedTopSideImage = ((BufferedImage) topSideImage).getSubimage(0, 0, w, tsHeight);
 
-            graphics.drawImage(usedTopSideImage, x+insets.left, insets.top, w, ts_height, component);
+            graphics.drawImage(usedTopSideImage, x+insets.left, insets.top, w, tsHeight, component);
         }
 
         //-- BOTTOM SIDE
-        int bs_max_width = component.getWidth() - bottomRightImage.getWidth(component); // height of the component - bottom left corner height
-        int bs_height = bottomSideImage.getHeight(component);
-        int bs_width = bottomSideImage.getWidth(component);
+        int bsMaxWidth = component.getWidth() - bottomRightImage.getWidth(component); // height of the component - bottom left corner height
+        int bsHeight = bottomSideImage.getHeight(component);
+        int bsWidth = bottomSideImage.getWidth(component);
 
-        for (int x = bottomLeftImage.getWidth(component); x < bs_max_width; x += bs_width) {
-            int w = getCorrectXSize(component.getWidth()-x, bs_width);
-            Image usedBottomSideImage = ((BufferedImage) bottomSideImage).getSubimage(0, 0, w, bs_height);
+        for (int x = bottomLeftImage.getWidth(component); x < bsMaxWidth; x += bsWidth) {
+            int w = getCorrectXSize(component.getWidth()-x, bsWidth);
+            Image usedBottomSideImage = ((BufferedImage) bottomSideImage).getSubimage(0, 0, w, bsHeight);
 
-            graphics.drawImage(usedBottomSideImage, x+insets.left, component.getHeight()-bottomSideImage.getHeight(component)-insets.bottom, w, bs_height, component);
+            graphics.drawImage(usedBottomSideImage, x+insets.left, component.getHeight()-bottomSideImage.getHeight(component)-insets.bottom, w, bsHeight, component);
         }
     }
 

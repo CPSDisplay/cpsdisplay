@@ -18,10 +18,10 @@ public enum ColorsEnum {
 	private final String name;
 	private final String hex;
 	
-	ColorsEnum(int id, String name, String hex_color) {
+	ColorsEnum(int id, String name, String hexColor) {
 		this.id = id;
 		this.name = name;
-		this.hex = hex_color;
+		this.hex = hexColor;
 	}
 	
 	public int getId() {

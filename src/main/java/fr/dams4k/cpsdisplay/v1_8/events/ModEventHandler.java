@@ -25,8 +25,8 @@ public class ModEventHandler {
 	private GameSettings gs = Minecraft.getMinecraft().gameSettings;
 
 	@SubscribeEvent
-	public void onRenderGui(RenderGameOverlayEvent.Post game_overlay_event) {
-		if (game_overlay_event.type == ElementType.HOTBAR && !(Minecraft.getMinecraft().currentScreen instanceof GuiIngameMenu)) {
+	public void onRenderGui(RenderGameOverlayEvent.Post gameOverlayEvent) {
+		if (gameOverlayEvent.type == ElementType.HOTBAR && !(Minecraft.getMinecraft().currentScreen instanceof GuiIngameMenu)) {
 			new GuiOverlay(Minecraft.getMinecraft(), this.getLeftCPS(), this.getRightCPS());
 		}
 	}
@@ -50,14 +50,14 @@ public class ModEventHandler {
 	}
 
 	public int getLeftCPS() {
-		long current_time = System.currentTimeMillis();
-		this.leftClicks.removeIf(e -> (e.longValue() + 1000l < current_time));
+		long currentTime = System.currentTimeMillis();
+		this.leftClicks.removeIf(e -> (e.longValue() + 1000l < currentTime));
 		return leftClicks.size();
 	}
 
 	public int getRightCPS() {
-		long current_time = System.currentTimeMillis();
-		this.rightClicks.removeIf(e -> (e.longValue() + 1000l < current_time));
+		long currentTime = System.currentTimeMillis();
+		this.rightClicks.removeIf(e -> (e.longValue() + 1000l < currentTime));
 		return rightClicks.size();
 	}
 }
