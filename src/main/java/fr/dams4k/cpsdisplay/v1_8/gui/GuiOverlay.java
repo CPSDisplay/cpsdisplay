@@ -36,7 +36,7 @@ public class GuiOverlay extends Gui {
 			GL11.glPushMatrix();
 			GL11.glScaled(ModConfig.text_scale, ModConfig.text_scale, 1d);
 
-			ArrayList<Integer> positions = GuiOverlay.getBackgroundPositions(mc, l, r, false);
+			ArrayList<Integer> positions = GuiOverlay.getBackgroundPositions(l, r, false);
 
 			int x = positions.get(0);
 			int y = positions.get(1);
@@ -56,7 +56,9 @@ public class GuiOverlay extends Gui {
 		this(mc, l, r, ModConfig.background_color);
 	}
 
-	public static ArrayList<Integer> getBackgroundPositions(Minecraft mc, Integer l, Integer r, boolean scaled) {
+	public static ArrayList<Integer> getBackgroundPositions(Integer l, Integer r, boolean scaled) {
+		Minecraft mc = Minecraft.getMinecraft();
+
 		ArrayList<Integer> list = new ArrayList<Integer>();
 		String text = ModConfig.text.replace("{0}", l.toString()).replace("{1}", r.toString()).replace("&", "§");
 		
@@ -74,5 +76,10 @@ public class GuiOverlay extends Gui {
 		}
 
 		return list;
+	}
+
+	public static boolean positionInOverlay(int x, int y) {
+		ArrayList<Integer> positions = GuiOverlay.getBackgroundPositions(0, 0, true);
+		return positions.get(0) <= x && x <= positions.get(2) && positions.get(1) <= y && y <= positions.get(3);
 	}
 }

@@ -22,7 +22,7 @@ public class MoveOverlayGui extends GuiScreen {
         int[] new_pos = {diff_x+mouseX, diff_y+mouseY};
         ModConfig.setText_position(new_pos);
 
-        ArrayList<Integer> positions = GuiOverlay.getBackgroundPositions(mc, 0, 0, true);
+        ArrayList<Integer> positions = GuiOverlay.getBackgroundPositions(0, 0, true);
         
         Color color = new Color(ModConfig.bg_color_r, ModConfig.bg_color_g, ModConfig.bg_color_b, (int) Math.round(ModConfig.bg_color_a * 0.5));
         new GuiOverlay(Minecraft.getMinecraft(), 0, 0, color);

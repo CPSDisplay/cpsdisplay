@@ -111,12 +111,11 @@ public class GuiConfig extends GuiScreen {
 		diff_x = text_position[0] - mouseX;
 		diff_y = text_position[1] - mouseY;
 		
-		ArrayList<Integer> positions = GuiOverlay.getBackgroundPositions(mc, 0, 0, true);
-		if (positions.get(0) <= mouseX && mouseX <= positions.get(2) && positions.get(1) <= mouseY && mouseY <= positions.get(3)) {
+		if (GuiOverlay.positionInOverlay(mouseX, mouseY)) {
 			mc.displayGuiScreen(new MoveOverlayGui(diff_x, diff_y));
+		} else {
+			super.mouseClicked(mouseX, mouseY, mouseButton);
 		}
-
-		super.mouseClicked(mouseX, mouseY, mouseButton);
 	}
 	
 	@Override
@@ -126,13 +125,12 @@ public class GuiConfig extends GuiScreen {
 	
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-		// drawDefaultBackground();
 		this.drawBackground();
 		textField.drawTextBox();
 		super.drawScreen(mouseX, mouseY, partialTicks);
 
-		ArrayList<Integer> positions = GuiOverlay.getBackgroundPositions(mc, 0, 0, true);
-		if (positions.get(0) <= mouseX && mouseX <= positions.get(2) && positions.get(1) <= mouseY && mouseY <= positions.get(3)) {
+		if (GuiOverlay.positionInOverlay(mouseX, mouseY)) {
+			ArrayList<Integer> positions = GuiOverlay.getBackgroundPositions(0, 0, true);
 			Color color = new Color(ModConfig.bg_color_r, ModConfig.bg_color_g, ModConfig.bg_color_b, (int) Math.round(ModConfig.bg_color_a * 0.5));
 			new GuiOverlay(Minecraft.getMinecraft(), 0, 0, color);
 			
@@ -147,7 +145,7 @@ public class GuiConfig extends GuiScreen {
 		saveConfig();
 	}
 	public void drawBackground() {
-		ArrayList<Integer> positions = GuiOverlay.getBackgroundPositions(mc, 0, 0, true);
+		ArrayList<Integer> positions = GuiOverlay.getBackgroundPositions(0, 0, true);
 
 		int color = -1072689136;
 		int padding = (int) (this.height / 10 * ModConfig.text_scale);
