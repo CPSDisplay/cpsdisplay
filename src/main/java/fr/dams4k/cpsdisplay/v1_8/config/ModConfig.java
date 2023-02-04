@@ -16,16 +16,18 @@ public class ModConfig {
 	private static Configuration config;
 	
 	public static final String CATEGORY_NAME_TEXT = "display";
-	public static final String CATEGORY_NAME_RAINBOW = "text";
+	public static final String CATEGORY_NAME_RAINBOW = "rainbow";
 	public static final String CATEGORY_NAME_BACKGROUND = "background";
 	
 	public static boolean showText = true;
 	// Text
 	private static double[] textPosition = {0, 0};
 	public static double textScale = 1d;
-	public static String textColor = "ffffff";
+	public static String textHexColor = "ffffff";
 	public static String text = "{0} | {1} CPS";
-	public static String backgroundHexColor = "2b2a2a80";
+
+	// Background
+	public static String backgroundHexColor = "2a2a2a80";
 	
 	// Rainbow
 	public static boolean rainbow = false;
@@ -36,18 +38,15 @@ public class ModConfig {
 	
 	private static Property textPositionProperty;
 	private static Property textScaleProperty;
-	private static Property textColorProperty;
+	private static Property textHexColorProperty;
 	private static Property showTextProperty;
 	private static Property textProperty;
+
+	private static Property backgroundHexColorProperty;
+	
 	private static Property rainbowProperty;
 	private static Property rainbowSpeedProperty;
-	
-	// private static Property backgroundColorRedProperty;
-	// private static Property backgroundColorGreenProperty;
-	// private static Property backgroundColorBlueProperty;
-	// private static Property backgroundColorAlphaProperty;
 
-	public static Color backgroundColor = new Color(Integer.parseInt(ModConfig.backgroundHexColor, 16)); // à sauvegarder séparement, var R var G var B var A
 	
 	public static void preInit() {
 		File configFile = new File(Loader.instance().getConfigDir(), References.MOD_ID + ".cfg");
@@ -62,43 +61,35 @@ public class ModConfig {
 			
 			textPositionProperty = config.get(CATEGORY_NAME_TEXT, "position", textPosition);
 			textScaleProperty = config.get(CATEGORY_NAME_TEXT, "scale", textScale);
-			textColorProperty = config.get(CATEGORY_NAME_TEXT, "color", textColor);
+			textHexColorProperty = config.get(CATEGORY_NAME_TEXT, "color", textHexColor);
 			textProperty = config.get(CATEGORY_NAME_TEXT, "text", text);
+
+			backgroundHexColorProperty = config.get(CATEGORY_NAME_BACKGROUND, "color", backgroundHexColor);
+
 			rainbowProperty = config.get(CATEGORY_NAME_RAINBOW, "rainbow", rainbow);
 			rainbowSpeedProperty = config.get(CATEGORY_NAME_RAINBOW, "chroma_speed", rainbowSpeed);
 
-			// backgroundColorRedProperty = config.get(CATEGORY_NAME_BACKGROUND, "color_r", bg_color_r);
-			// backgroundColorGreenProperty = config.get(CATEGORY_NAME_BACKGROUND, "color_g", bg_color_g);
-			// backgroundColorBlueProperty = config.get(CATEGORY_NAME_BACKGROUND, "color_b", bg_color_b);
-			// backgroundColorAlphaProperty = config.get(CATEGORY_NAME_BACKGROUND, "color_a", bg_color_a);
-
 			textPosition = textPositionProperty.getDoubleList();
 			textScale = textScaleProperty.getDouble();
-			textColor = textColorProperty.getString();
+			textHexColor = textHexColorProperty.getString();
 			showText = showTextProperty.getBoolean();
 			text = textProperty.getString();
+
+			backgroundHexColor = backgroundHexColorProperty.getString();
+
 			rainbow = rainbowProperty.getBoolean();
 			rainbowSpeed = rainbowSpeedProperty.getDouble();
-
-			// bg_color_r = backgroundColorRedProperty.getInt();
-			// bg_color_g = backgroundColorGreenProperty.getInt();
-			// bg_color_b = backgroundColorBlueProperty.getInt();
-			// bg_color_a = backgroundColorAlphaProperty.getInt();
-			// background_color = new Color(bg_color_r, bg_color_g, bg_color_b, bg_color_a);
-
 		} else {
 			textPositionProperty.set(textPosition);
 			textScaleProperty.set(textScale);
-			textColorProperty.set(textColor);
+			textHexColorProperty.set(textHexColor);
 			showTextProperty.set(showText);
 			textProperty.set(text);
+
+			backgroundHexColorProperty.set(backgroundHexColor);
+
 			rainbowProperty.set(rainbow);
 			rainbowSpeedProperty.set(rainbowSpeed);
-
-			// backgroundColorRedProperty.set(bg_color_r);
-			// backgroundColorGreenProperty.set(bg_color_g);
-			// backgroundColorBlueProperty.set(bg_color_b);
-			// backgroundColorAlphaProperty.set(bg_color_a);
 		}
 		
 		saveConfig();
@@ -110,11 +101,11 @@ public class ModConfig {
 		}
 	}
 	
-	public static int getChroma() {
+	public static Color getChroma() {
 		double precision = ModConfig.rainbowPrecision * 20000;
 		
 		int rgb = Color.HSBtoRGB((float) ((System.currentTimeMillis() * ModConfig.rainbowSpeed) % ((long) precision)) / ((float) precision), 0.8f, 0.8f);
-		return rgb;
+		return new Color(rgb);
 	}
 
 	public static void setTextPosition(int[] textPosition) {
@@ -132,5 +123,33 @@ public class ModConfig {
 
 		int[] realPosition = {(int) (ModConfig.textPosition[0] * (mc.displayWidth / scaleFactor)), (int) (ModConfig.textPosition[1] * (mc.displayHeight / scaleFactor))};
 		return realPosition;
+	}
+
+	public static Color getTextColor() {
+		return ModConfig.HexToColor(ModConfig.textHexColor);
+	}
+
+	public static Color getBackgroundColor() {
+		return ModConfig.HexToColor(ModConfig.backgroundHexColor);
+	}
+
+	public static Color HexToColor(String hex) {
+		hex = hex.replace("#", "");
+		switch (hex.length()) {
+			case 6:
+				return new Color(
+					Integer.valueOf(hex.substring(0, 2), 16),
+					Integer.valueOf(hex.substring(2, 4), 16),
+					Integer.valueOf(hex.substring(4, 6), 16)
+				);
+			case 8:
+				return new Color(
+					Integer.valueOf(hex.substring(0, 2), 16),
+					Integer.valueOf(hex.substring(2, 4), 16),
+					Integer.valueOf(hex.substring(4, 6), 16),
+					Integer.valueOf(hex.substring(6, 8), 16)
+				);
+		}
+		return null;
 	}
 }

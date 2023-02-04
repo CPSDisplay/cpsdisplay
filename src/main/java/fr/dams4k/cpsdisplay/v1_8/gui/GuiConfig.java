@@ -46,7 +46,7 @@ public class GuiConfig extends GuiScreen {
 		MinecraftForge.EVENT_BUS.register(this);
 
 		mouseModeSelected = MouseModeEnum.getByText(ModConfig.text);
-		colorSelected = ColorsEnum.getByHex(ModConfig.textColor);
+		colorSelected = ColorsEnum.getByHex(ModConfig.textHexColor);
 		showText = ShowTextEnum.getByBool(ModConfig.showText);
 		
 		if (ModConfig.rainbow) {
@@ -61,7 +61,7 @@ public class GuiConfig extends GuiScreen {
 		
 		baseColorChangerButton = new GuiButton(10, width / 2 + 2, 10 + top, 150, 20, "Color: " + colorSelected.getName());
 		colorButton = new GuiColorButton(11, width / 2 + 2, 35 + top, 150, 20);
-		colorButton.setColor(new Color(Integer.parseInt(ModConfig.textColor, 16)));
+		colorButton.setColor(ModConfig.getTextColor());
 
 		rainbowSpeedSlider = new GuiSlider(13, width / 2 + 2, 60 + top, 150, 20, "", 0.1f, 3f, 0.1f, (float) ModConfig.rainbowSpeed, 10);
 		rainbowSpeedSlider.setFormatHelper(new FormatHelper() {
@@ -131,8 +131,8 @@ public class GuiConfig extends GuiScreen {
 
 		if (GuiOverlay.positionInOverlay(mouseX, mouseY)) {
 			ArrayList<Integer> positions = GuiOverlay.getBackgroundPositions(0, 0, true);
-			// Color color = new Color(ModConfig.bg_color_r, ModConfig.bg_color_g, ModConfig.bg_color_b, (int) Math.round(ModConfig.bg_color_a * 0.5));
-			new GuiOverlay(Minecraft.getMinecraft(), 0, 0, ModConfig.backgroundColor);
+			
+			new GuiOverlay(Minecraft.getMinecraft(), 0, 0, ModConfig.getBackgroundColor());
 			
 			drawVerticalLine(positions.get(0), positions.get(1), positions.get(3), Color.RED.getRGB());
 			drawVerticalLine(positions.get(2), positions.get(1), positions.get(3), Color.RED.getRGB());
@@ -167,8 +167,8 @@ public class GuiConfig extends GuiScreen {
 	
 	public void changeConfig() {
 		ModConfig.text = textField.getText();
-		ModConfig.textColor = Integer.toHexString(colorButton.getColor().getRGB()).substring(2);
-		ModConfig.textScale = scaleSlider.getValue() / 100d; // func_175220_c return slider value
+		ModConfig.textHexColor = Integer.toHexString(colorButton.getColor().getRGB()).substring(2);
+		ModConfig.textScale = scaleSlider.getValue() / 100d;
 		ModConfig.rainbowSpeed = rainbowSpeedSlider.getValue();
 		ModConfig.rainbowPrecision = rainbowPrecisionSlider.getValue();
 		ModConfig.showText = showText.getBool();
@@ -181,7 +181,7 @@ public class GuiConfig extends GuiScreen {
 			baseColorChangerButton.displayString = "Color: " + colorSelected.getName();
 			
 			if (colorSelected != ColorsEnum.CUSTOM && colorSelected != ColorsEnum.RAINBOW) {
-				ModConfig.textColor = colorSelected.getHex();
+				ModConfig.textHexColor = colorSelected.getHex();
 			}
 			
 			if (colorSelected == ColorsEnum.RAINBOW) {
@@ -191,7 +191,7 @@ public class GuiConfig extends GuiScreen {
 			}
 			
 			
-			colorButton.setColor(new Color(Integer.parseInt(ModConfig.textColor, 16)));
+			colorButton.setColor(ModConfig.getTextColor());
 		} else if (button == mouseModeChangerButton) {
 			mouseModeSelected = MouseModeEnum.getById(mouseModeSelected.getId() + 1);
 			mouseModeChangerButton.displayString = "Mode: " + mouseModeSelected.getName();

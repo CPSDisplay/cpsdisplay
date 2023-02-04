@@ -20,13 +20,13 @@ public class GuiOverlay extends Gui {
 
 		if (ModConfig.showText) {
 			String text = ModConfig.text.replace("{0}", l.toString()).replace("{1}", r.toString()).replace("&", "§");
-			Integer textColor;
+			Color textColor;
 			if (!ModConfig.rainbow) {
 				try {
-					textColor = Integer.parseInt(ModConfig.textColor, 16);
+					textColor = ModConfig.getTextColor();
 				} catch (Exception e) {
-					textColor = Integer.parseInt("ffffff", 16);
-					ModConfig.textColor = "ffffff";
+					textColor = Color.WHITE;
+					ModConfig.textHexColor = "ffffff";
 					ModConfig.syncConfig(false);
 				}
 			} else {
@@ -46,14 +46,14 @@ public class GuiOverlay extends Gui {
 			}
 			
 			// modFontRenderer.drawGradientString(text, x, y, 0x00ffff, 0x0000ff, true, true);
-			drawString(mc.fontRendererObj, text, x, y, textColor);
+			drawString(mc.fontRendererObj, text, x, y, textColor.getRGB());
 
 			GL11.glPopMatrix();
 		}
 	}
 
 	public GuiOverlay(Minecraft mc, Integer l, Integer r) {
-		this(mc, l, r, ModConfig.backgroundColor);
+		this(mc, l, r, ModConfig.getBackgroundColor());
 	}
 
 	public static ArrayList<Integer> getBackgroundPositions(Integer l, Integer r, boolean scaled) {
