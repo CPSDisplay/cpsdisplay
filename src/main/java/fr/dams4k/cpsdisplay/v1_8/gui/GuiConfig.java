@@ -132,6 +132,7 @@ public class GuiConfig extends GuiScreen {
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		this.drawBackground();
 		textField.drawTextBox();
+
 		super.drawScreen(mouseX, mouseY, partialTicks);
 
 		if (GuiOverlay.positionInOverlay(mouseX, mouseY)) {
@@ -217,19 +218,12 @@ public class GuiConfig extends GuiScreen {
 	
 	public void updateButtons() {
 		// Color
-		if (colorSelected != ColorsEnum.RAINBOW) {
-			rainbowPrecisionSlider.visible = false;
-			rainbowSpeedSlider.visible = false;
-			
-			if (colorSelected == ColorsEnum.CUSTOM) {
-				textColorButton.visible = true;
-			} else {
-				textColorButton.visible = false;
-			}
-		} else {
-			textColorButton.visible = true;
+		if (colorSelected == ColorsEnum.RAINBOW) {
 			rainbowPrecisionSlider.visible = true;
 			rainbowSpeedSlider.visible = true;
+		} else {
+			rainbowPrecisionSlider.visible = false;
+			rainbowSpeedSlider.visible = false;
 		}
 		
 		// Display mode

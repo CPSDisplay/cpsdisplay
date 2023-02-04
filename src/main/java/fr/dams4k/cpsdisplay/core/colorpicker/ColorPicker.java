@@ -144,6 +144,7 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
                 super.windowClosing(e);
                 for (ColorPickerListener listener : listeners) {
                     listener.newColor(getColor());
+                    listener.closed();
                 }
             }
         });
