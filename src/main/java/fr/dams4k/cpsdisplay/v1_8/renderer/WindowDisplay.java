@@ -21,66 +21,78 @@ public class WindowDisplay {
     
     private static final List<DisplayMode> macDisplayModes = Lists.newArrayList(new DisplayMode[] {new DisplayMode(2560, 1600), new DisplayMode(2880, 1800)});
     
-    public static void updateDisplayMode() throws LWJGLException {
-        Set<DisplayMode> set = Sets.<DisplayMode>newHashSet();
-        Collections.addAll(set, Display.getAvailableDisplayModes());
-        DisplayMode displaymode = Display.getDesktopDisplayMode();
+    public static void updateDisplayMode() {
+        try {
+            Set<DisplayMode> set = Sets.<DisplayMode>newHashSet();
+            Collections.addAll(set, Display.getAvailableDisplayModes());
+            DisplayMode displaymode = Display.getDesktopDisplayMode();
 
-        if (!set.contains(displaymode) && Util.getOSType() == Util.EnumOS.OSX) {
-            label53:
+            if (!set.contains(displaymode) && Util.getOSType() == Util.EnumOS.OSX) {
+                label53:
 
-            for (DisplayMode displaymode1 : macDisplayModes) {
-                boolean flag = true;
+                for (DisplayMode displaymode1 : macDisplayModes) {
+                    boolean flag = true;
 
-                for (DisplayMode displaymode2 : set) {
-                    if (displaymode2.getBitsPerPixel() == 32 && displaymode2.getWidth() == displaymode1.getWidth() && displaymode2.getHeight() == displaymode1.getHeight()) {
-                        flag = false;
-                        break;
-                    }
-                }
-
-                if (!flag) {
-                    Iterator<DisplayMode> iterator = set.iterator();
-                    DisplayMode displaymode3;
-
-                    while (true) {
-                        if (!iterator.hasNext()) {
-                            continue label53;
-                        }
-
-                        displaymode3 = (DisplayMode)iterator.next();
-
-                        if (displaymode3.getBitsPerPixel() == 32 && displaymode3.getWidth() == displaymode1.getWidth() / 2 && displaymode3.getHeight() == displaymode1.getHeight() / 2) {
+                    for (DisplayMode displaymode2 : set) {
+                        if (displaymode2.getBitsPerPixel() == 32 && displaymode2.getWidth() == displaymode1.getWidth() && displaymode2.getHeight() == displaymode1.getHeight()) {
+                            flag = false;
                             break;
                         }
                     }
 
-                    displaymode = displaymode3;
+                    if (!flag) {
+                        Iterator<DisplayMode> iterator = set.iterator();
+                        DisplayMode displaymode3;
+
+                        while (true) {
+                            if (!iterator.hasNext()) {
+                                continue label53;
+                            }
+
+                            displaymode3 = (DisplayMode)iterator.next();
+
+                            if (displaymode3.getBitsPerPixel() == 32 && displaymode3.getWidth() == displaymode1.getWidth() / 2 && displaymode3.getHeight() == displaymode1.getHeight() / 2) {
+                                break;
+                            }
+                        }
+
+                        displaymode = displaymode3;
+                    }
                 }
             }
+
+            Display.setDisplayMode(displaymode);
+        } catch (LWJGLException e) {
+            e.printStackTrace();
         }
-
-        Display.setDisplayMode(displaymode);
     }
 
-    public static void enableFullscreen() throws LWJGLException {
-        WindowDisplay.updateDisplayMode();
+    public static void enableFullscreen() {
+        try {
+            WindowDisplay.updateDisplayMode();
 
-        Display.setFullscreen(true);
-        Display.setVSyncEnabled(mc.gameSettings.enableVsync);
-        mc.updateDisplay();
+            Display.setFullscreen(true);
+            Display.setVSyncEnabled(mc.gameSettings.enableVsync);
+            mc.updateDisplay();
+        } catch (LWJGLException e) {
+            e.printStackTrace();
+        }
     }
 
-    public static void disableFullscreen() throws LWJGLException {
-        int displayWidth = Display.getDisplayMode().getWidth();
-        int displayHeight = Display.getDisplayMode().getHeight();
+    public static void disableFullscreen() {
+        try {
+            int displayWidth = Display.getDisplayMode().getWidth();
+            int displayHeight = Display.getDisplayMode().getHeight();
 
-        Display.setDisplayMode(new DisplayMode(displayWidth, displayHeight));
-        mc.displayWidth = displayWidth;
-        mc.displayHeight = displayHeight;
+            Display.setDisplayMode(new DisplayMode(displayWidth, displayHeight));
+            mc.displayWidth = displayWidth;
+            mc.displayHeight = displayHeight;
 
-        Display.setFullscreen(false);
-        Display.setVSyncEnabled(mc.gameSettings.enableVsync);
-        mc.updateDisplay();
+            Display.setFullscreen(false);
+            Display.setVSyncEnabled(mc.gameSettings.enableVsync);
+            mc.updateDisplay();
+        } catch (LWJGLException e) {
+            e.printStackTrace();
+        }
     }
 }

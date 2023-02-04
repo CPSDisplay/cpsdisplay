@@ -2,8 +2,6 @@ package fr.dams4k.cpsdisplay.v1_8.gui.buttons;
 
 import java.awt.Color;
 
-import org.lwjgl.LWJGLException;
-
 import fr.dams4k.cpsdisplay.core.colorpicker.ColorPicker;
 import fr.dams4k.cpsdisplay.core.colorpicker.ColorPickerListener;
 import fr.dams4k.cpsdisplay.v1_8.renderer.WindowDisplay;
@@ -46,11 +44,7 @@ public class GuiColorButton extends GuiButton implements ColorPickerListener {
         }
         if (colorPicker == null && wasOriginallyFullscreen) {
             wasOriginallyFullscreen = false;
-            try {
-                WindowDisplay.enableFullscreen();
-            } catch (LWJGLException e) {
-                e.printStackTrace();
-            }
+            WindowDisplay.enableFullscreen();
         }
     }
 
@@ -60,11 +54,7 @@ public class GuiColorButton extends GuiButton implements ColorPickerListener {
 
         if (mc.isFullScreen()) {
             this.wasOriginallyFullscreen = true;
-            try {
-                WindowDisplay.disableFullscreen();
-            } catch (LWJGLException e) {
-                e.printStackTrace();
-            }
+            WindowDisplay.disableFullscreen();
         }
         this.colorPicker = new ColorPicker(color, this.alphaChannel);
         this.colorPicker.addListener(this);
