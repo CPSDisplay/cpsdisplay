@@ -1,5 +1,8 @@
 package fr.dams4k.cpsdisplay.v1_8.commands;
 
+import java.util.Arrays;
+import java.util.List;
+
 import fr.dams4k.cpsdisplay.core.References;
 import fr.dams4k.cpsdisplay.v1_8.gui.GuiConfig;
 import net.minecraft.client.Minecraft;
@@ -11,10 +14,14 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 public class ConfigCommand extends CommandBase {
-
     @Override
     public String getCommandName() {
         return References.MOD_ID;
+    }
+
+    @Override
+    public List<String> getCommandAliases() {
+        return Arrays.asList("cpsd");
     }
 
     @Override
@@ -34,6 +41,7 @@ public class ConfigCommand extends CommandBase {
 
     @SubscribeEvent
     public void onTick(TickEvent.ClientTickEvent event) {
+        // we need to wait a tick lol
         Minecraft.getMinecraft().displayGuiScreen(new GuiConfig());
         MinecraftForge.EVENT_BUS.unregister(this);
     }

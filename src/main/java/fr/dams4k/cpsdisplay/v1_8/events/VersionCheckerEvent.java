@@ -88,9 +88,7 @@ public class VersionCheckerEvent {
 					}
 				}
 			} catch (MalformedURLException e) {
-				e.printStackTrace();
 			} catch (IOException e) {
-				e.printStackTrace();
 			}
 
 			updateMessageSent = true;
