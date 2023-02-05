@@ -11,7 +11,7 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 
-public class GuiColorButton extends GuiButton implements ColorPickerListener {
+public class ModColorButton extends GuiButton implements ColorPickerListener {
     private final Minecraft mc = Minecraft.getMinecraft();
 
     private Color color = Color.GREEN;
@@ -24,11 +24,11 @@ public class GuiColorButton extends GuiButton implements ColorPickerListener {
     private boolean wasOriginallyFullscreen;
     private ColorPicker colorPicker;
 
-    public GuiColorButton(int id, int x, int y, int width, int height, String text, boolean alphaChannel) {
+    public ModColorButton(int id, int x, int y, int width, int height, String text, boolean alphaChannel) {
         this(id, x, y, width, height, text, alphaChannel, 40, new Insets(4, 6, 4, 6));
     }
 
-    public GuiColorButton(int id, int x, int y, int width, int height, String text, boolean alphaChannel, int colorWidth, Insets padding) {
+    public ModColorButton(int id, int x, int y, int width, int height, String text, boolean alphaChannel, int colorWidth, Insets padding) {
         super(id, x, y, width, height, text);
         this.alphaChannel = alphaChannel;
         this.colorWidth = colorWidth;
@@ -38,7 +38,7 @@ public class GuiColorButton extends GuiButton implements ColorPickerListener {
     @Override
     public void drawButton(Minecraft mc, int mouseX, int mouseY) {
         if (this.visible) {
-            FontRenderer fontrenderer = mc.fontRendererObj;
+            FontRenderer fontRenderer = mc.fontRendererObj;
             mc.getTextureManager().bindTexture(buttonTextures);
             GlStateManager.color(1f, 1f, 1f, 1f);
             this.hovered = mouseX >= this.xPosition && mouseY >= this.yPosition && mouseX < this.xPosition + this.width && mouseY < this.yPosition + this.height;
@@ -64,7 +64,7 @@ public class GuiColorButton extends GuiButton implements ColorPickerListener {
             } else if (this.hovered) {
                 textColor = 16777120;
             }
-            this.drawCenteredString(fontrenderer, this.displayString, this.xPosition + textButtonWidth / 2, this.yPosition + (this.height - 8) / 2, textColor);
+            this.drawCenteredString(fontRenderer, this.displayString, this.xPosition + textButtonWidth / 2, this.yPosition + (this.height - 8) / 2, textColor);
             
             int rectX = this.xPosition + textButtonWidth + this.padding.left;
             int rectY = this.yPosition + this.padding.top;

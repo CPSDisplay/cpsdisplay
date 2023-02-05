@@ -3,12 +3,14 @@ package fr.dams4k.cpsdisplay.v1_8.gui;
 import java.awt.Color;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import fr.dams4k.cpsdisplay.v1_8.config.ModConfig;
 import fr.dams4k.cpsdisplay.v1_8.enums.MouseModeEnum;
 import fr.dams4k.cpsdisplay.v1_8.enums.ShowTextEnum;
-import fr.dams4k.cpsdisplay.v1_8.gui.buttons.GuiColorButton;
-import fr.dams4k.cpsdisplay.v1_8.gui.buttons.GuiSlider;
+import fr.dams4k.cpsdisplay.v1_8.gui.buttons.ModColorButton;
+import fr.dams4k.cpsdisplay.v1_8.gui.buttons.ModSlider;
+import fr.dams4k.cpsdisplay.v1_8.gui.buttons.ModTextField;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -39,15 +41,18 @@ public class GuiConfig extends GuiScreen {
 		}
 	}
 
+	private List<GuiTextField> textFieldList = new ArrayList<>();
+
 	// Text
 	private GuiButton showTextButton;
-	private GuiSlider scaleTextSlider;
+	private ModSlider scaleTextSlider;
 	private GuiButton modeTextButton;
 	private GuiTextField textField;
-	private GuiColorButton colorTextButton;
+	private ModColorButton colorTextButton;
 
 	// Background
-	private GuiColorButton colorBackgroundButton;
+	private ModColorButton colorBackgroundButton;
+	private ModTextField paddingBackgroundField;
 
 	// Rainbow
 	// private GuiSlider rainbowSpeedSlider;
@@ -101,13 +106,13 @@ public class GuiConfig extends GuiScreen {
 		showTextButton = new GuiButton(GuiButtons.SHOW_TEXT.id, x, GuiButtons.SHOW_TEXT.getY(y), 150, 20, "");
 		updateShowTextButton();
 
-		colorTextButton = new GuiColorButton(
+		colorTextButton = new ModColorButton(
 			GuiButtons.COLOR_TEXT.id, x, GuiButtons.COLOR_TEXT.getY(y), 150, 20,
 			I18n.format("cpsdisplay.button.color_text", new Object[0]), false
 		);
 		colorTextButton.setColor(ModConfig.getTextColor());
 		
-		scaleTextSlider = new GuiSlider(
+		scaleTextSlider = new ModSlider(
 			GuiButtons.SCALE_TEXT.id, x, GuiButtons.SCALE_TEXT.getY(y), 150, 20,
 			I18n.format("cpsdisplay.button.scale_text", new Object[0]),
 			0.1f * 100, 4 * 100, 0.01f, (float) (ModConfig.textScale * 100), 10
@@ -124,27 +129,42 @@ public class GuiConfig extends GuiScreen {
 		buttonList.add(scaleTextSlider);
 		buttonList.add(modeTextButton);
 		buttonList.add(colorTextButton);
+
+		textFieldList.add(textField);
 	}
 
 	public void addBackgroundButtons(int x, int y) {
-		colorBackgroundButton = new GuiColorButton(
+		colorBackgroundButton = new ModColorButton(
 			GuiButtons.COLOR_BACKGROUND.id, x, GuiButtons.COLOR_BACKGROUND.getY(y), 150, 20,
 			I18n.format("cpsdisplay.button.color_background", new Object[0]), true
 		);
 		colorBackgroundButton.setColor(ModConfig.getBackgroundColor());
 
+		paddingBackgroundField = new ModTextField(GuiButtons.PADDING_BACKGROUND.id, fontRendererObj, x, GuiButtons.PADDING_BACKGROUND.getY(y), 150, 20);
+		paddingBackgroundField.setMaxStringLength(2);
+		paddingBackgroundField.letters = false;
+		paddingBackgroundField.punctuation = false;
+		paddingBackgroundField.anythings = false;
+
 		buttonList.add(colorBackgroundButton);
+
+		textFieldList.add(paddingBackgroundField);
 	}
 	
 	@Override
 	protected void keyTyped(char typedChar, int keyCode) throws IOException {
-		if (this.textField != null) this.textField.textboxKeyTyped(typedChar, keyCode);
+		for (GuiTextField field : this.textFieldList) {
+			field.textboxKeyTyped(typedChar, keyCode);
+		}
+		
 		super.keyTyped(typedChar, keyCode);
 	}
 	
 	@Override
 	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
-		if (this.textField != null) this.textField.mouseClicked(mouseX, mouseY, mouseButton);
+		for (GuiTextField field : this.textFieldList) {
+			field.mouseClicked(mouseX, mouseY, mouseButton);
+		}
 		
 		int[] textPosition = ModConfig.getTextPosition();
 
@@ -160,7 +180,9 @@ public class GuiConfig extends GuiScreen {
 	
 	@Override
 	public void updateScreen() {
-		if (this.textField != null) this.textField.updateCursorCounter();
+		for (GuiTextField field : this.textFieldList) {
+			field.updateCursorCounter();
+		}
 	}
 	
 	@Override
@@ -168,8 +190,9 @@ public class GuiConfig extends GuiScreen {
 		this.drawBackground();
 		super.drawScreen(mouseX, mouseY, partialTicks);
 
-		if (this.textField != null) this.textField.drawTextBox();
-
+		for (GuiTextField field : this.textFieldList) {
+			field.drawTextBox();
+		}
 
 		if (GuiOverlay.positionInOverlay(mouseX, mouseY)) {
 			ArrayList<Integer> positions = GuiOverlay.getBackgroundPositions(0, 0, true);

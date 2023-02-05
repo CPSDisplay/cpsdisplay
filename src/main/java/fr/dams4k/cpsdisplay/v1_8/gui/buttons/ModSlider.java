@@ -7,7 +7,7 @@ import net.minecraft.client.gui.GuiPageButtonList.GuiResponder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 
-public class GuiSlider extends GuiButton {
+public class ModSlider extends GuiButton {
     private float sliderPosition = 1.0f;
     public boolean isMouseDown;
     private String name;
@@ -16,9 +16,9 @@ public class GuiSlider extends GuiButton {
     private final float step;
     private final int decimals;
     private final GuiPageButtonList.GuiResponder responder;
-    private GuiSlider.FormatHelper formatHelper;
+    private ModSlider.FormatHelper formatHelper;
 
-    public GuiSlider(GuiPageButtonList.GuiResponder guiResponder, int idIn, int x, int y, int width, int height, String name, float min, float max, float step, float defaultValue, GuiSlider.FormatHelper formatter, int decimals) {
+    public ModSlider(GuiPageButtonList.GuiResponder guiResponder, int idIn, int x, int y, int width, int height, String name, float min, float max, float step, float defaultValue, ModSlider.FormatHelper formatter, int decimals) {
         super(idIn, x, y, width, height, "");
         this.name = name;
         this.min = min;
@@ -31,11 +31,11 @@ public class GuiSlider extends GuiButton {
         this.displayString = this.getDisplayString();
     }
 
-    public GuiSlider(GuiPageButtonList.GuiResponder guiResponder, int idIn, int x, int y, String name, float min, float max, float step, float defaultValue, GuiSlider.FormatHelper formatter, int decimals) {
+    public ModSlider(GuiPageButtonList.GuiResponder guiResponder, int idIn, int x, int y, String name, float min, float max, float step, float defaultValue, ModSlider.FormatHelper formatter, int decimals) {
         this(guiResponder, idIn, x, y, 150, 20, name, min, max, step, defaultValue, formatter, decimals);
     }
 
-    public GuiSlider(int idIn, int x, int y, int width, int height, String name, float min, float max, float step, float defaultValue, int decimals) {
+    public ModSlider(int idIn, int x, int y, int width, int height, String name, float min, float max, float step, float defaultValue, int decimals) {
         this(new GuiResponder() {
 
 			@Override
@@ -70,11 +70,11 @@ public class GuiSlider extends GuiButton {
     }
 
 
-    public GuiSlider.FormatHelper getFormatHelper() {
+    public ModSlider.FormatHelper getFormatHelper() {
         return formatHelper;
     }
 
-    public void setFormatHelper(GuiSlider.FormatHelper formatHelper) {
+    public void setFormatHelper(ModSlider.FormatHelper formatHelper) {
         this.formatHelper = formatHelper;
         this.displayString = this.getDisplayString();
     }
