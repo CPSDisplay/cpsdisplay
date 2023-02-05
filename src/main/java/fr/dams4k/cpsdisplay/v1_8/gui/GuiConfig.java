@@ -41,13 +41,13 @@ public class GuiConfig extends GuiScreen {
 
 	// Text
 	private GuiButton showTextButton;
-	private GuiSlider scaleSlider;
-	private GuiButton mouseModeChangerButton;
+	private GuiSlider scaleTextSlider;
+	private GuiButton modeTextButton;
 	private GuiTextField textField;
-	private GuiColorButton textColorButton;
+	private GuiColorButton colorTextButton;
 
 	// Background
-	private GuiColorButton backgroundColorButton;
+	private GuiColorButton colorBackgroundButton;
 
 	// Rainbow
 	// private GuiSlider rainbowSpeedSlider;
@@ -101,12 +101,19 @@ public class GuiConfig extends GuiScreen {
 		showTextButton = new GuiButton(GuiButtons.SHOW_TEXT.id, x, GuiButtons.SHOW_TEXT.getY(y), 150, 20, "");
 		updateShowTextButton();
 
-		textColorButton = new GuiColorButton(GuiButtons.COLOR_TEXT.id, x, GuiButtons.COLOR_TEXT.getY(y), 150, 20, I18n.format("cpsdisplay.button.text_color", new Object[0]), false);
-		textColorButton.setColor(ModConfig.getTextColor());
+		colorTextButton = new GuiColorButton(
+			GuiButtons.COLOR_TEXT.id, x, GuiButtons.COLOR_TEXT.getY(y), 150, 20,
+			I18n.format("cpsdisplay.button.color_text", new Object[0]), false
+		);
+		colorTextButton.setColor(ModConfig.getTextColor());
 		
-		scaleSlider = new GuiSlider(GuiButtons.SCALE_TEXT.id, x, GuiButtons.SCALE_TEXT.getY(y), 150, 20, I18n.format("cpsdisplay.button.text_scale", new Object[0]), 0.1f * 100, 4 * 100, 0.01f, (float) (ModConfig.textScale * 100), 10);
+		scaleTextSlider = new GuiSlider(
+			GuiButtons.SCALE_TEXT.id, x, GuiButtons.SCALE_TEXT.getY(y), 150, 20,
+			I18n.format("cpsdisplay.button.scale_text", new Object[0]),
+			0.1f * 100, 4 * 100, 0.01f, (float) (ModConfig.textScale * 100), 10
+		);
 
-		mouseModeChangerButton = new GuiButton(GuiButtons.MODE_TEXT.id, x, GuiButtons.MODE_TEXT.getY(y), 150, 20, "");
+		modeTextButton = new GuiButton(GuiButtons.MODE_TEXT.id, x, GuiButtons.MODE_TEXT.getY(y), 150, 20, "");
 		updateMouseModeButton();
 
 		textField = new GuiTextField(GuiButtons.TEXT.id, fontRendererObj, x, GuiButtons.TEXT.getY(y), 150, 20);
@@ -114,16 +121,19 @@ public class GuiConfig extends GuiScreen {
 		textField.setText(ModConfig.text);
 		
 		buttonList.add(showTextButton);
-		buttonList.add(scaleSlider);
-		buttonList.add(mouseModeChangerButton);
-		buttonList.add(textColorButton);
+		buttonList.add(scaleTextSlider);
+		buttonList.add(modeTextButton);
+		buttonList.add(colorTextButton);
 	}
 
 	public void addBackgroundButtons(int x, int y) {
-		backgroundColorButton = new GuiColorButton(GuiButtons.COLOR_BACKGROUND.id, x, GuiButtons.COLOR_BACKGROUND.getY(y), 150, 20, I18n.format("cpsdisplay.button.background_color", new Object[0]), true);
-		backgroundColorButton.setColor(ModConfig.getBackgroundColor());
+		colorBackgroundButton = new GuiColorButton(
+			GuiButtons.COLOR_BACKGROUND.id, x, GuiButtons.COLOR_BACKGROUND.getY(y), 150, 20,
+			I18n.format("cpsdisplay.button.color_background", new Object[0]), true
+		);
+		colorBackgroundButton.setColor(ModConfig.getBackgroundColor());
 
-		buttonList.add(backgroundColorButton);
+		buttonList.add(colorBackgroundButton);
 	}
 	
 	@Override
@@ -199,11 +209,11 @@ public class GuiConfig extends GuiScreen {
 	
 	public void changeConfig() {
 		if (this.textField != null) ModConfig.text = textField.getText();
-		if (this.textColorButton != null) ModConfig.setTextColor(textColorButton.getColor());
+		if (this.colorTextButton != null) ModConfig.setTextColor(colorTextButton.getColor());
 		if (this.showText != null) ModConfig.showText = showText.getBool();
-		if (this.scaleSlider != null) ModConfig.textScale = scaleSlider.getValue() / 100d;
+		if (this.scaleTextSlider != null) ModConfig.textScale = scaleTextSlider.getValue() / 100d;
 
-		if (this.backgroundColorButton != null) ModConfig.setBackgroundColor(this.backgroundColorButton.getColor());
+		if (this.colorBackgroundButton != null) ModConfig.setBackgroundColor(this.colorBackgroundButton.getColor());
 
 		// ModConfig.rainbowSpeed = rainbowSpeedSlider.getValue();
 		// ModConfig.rainbowPrecision = rainbowPrecisionSlider.getValue();
@@ -211,7 +221,7 @@ public class GuiConfig extends GuiScreen {
 	
 	@Override
 	protected void actionPerformed(GuiButton button) throws IOException {
-		if (button == mouseModeChangerButton) {
+		if (button == modeTextButton) {
 			mouseModeSelected = MouseModeEnum.getById(mouseModeSelected.getId() + 1);
 			updateMouseModeButton();
 
@@ -231,7 +241,7 @@ public class GuiConfig extends GuiScreen {
 		showTextButton.displayString = I18n.format("cpsdisplay.button.show_text", new Object[0]) + showText.getText();
 	}
 	public void updateMouseModeButton() {
-		mouseModeChangerButton.displayString = I18n.format("cpsdisplay.button.display_mode", new Object[0]) + mouseModeSelected.getName();
+		modeTextButton.displayString = I18n.format("cpsdisplay.button.display_mode", new Object[0]) + mouseModeSelected.getName();
 	}
 
 	public void updateButtons() {
