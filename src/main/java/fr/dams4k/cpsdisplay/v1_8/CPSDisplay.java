@@ -9,7 +9,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
-@Mod(modid = References.MOD_ID, name = References.MOD_NAME, clientSideOnly = true, canBeDeactivated = true, version = References.MOD_VERSION)
+@Mod(modid = References.MOD_ID, name = References.MOD_NAME, clientSideOnly = true, acceptableRemoteVersions = "*", version = References.MOD_VERSION)
 public class CPSDisplay {
 	@SidedProxy(clientSide = "fr.dams4k.cpsdisplay.v1_8.proxy.ClientProxy")
 	public static ClientProxy proxy;
