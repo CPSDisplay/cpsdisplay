@@ -1,20 +1,23 @@
 package fr.dams4k.cpsdisplay.v1_8.gui.buttons;
 
 import java.awt.Color;
+import java.awt.Insets;
 
 import fr.dams4k.cpsdisplay.core.colorpicker.ColorPicker;
 import fr.dams4k.cpsdisplay.core.colorpicker.ColorPickerListener;
 import fr.dams4k.cpsdisplay.v1_8.renderer.WindowDisplay;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.renderer.GlStateManager;
 
 public class GuiColorButton extends GuiButton implements ColorPickerListener {
     private final Minecraft mc = Minecraft.getMinecraft();
 
     private Color color = Color.GREEN;
-    
-    private int xGap = 0;
-    private int yGap = 0;
+
+    private int colorWidth;
+    private Insets padding;
 
     private boolean alphaChannel = false;
 
@@ -22,25 +25,47 @@ public class GuiColorButton extends GuiButton implements ColorPickerListener {
     private ColorPicker colorPicker;
 
     public GuiColorButton(int id, int x, int y, int width, int height, String text, boolean alphaChannel) {
-        this(id, x, y, width, height, text, alphaChannel, width / 4, height / 4);
+        this(id, x, y, width, height, text, alphaChannel, 40, new Insets(2, 2, 2, 2));
     }
 
-    public GuiColorButton(int id, int x, int y, int width, int height, String text, boolean alphaChannel, int xGap, int yGap) {
+    public GuiColorButton(int id, int x, int y, int width, int height, String text, boolean alphaChannel, int colorWidth, Insets padding) {
         super(id, x, y, width, height, text);
         this.alphaChannel = alphaChannel;
-        this.xGap = xGap;
-        this.yGap = yGap;
+        this.colorWidth = colorWidth;
+        this.padding = padding;
     }
     
     @Override
-    public void drawButton(Minecraft p_drawButton_1_, int p_drawButton_2_, int p_drawButton_3_) {
-        super.drawButton(p_drawButton_1_, p_drawButton_2_, p_drawButton_3_);
-        
+    public void drawButton(Minecraft mc, int mouseX, int mouseY) {
         if (this.visible) {
-            int x = xPosition + xGap;
-            int y = yPosition + yGap;
-    
-            drawRect(x, y, x + width - 2*xGap, y + height - 2*yGap, color.getRGB());
+            FontRenderer fontrenderer = mc.fontRendererObj;
+            mc.getTextureManager().bindTexture(buttonTextures);
+            GlStateManager.color(1f, 1f, 1f, 1f);
+            this.hovered = mouseX >= this.xPosition && mouseY >= this.yPosition && mouseX < this.xPosition + this.width && mouseY < this.yPosition + this.height;
+            int i = this.getHoverState(this.hovered);
+            GlStateManager.enableBlend();
+            GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+            GlStateManager.blendFunc(770, 771);
+            
+            int textButtonWidth = this.width - colorWidth;
+            int colorButtonWidth = colorWidth;
+            this.drawTexturedModalRect(this.xPosition, this.yPosition, 0, 46 + i * 20, textButtonWidth / 2, this.height); // LEFT SIDE
+            this.drawTexturedModalRect(this.xPosition + textButtonWidth / 2, this.yPosition, 200 - textButtonWidth / 2, 46 + i * 20, textButtonWidth / 2, this.height); // RIGHT SIDE
+            this.drawTexturedModalRect(this.xPosition + textButtonWidth, this.yPosition, 200 - colorButtonWidth, 46, colorButtonWidth, this.height); // COLOR RIGHT SIDE
+            
+            this.mouseDragged(mc, mouseX, mouseY);
+            int textColor = 14737632;
+
+            if (!this.enabled) {
+                textColor = 10526880;
+            } else if (this.hovered) {
+                textColor = 16777120;
+            }
+            this.drawCenteredString(fontrenderer, this.displayString, this.xPosition + textButtonWidth / 2, this.yPosition + (this.height - 8) / 2, textColor);
+            
+            int rectX = this.xPosition + textButtonWidth + this.padding.left;
+            int rectY = this.yPosition + this.padding.top;
+            drawRect(rectX-1, rectY, this.xPosition + textButtonWidth + colorButtonWidth - this.padding.right, this.yPosition + this.height - this.padding.bottom, color.getRGB());
         }
         if (colorPicker == null && wasOriginallyFullscreen) {
             wasOriginallyFullscreen = false;
