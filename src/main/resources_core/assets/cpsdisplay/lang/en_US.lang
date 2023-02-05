@@ -12,3 +12,6 @@ cpsdisplay.display_template.left={0} CPS
 cpsdisplay.display_template.right={1} CPS
 cpsdisplay.display_template.left_right=[{0} | {1}] CPS
 cpsdisplay.display_template.custom=
+cpsdisplay.button.text_scale=Text scale
+cpsdisplay.button.text_color=Text color
+cpsdisplay.button.background_color=Background color

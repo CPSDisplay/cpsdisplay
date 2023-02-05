@@ -5,18 +5,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import fr.dams4k.cpsdisplay.v1_8.config.ModConfig;
-import fr.dams4k.cpsdisplay.v1_8.enums.ColorsEnum;
 import fr.dams4k.cpsdisplay.v1_8.enums.MouseModeEnum;
 import fr.dams4k.cpsdisplay.v1_8.enums.ShowTextEnum;
 import fr.dams4k.cpsdisplay.v1_8.gui.buttons.GuiColorButton;
 import fr.dams4k.cpsdisplay.v1_8.gui.buttons.GuiSlider;
-import fr.dams4k.cpsdisplay.v1_8.gui.buttons.GuiSlider.FormatHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.MinecraftForge;
 
 
@@ -24,7 +21,6 @@ public class GuiConfig extends GuiScreen {
 	// Text
 	private GuiButton showTextButton;
 	private GuiSlider scaleSlider;
-	private GuiButton baseColorChangerButton;
 	private GuiButton mouseModeChangerButton;
 	private GuiTextField textField;
 	private GuiColorButton textColorButton;
@@ -33,11 +29,10 @@ public class GuiConfig extends GuiScreen {
 	private GuiColorButton backgroundColorButton;
 
 	// Rainbow
-	private GuiSlider rainbowSpeedSlider;
-	private GuiSlider rainbowPrecisionSlider;
+	// private GuiSlider rainbowSpeedSlider;
+	// private GuiSlider rainbowPrecisionSlider;
 
 	private MouseModeEnum mouseModeSelected;
-	private ColorsEnum colorSelected;
 	private ShowTextEnum showText;
 
 	private int top = 20;
@@ -50,12 +45,7 @@ public class GuiConfig extends GuiScreen {
 		MinecraftForge.EVENT_BUS.register(this);
 
 		mouseModeSelected = MouseModeEnum.getByText(ModConfig.text);
-		colorSelected = ColorsEnum.getByHex(ModConfig.textHexColor);
 		showText = ShowTextEnum.getByBool(ModConfig.showText);
-		
-		if (ModConfig.rainbow) {
-			colorSelected = ColorsEnum.getById(9);
-		}
 
 		showTextButton = new GuiButton(0, width / 2 - 152, 10 + top, 150, 20, "");
 		updateShowTextButton();
@@ -67,41 +57,39 @@ public class GuiConfig extends GuiScreen {
 		textField.setMaxStringLength(999);
 		textField.setText(ModConfig.text);
 		
-		baseColorChangerButton = new GuiButton(10, width / 2 + 2, 10 + top, 150, 20, "Color: " + colorSelected.getName());
-		textColorButton = new GuiColorButton(11, width / 2 + 2, 35 + top, 150, 20, "Text Color:", false);
+		textColorButton = new GuiColorButton(11, width / 2 + 2, 10 + top, 150, 20, I18n.format("cpsdisplay.button.text_color", new Object[0]), false);
 		textColorButton.setColor(ModConfig.getTextColor());
 
-		backgroundColorButton = new GuiColorButton(12, width / 2 + 2, 60 + top, 150, 20, "Background Color:", true);
+		backgroundColorButton = new GuiColorButton(12, width / 2 + 2, 35 + top, 150, 20, I18n.format("cpsdisplay.button.background_color", new Object[0]), true);
 		backgroundColorButton.setColor(ModConfig.getBackgroundColor());
 
-		rainbowSpeedSlider = new GuiSlider(13, width / 2 + 2, 60 + top, 150, 20, "", 0.1f, 3f, 0.1f, (float) ModConfig.rainbowSpeed, 10);
-		rainbowSpeedSlider.setFormatHelper(new FormatHelper() {
+		// rainbowSpeedSlider = new GuiSlider(13, width / 2 + 2, 60 + top, 150, 20, "", 0.1f, 3f, 0.1f, (float) ModConfig.rainbowSpeed, 10);
+		// rainbowSpeedSlider.setFormatHelper(new FormatHelper() {
 
-			@Override
-			public String getText(int id, String name, float value) {
-				return "Speed: " + value + "x";
-			}
+		// 	@Override
+		// 	public String getText(int id, String name, float value) {
+		// 		return "Speed: " + value + "x";
+		// 	}
 			
-		});
-		rainbowPrecisionSlider = new GuiSlider(14, width / 2 + 2, 85 + top, 150, 20, "Precision", 0.1f, 1f, 0.1f, (float) ModConfig.rainbowPrecision, 10);
-		rainbowPrecisionSlider.setFormatHelper(new FormatHelper() {
+		// });
+		// rainbowPrecisionSlider = new GuiSlider(14, width / 2 + 2, 85 + top, 150, 20, "Precision", 0.1f, 1f, 0.1f, (float) ModConfig.rainbowPrecision, 10);
+		// rainbowPrecisionSlider.setFormatHelper(new FormatHelper() {
 
-			@Override
-			public String getText(int id, String name, float value) {
-				return "Precision: " + value + "";
-			}
+		// 	@Override
+		// 	public String getText(int id, String name, float value) {
+		// 		return "Precision: " + value + "";
+		// 	}
 			
-		});
+		// });
 
-		scaleSlider = new GuiSlider(100, width / 2 - 152, 35 + top, 150, 20, "Scale", 0.1f * 100, 4 * 100, 0.01f, (float) (ModConfig.textScale * 100), 10);
+		scaleSlider = new GuiSlider(100, width / 2 - 152, 35 + top, 150, 20, I18n.format("cpsdisplay.button.text_scale", new Object[0]), 0.1f * 100, 4 * 100, 0.01f, (float) (ModConfig.textScale * 100), 10);
 		
 		buttonList.add(showTextButton);
 		buttonList.add(scaleSlider);
 		buttonList.add(mouseModeChangerButton);
 		
-		buttonList.add(baseColorChangerButton);
-		buttonList.add(rainbowSpeedSlider);
-		buttonList.add(rainbowPrecisionSlider);
+		// buttonList.add(rainbowSpeedSlider);
+		// buttonList.add(rainbowPrecisionSlider);
 		buttonList.add(textColorButton);
 		buttonList.add(backgroundColorButton);
 
@@ -185,29 +173,14 @@ public class GuiConfig extends GuiScreen {
 
 		ModConfig.setBackgroundColor(backgroundColorButton.getColor());
 
-		ModConfig.rainbowSpeed = rainbowSpeedSlider.getValue();
-		ModConfig.rainbowPrecision = rainbowPrecisionSlider.getValue();
+		// ModConfig.rainbowSpeed = rainbowSpeedSlider.getValue();
+		// ModConfig.rainbowPrecision = rainbowPrecisionSlider.getValue();
 		ModConfig.showText = showText.getBool();
 	}
 	
 	@Override
 	protected void actionPerformed(GuiButton button) throws IOException {
-		if (button == baseColorChangerButton) {
-			colorSelected = ColorsEnum.getById(colorSelected.getId() + 1);
-			baseColorChangerButton.displayString = "Color: " + colorSelected.getName();
-			
-			if (colorSelected != ColorsEnum.CUSTOM && colorSelected != ColorsEnum.RAINBOW) {
-				ModConfig.textHexColor = colorSelected.getHex();
-			}
-			
-			if (colorSelected == ColorsEnum.RAINBOW) {
-				ModConfig.rainbow = true;
-			} else {
-				ModConfig.rainbow = false;
-			}
-			
-			textColorButton.setColor(ModConfig.getTextColor());
-		} else if (button == mouseModeChangerButton) {
+		if (button == mouseModeChangerButton) {
 			mouseModeSelected = MouseModeEnum.getById(mouseModeSelected.getId() + 1);
 			updateMouseModeButton();
 
@@ -231,15 +204,6 @@ public class GuiConfig extends GuiScreen {
 	}
 
 	public void updateButtons() {
-		// Color
-		if (colorSelected == ColorsEnum.RAINBOW) {
-			rainbowPrecisionSlider.visible = true;
-			rainbowSpeedSlider.visible = true;
-		} else {
-			rainbowPrecisionSlider.visible = false;
-			rainbowSpeedSlider.visible = false;
-		}
-		
 		// Display mode
 		if (mouseModeSelected == MouseModeEnum.CUSTOM) {
 			textField.setVisible(true);

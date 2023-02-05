@@ -51,7 +51,7 @@ public class GuiSlider extends GuiButton {
 
 			@Override
 			public String getText(int id, String name, float value) {
-				return name + " : " + value + "%";
+				return name + ": " + value + "%";
 			}
 			
 		}, decimals);
