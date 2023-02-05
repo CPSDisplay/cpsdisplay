@@ -1,6 +1,5 @@
-command.cpsdisplay.usage=/cpsdisplay
-key.opengui=Ouvrir l'interface de configuration
-category.cpsdisplay=CPS Display
+cpsdisplay.key.opengui=Ouvrir l'interface de configuration
+cpsdisplay.category.cpsdisplay=CPS Display
 cpsdisplay.button.show_text=Afficher le texte : 
 cpsdisplay.button.enable=§aActivé
 cpsdisplay.button.disable=§cDésactivé

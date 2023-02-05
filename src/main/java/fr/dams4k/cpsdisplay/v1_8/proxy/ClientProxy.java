@@ -12,7 +12,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 
 public class ClientProxy extends CommonProxy {
-	public static final KeyBinding CPS_OVERLAY_CONFIG = new KeyBinding("key.opengui", Keyboard.KEY_P, "category.cpsdisplay");
+	public static final KeyBinding CPS_OVERLAY_CONFIG = new KeyBinding("cpsdisplay.key.opengui", Keyboard.KEY_P, "cpsdisplay.category.cpsdisplay");
 	
 	@Override
 	public void preInit() {
