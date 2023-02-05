@@ -25,7 +25,7 @@ public class GuiColorButton extends GuiButton implements ColorPickerListener {
     private ColorPicker colorPicker;
 
     public GuiColorButton(int id, int x, int y, int width, int height, String text, boolean alphaChannel) {
-        this(id, x, y, width, height, text, alphaChannel, 40, new Insets(2, 2, 2, 2));
+        this(id, x, y, width, height, text, alphaChannel, 40, new Insets(4, 6, 4, 6));
     }
 
     public GuiColorButton(int id, int x, int y, int width, int height, String text, boolean alphaChannel, int colorWidth, Insets padding) {
@@ -51,8 +51,11 @@ public class GuiColorButton extends GuiButton implements ColorPickerListener {
             int colorButtonWidth = colorWidth;
             this.drawTexturedModalRect(this.xPosition, this.yPosition, 0, 46 + i * 20, textButtonWidth / 2, this.height); // LEFT SIDE
             this.drawTexturedModalRect(this.xPosition + textButtonWidth / 2, this.yPosition, 200 - textButtonWidth / 2, 46 + i * 20, textButtonWidth / 2, this.height); // RIGHT SIDE
-            this.drawTexturedModalRect(this.xPosition + textButtonWidth, this.yPosition, 200 - colorButtonWidth, 46, colorButtonWidth, this.height); // COLOR RIGHT SIDE
             
+            this.drawTexturedModalRect(this.xPosition + textButtonWidth, this.yPosition, 0, 46, colorButtonWidth / 2, this.height); // COLOR LEFT SIDE
+            this.drawTexturedModalRect(this.xPosition + textButtonWidth + colorButtonWidth/2, this.yPosition, 200 - colorButtonWidth/2, 46, colorButtonWidth/2, this.height); // COLOR RIGHT SIDE
+            
+
             this.mouseDragged(mc, mouseX, mouseY);
             int textColor = 14737632;
 
@@ -65,7 +68,7 @@ public class GuiColorButton extends GuiButton implements ColorPickerListener {
             
             int rectX = this.xPosition + textButtonWidth + this.padding.left;
             int rectY = this.yPosition + this.padding.top;
-            drawRect(rectX-1, rectY, this.xPosition + textButtonWidth + colorButtonWidth - this.padding.right, this.yPosition + this.height - this.padding.bottom, color.getRGB());
+            drawRect(rectX, rectY, this.xPosition + textButtonWidth + colorButtonWidth - this.padding.right, this.yPosition + this.height - this.padding.bottom, color.getRGB());
         }
         if (colorPicker == null && wasOriginallyFullscreen) {
             wasOriginallyFullscreen = false;
