@@ -18,6 +18,27 @@ import net.minecraftforge.common.MinecraftForge;
 
 
 public class GuiConfig extends GuiScreen {
+	public enum GuiButtons {
+		SHOW_TEXT(0),
+		SCALE_TEXT(1),
+		COLOR_TEXT(2),
+		MODE_TEXT(3),
+		TEXT(4),
+
+		COLOR_BACKGROUND(10),
+		PADDING_BACKGROUND(11);
+
+		public final int id;
+
+		GuiButtons(int id) {
+			this.id = id;
+		}
+
+		public int getY(int y) {
+			return y + (this.id % 10) * 25;
+		}
+	}
+
 	// Text
 	private GuiButton showTextButton;
 	private GuiSlider scaleSlider;
@@ -44,25 +65,6 @@ public class GuiConfig extends GuiScreen {
 	public void initGui() {
 		MinecraftForge.EVENT_BUS.register(this);
 
-		mouseModeSelected = MouseModeEnum.getByText(ModConfig.text);
-		showText = ShowTextEnum.getByBool(ModConfig.showText);
-
-		showTextButton = new GuiButton(0, width / 2 - 152, 10 + top, 150, 20, "");
-		updateShowTextButton();
-
-		mouseModeChangerButton = new GuiButton(3, width / 2 - 152, 60 + top, 150, 20, "");
-		updateMouseModeButton();
-
-		textField = new GuiTextField(2, fontRendererObj,  width / 2 - 152, 85 + top, 150, 20);
-		textField.setMaxStringLength(999);
-		textField.setText(ModConfig.text);
-		
-		textColorButton = new GuiColorButton(11, width / 2 + 2, 10 + top, 150, 20, I18n.format("cpsdisplay.button.text_color", new Object[0]), false);
-		textColorButton.setColor(ModConfig.getTextColor());
-
-		backgroundColorButton = new GuiColorButton(12, width / 2 + 2, 35 + top, 150, 20, I18n.format("cpsdisplay.button.background_color", new Object[0]), true);
-		backgroundColorButton.setColor(ModConfig.getBackgroundColor());
-
 		// rainbowSpeedSlider = new GuiSlider(13, width / 2 + 2, 60 + top, 150, 20, "", 0.1f, 3f, 0.1f, (float) ModConfig.rainbowSpeed, 10);
 		// rainbowSpeedSlider.setFormatHelper(new FormatHelper() {
 
@@ -82,29 +84,57 @@ public class GuiConfig extends GuiScreen {
 			
 		// });
 
-		scaleSlider = new GuiSlider(100, width / 2 - 152, 35 + top, 150, 20, I18n.format("cpsdisplay.button.text_scale", new Object[0]), 0.1f * 100, 4 * 100, 0.01f, (float) (ModConfig.textScale * 100), 10);
+		
+		
+		
+		// buttonList.add(rainbowSpeedSlider);
+		// buttonList.add(rainbowPrecisionSlider);
+		this.addTextButtons(width / 2 - 152, 10 + top);
+		this.addBackgroundButtons(width / 2 + 2, 10 + top);
+		updateButtons();
+	}
+
+	public void addTextButtons(int x, int y) {
+		mouseModeSelected = MouseModeEnum.getByText(ModConfig.text);
+		showText = ShowTextEnum.getByBool(ModConfig.showText);
+
+		showTextButton = new GuiButton(GuiButtons.SHOW_TEXT.id, x, GuiButtons.SHOW_TEXT.getY(y), 150, 20, "");
+		updateShowTextButton();
+
+		textColorButton = new GuiColorButton(GuiButtons.COLOR_TEXT.id, x, GuiButtons.COLOR_TEXT.getY(y), 150, 20, I18n.format("cpsdisplay.button.text_color", new Object[0]), false);
+		textColorButton.setColor(ModConfig.getTextColor());
+		
+		scaleSlider = new GuiSlider(GuiButtons.SCALE_TEXT.id, x, GuiButtons.SCALE_TEXT.getY(y), 150, 20, I18n.format("cpsdisplay.button.text_scale", new Object[0]), 0.1f * 100, 4 * 100, 0.01f, (float) (ModConfig.textScale * 100), 10);
+
+		mouseModeChangerButton = new GuiButton(GuiButtons.MODE_TEXT.id, x, GuiButtons.MODE_TEXT.getY(y), 150, 20, "");
+		updateMouseModeButton();
+
+		textField = new GuiTextField(GuiButtons.TEXT.id, fontRendererObj, x, GuiButtons.TEXT.getY(y), 150, 20);
+		textField.setMaxStringLength(999);
+		textField.setText(ModConfig.text);
 		
 		buttonList.add(showTextButton);
 		buttonList.add(scaleSlider);
 		buttonList.add(mouseModeChangerButton);
-		
-		// buttonList.add(rainbowSpeedSlider);
-		// buttonList.add(rainbowPrecisionSlider);
 		buttonList.add(textColorButton);
-		buttonList.add(backgroundColorButton);
+	}
 
-		updateButtons();
+	public void addBackgroundButtons(int x, int y) {
+		backgroundColorButton = new GuiColorButton(GuiButtons.COLOR_BACKGROUND.id, x, GuiButtons.COLOR_BACKGROUND.getY(y), 150, 20, I18n.format("cpsdisplay.button.background_color", new Object[0]), true);
+		backgroundColorButton.setColor(ModConfig.getBackgroundColor());
+
+		buttonList.add(backgroundColorButton);
 	}
 	
 	@Override
 	protected void keyTyped(char typedChar, int keyCode) throws IOException {
-		textField.textboxKeyTyped(typedChar, keyCode);
+		if (this.textField != null) this.textField.textboxKeyTyped(typedChar, keyCode);
 		super.keyTyped(typedChar, keyCode);
 	}
 	
 	@Override
 	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
-		textField.mouseClicked(mouseX, mouseY, mouseButton);
+		if (this.textField != null) this.textField.mouseClicked(mouseX, mouseY, mouseButton);
 		
 		int[] textPosition = ModConfig.getTextPosition();
 
@@ -120,15 +150,16 @@ public class GuiConfig extends GuiScreen {
 	
 	@Override
 	public void updateScreen() {
-		textField.updateCursorCounter();
+		if (this.textField != null) this.textField.updateCursorCounter();
 	}
 	
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		this.drawBackground();
-		textField.drawTextBox();
-
 		super.drawScreen(mouseX, mouseY, partialTicks);
+
+		if (this.textField != null) this.textField.drawTextBox();
+
 
 		if (GuiOverlay.positionInOverlay(mouseX, mouseY)) {
 			ArrayList<Integer> positions = GuiOverlay.getBackgroundPositions(0, 0, true);
@@ -167,15 +198,15 @@ public class GuiConfig extends GuiScreen {
 	}
 	
 	public void changeConfig() {
-		ModConfig.text = textField.getText();
-		ModConfig.setTextColor(textColorButton.getColor());
-		ModConfig.textScale = scaleSlider.getValue() / 100d;
+		if (this.textField != null) ModConfig.text = textField.getText();
+		if (this.textColorButton != null) ModConfig.setTextColor(textColorButton.getColor());
+		if (this.showText != null) ModConfig.showText = showText.getBool();
+		if (this.scaleSlider != null) ModConfig.textScale = scaleSlider.getValue() / 100d;
 
-		ModConfig.setBackgroundColor(backgroundColorButton.getColor());
+		if (this.backgroundColorButton != null) ModConfig.setBackgroundColor(this.backgroundColorButton.getColor());
 
 		// ModConfig.rainbowSpeed = rainbowSpeedSlider.getValue();
 		// ModConfig.rainbowPrecision = rainbowPrecisionSlider.getValue();
-		ModConfig.showText = showText.getBool();
 	}
 	
 	@Override
@@ -205,10 +236,13 @@ public class GuiConfig extends GuiScreen {
 
 	public void updateButtons() {
 		// Display mode
-		if (mouseModeSelected == MouseModeEnum.CUSTOM) {
-			textField.setVisible(true);
-		} else {
-			textField.setVisible(false);
+		if (textField != null) {
+			if (mouseModeSelected == MouseModeEnum.CUSTOM) {
+				textField.setVisible(true);
+			} else {
+				textField.setVisible(false);
+			}
 		}
+		
 	}
 }
