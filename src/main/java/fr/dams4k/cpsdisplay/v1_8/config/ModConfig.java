@@ -15,37 +15,38 @@ public class ModConfig {
 
 	private static Configuration config;
 	
-	public static final String CATEGORY_NAME_TEXT = "display";
-	public static final String CATEGORY_NAME_RAINBOW = "rainbow";
-	public static final String CATEGORY_NAME_BACKGROUND = "background";
+	public static final String CATEGORY_TEXT = "display";
+	public static final String CATEGORY_RAINBOW = "rainbow";
+	public static final String CATEGORY_BACKGROUND = "background";
 	
 	public static boolean showText = true;
 	// Text
-	private static double[] textPosition = {0, 0};
-	public static double textScale = 1d;
-	public static String textHexColor = "ffffff";
+	private static double[] positionText = {0, 0};
+	public static double scaleText = 1d;
+	public static String hexColorText = "ffffff";
 	public static String text = "{0} | {1} CPS";
 
 	// Background
-	public static String backgroundHexColor = "2a2a2a80";
+	public static String hexColorBackground = "2a2a2a80";
 	
 	// Rainbow
 	public static boolean rainbow = false;
-	public static double rainbowSpeed = 1d;
-	public static double rainbowPrecision = 0.1;
-	public static float rainbowHue = 0f;
+	public static double speedRainbow = 1d;
+	public static double precisionRainbow = 0.1;
+	public static float hueRainbow = 0f;
 	public static boolean playRainbow;
 	
-	private static Property textPositionProperty;
-	private static Property textScaleProperty;
-	private static Property textHexColorProperty;
+	private static Property positionTextProperty;
+	private static Property scaleTextProperty;
+	private static Property hexColorTextProperty;
 	private static Property showTextProperty;
 	private static Property textProperty;
 
-	private static Property backgroundHexColorProperty;
+	private static Property hexColorBackgroundProperty;
+	// private static Property 
 	
 	private static Property rainbowProperty;
-	private static Property rainbowSpeedProperty;
+	private static Property speedRainbowProperty;
 
 	
 	public static void preInit() {
@@ -57,39 +58,39 @@ public class ModConfig {
 	
 	public static void syncConfig(boolean load) {
 		if (load) {
-			showTextProperty = config.get(CATEGORY_NAME_TEXT, "enable", showText);
+			showTextProperty = config.get(CATEGORY_TEXT, "enable", showText);
 			
-			textPositionProperty = config.get(CATEGORY_NAME_TEXT, "position", textPosition);
-			textScaleProperty = config.get(CATEGORY_NAME_TEXT, "scale", textScale);
-			textHexColorProperty = config.get(CATEGORY_NAME_TEXT, "color", textHexColor);
-			textProperty = config.get(CATEGORY_NAME_TEXT, "text", text);
+			positionTextProperty = config.get(CATEGORY_TEXT, "position", positionText);
+			scaleTextProperty = config.get(CATEGORY_TEXT, "scale", scaleText);
+			hexColorTextProperty = config.get(CATEGORY_TEXT, "color", hexColorText);
+			textProperty = config.get(CATEGORY_TEXT, "text", text);
 
-			backgroundHexColorProperty = config.get(CATEGORY_NAME_BACKGROUND, "color", backgroundHexColor);
+			hexColorBackgroundProperty = config.get(CATEGORY_BACKGROUND, "color", hexColorBackground);
 
-			rainbowProperty = config.get(CATEGORY_NAME_RAINBOW, "rainbow", rainbow);
-			rainbowSpeedProperty = config.get(CATEGORY_NAME_RAINBOW, "chroma_speed", rainbowSpeed);
+			rainbowProperty = config.get(CATEGORY_RAINBOW, "rainbow", rainbow);
+			speedRainbowProperty = config.get(CATEGORY_RAINBOW, "chroma_speed", speedRainbow);
 
-			textPosition = textPositionProperty.getDoubleList();
-			textScale = textScaleProperty.getDouble();
-			textHexColor = textHexColorProperty.getString();
+			positionText = positionTextProperty.getDoubleList();
+			scaleText = scaleTextProperty.getDouble();
+			hexColorBackground = hexColorTextProperty.getString();
 			showText = showTextProperty.getBoolean();
 			text = textProperty.getString();
 
-			backgroundHexColor = backgroundHexColorProperty.getString();
+			hexColorBackground = hexColorBackgroundProperty.getString();
 
 			rainbow = rainbowProperty.getBoolean();
-			rainbowSpeed = rainbowSpeedProperty.getDouble();
+			speedRainbow = speedRainbowProperty.getDouble();
 		} else {
-			textPositionProperty.set(textPosition);
-			textScaleProperty.set(textScale);
-			textHexColorProperty.set(textHexColor);
+			positionTextProperty.set(positionText);
+			scaleTextProperty.set(scaleText);
+			hexColorTextProperty.set(hexColorText);
 			showTextProperty.set(showText);
 			textProperty.set(text);
 
-			backgroundHexColorProperty.set(backgroundHexColor);
+			hexColorBackgroundProperty.set(hexColorBackground);
 
 			rainbowProperty.set(rainbow);
-			rainbowSpeedProperty.set(rainbowSpeed);
+			speedRainbowProperty.set(speedRainbow);
 		}
 		
 		saveConfig();
@@ -102,42 +103,42 @@ public class ModConfig {
 	}
 	
 	public static Color getChroma() {
-		double precision = ModConfig.rainbowPrecision * 20000;
+		double precision = ModConfig.precisionRainbow * 20000;
 		
-		int rgb = Color.HSBtoRGB((float) ((System.currentTimeMillis() * ModConfig.rainbowSpeed) % ((long) precision)) / ((float) precision), 0.8f, 0.8f);
+		int rgb = Color.HSBtoRGB((float) ((System.currentTimeMillis() * ModConfig.speedRainbow) % ((long) precision)) / ((float) precision), 0.8f, 0.8f);
 		return new Color(rgb);
 	}
 
-	public static void setTextPosition(int[] textPosition) {
+	public static void setTextPosition(int[] positionText) {
 		ScaledResolution scaledResolution = new ScaledResolution(mc);
 		int scaleFactor = scaledResolution.getScaleFactor();
 
-		double[] textPositionPercentage = {(double) textPosition[0] / (mc.displayWidth / scaleFactor), (double) textPosition[1] / (mc.displayHeight / scaleFactor)};
+		double[] positionTextPercentage = {(double) positionText[0] / (mc.displayWidth / scaleFactor), (double) positionText[1] / (mc.displayHeight / scaleFactor)};
 
-		ModConfig.textPosition = textPositionPercentage;
+		ModConfig.positionText = positionTextPercentage;
 	}
 
 	public static int[] getTextPosition() {
 		ScaledResolution scaledResolution = new ScaledResolution(mc);
 		int scaleFactor = scaledResolution.getScaleFactor();
 
-		int[] realPosition = {(int) (ModConfig.textPosition[0] * (mc.displayWidth / scaleFactor)), (int) (ModConfig.textPosition[1] * (mc.displayHeight / scaleFactor))};
+		int[] realPosition = {(int) (ModConfig.positionText[0] * (mc.displayWidth / scaleFactor)), (int) (ModConfig.positionText[1] * (mc.displayHeight / scaleFactor))};
 		return realPosition;
 	}
 
 	public static Color getTextColor() {
-		return ModConfig.HexToColor(ModConfig.textHexColor);
+		return ModConfig.HexToColor(ModConfig.hexColorText);
 	}
 	public static void setTextColor(Color color) {
-		ModConfig.textHexColor = Integer.toHexString(color.getRGB()).substring(2);
+		ModConfig.hexColorText = Integer.toHexString(color.getRGB()).substring(2);
 	}
 
 	public static Color getBackgroundColor() {
-		return ModConfig.HexToColor(ModConfig.backgroundHexColor);
+		return ModConfig.HexToColor(ModConfig.hexColorBackground);
 	}
 	public static void setBackgroundColor(Color color) {
 		String hexString = Integer.toHexString(color.getRGB()); // aarrggbbb
-		ModConfig.backgroundHexColor = hexString.substring(2) + hexString.subSequence(0, 2); // rrggbbaa
+		ModConfig.hexColorBackground = hexString.substring(2) + hexString.subSequence(0, 2); // rrggbbaa
 	}
 
 	public static Color HexToColor(String hex) {
