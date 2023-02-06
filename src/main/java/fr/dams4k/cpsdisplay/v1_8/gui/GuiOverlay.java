@@ -43,7 +43,6 @@ public class GuiOverlay extends Gui {
 
 			if (color.getAlpha() > 0) {
 				int padding = ModConfig.paddingBackground;
-				System.out.println(padding);
 				drawRect(x-padding, y-padding, positions.get(2)+padding, positions.get(3)+padding, color.getRGB());
 			}
 			

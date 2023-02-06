@@ -13,6 +13,7 @@ import fr.dams4k.cpsdisplay.v1_8.gui.buttons.ModSlider;
 import fr.dams4k.cpsdisplay.v1_8.gui.buttons.ModTextField;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiLabel;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.resources.I18n;
@@ -28,7 +29,11 @@ public class GuiConfig extends GuiScreen {
 		TEXT(4),
 
 		COLOR_BACKGROUND(10),
-		PADDING_BACKGROUND(11);
+		PADDING_BACKGROUND_LABEL(11),
+		PADDING_BACKGROUND_FIELD(11),
+
+		SHOW_RAINBOW(20),
+		SPEED_RAINBOW(21);
 
 		public final int id;
 
@@ -52,9 +57,12 @@ public class GuiConfig extends GuiScreen {
 
 	// Background
 	private ModColorButton colorBackgroundButton;
+	private GuiLabel paddingBackgroundLabel;
 	private ModTextField paddingBackgroundField;
 
 	// Rainbow
+	private GuiButton showRainbow;
+	private ModSlider speedRainbowSlider;
 	// private GuiSlider rainbowSpeedSlider;
 	// private GuiSlider rainbowPrecisionSlider;
 
@@ -68,6 +76,7 @@ public class GuiConfig extends GuiScreen {
 
 	@Override
 	public void initGui() {
+		super.initGui();
 		MinecraftForge.EVENT_BUS.register(this);
 
 		// rainbowSpeedSlider = new GuiSlider(13, width / 2 + 2, 60 + top, 150, 20, "", 0.1f, 3f, 0.1f, (float) ModConfig.rainbowSpeed, 10);
@@ -98,6 +107,7 @@ public class GuiConfig extends GuiScreen {
 
 		this.addTextButtons(width / 2 - 152, 10 + top);
 		this.addBackgroundButtons(width / 2 + 2, 10 + top);
+		this.addRainbowButtons(width / 2 + 2, GuiButtons.PADDING_BACKGROUND_FIELD.getY(10 + top) + 25);
 		updateButtons();
 	}
 
@@ -142,7 +152,10 @@ public class GuiConfig extends GuiScreen {
 		);
 		colorBackgroundButton.setColor(ModConfig.getBackgroundColor());
 
-		paddingBackgroundField = new ModTextField(GuiButtons.PADDING_BACKGROUND.id, fontRendererObj, x, GuiButtons.PADDING_BACKGROUND.getY(y), 150, 20);
+		paddingBackgroundLabel = new GuiLabel(fontRendererObj, GuiButtons.PADDING_BACKGROUND_LABEL.id, x+7, GuiButtons.PADDING_BACKGROUND_LABEL.getY(y), 75, 20, 0xffffff);
+		paddingBackgroundLabel.func_175202_a("Padding background:");
+
+		paddingBackgroundField = new ModTextField(GuiButtons.PADDING_BACKGROUND_FIELD.id, fontRendererObj, x+75+10, GuiButtons.PADDING_BACKGROUND_FIELD.getY(y), 65, 20);
 		paddingBackgroundField.setMaxStringLength(2);
 		paddingBackgroundField.setText(Integer.toString(ModConfig.paddingBackground));
 		paddingBackgroundField.letters = false;
@@ -151,8 +164,20 @@ public class GuiConfig extends GuiScreen {
 		paddingBackgroundField.placeHolder = "§oxx";
 
 		buttonList.add(colorBackgroundButton);
-
+		labelList.add(paddingBackgroundLabel);
 		textFieldList.add(paddingBackgroundField);
+	}
+
+	public void addRainbowButtons(int x, int y) {
+		showRainbow = new GuiButton(GuiButtons.SHOW_RAINBOW.id, x, GuiButtons.SHOW_RAINBOW.getY(y), 150, 20, "");
+
+		speedRainbowSlider = new ModSlider(
+			GuiButtons.SPEED_RAINBOW.id, x, GuiButtons.SPEED_RAINBOW.getY(y), 150, 20,
+			"Speed", 0.1f, 3f, 0.1f, 0.5f, 10
+		);
+
+		buttonList.add(showRainbow);
+		buttonList.add(speedRainbowSlider);
 	}
 	
 	@Override
@@ -271,10 +296,16 @@ public class GuiConfig extends GuiScreen {
 	}
 	
 	public void updateShowTextButton() {
+		if (showTextButton == null) return;
 		showTextButton.displayString = I18n.format("cpsdisplay.button.show_text", new Object[0]) + showText.getText();
 	}
 	public void updateMouseModeButton() {
+		if (modeTextButton == null) return;
 		modeTextButton.displayString = I18n.format("cpsdisplay.button.display_mode", new Object[0]) + mouseModeSelected.getName();
+	}
+	public void updateShowRainbowButton() {
+		if (showRainbow == null) return;
+		showRainbow.displayString = I18n.format("cpsdisplay.button.show_rainbow", new Object[0]);
 	}
 
 	public void updateButtons() {
