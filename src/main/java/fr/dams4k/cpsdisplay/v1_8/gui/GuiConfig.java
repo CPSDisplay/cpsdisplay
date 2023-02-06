@@ -94,6 +94,8 @@ public class GuiConfig extends GuiScreen {
 		
 		// buttonList.add(rainbowSpeedSlider);
 		// buttonList.add(rainbowPrecisionSlider);
+		textFieldList.clear();
+
 		this.addTextButtons(width / 2 - 152, 10 + top);
 		this.addBackgroundButtons(width / 2 + 2, 10 + top);
 		updateButtons();
@@ -142,6 +144,7 @@ public class GuiConfig extends GuiScreen {
 
 		paddingBackgroundField = new ModTextField(GuiButtons.PADDING_BACKGROUND.id, fontRendererObj, x, GuiButtons.PADDING_BACKGROUND.getY(y), 150, 20);
 		paddingBackgroundField.setMaxStringLength(2);
+		paddingBackgroundField.setText(Integer.toString(ModConfig.paddingBackground));
 		paddingBackgroundField.letters = false;
 		paddingBackgroundField.punctuation = false;
 		paddingBackgroundField.anythings = false;
@@ -157,7 +160,6 @@ public class GuiConfig extends GuiScreen {
 		for (GuiTextField field : this.textFieldList) {
 			field.textboxKeyTyped(typedChar, keyCode);
 		}
-		
 		super.keyTyped(typedChar, keyCode);
 	}
 	
@@ -184,16 +186,17 @@ public class GuiConfig extends GuiScreen {
 		for (GuiTextField field : this.textFieldList) {
 			field.updateCursorCounter();
 		}
+		super.updateScreen();
 	}
 	
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		this.drawBackground();
-		super.drawScreen(mouseX, mouseY, partialTicks);
 
 		for (GuiTextField field : this.textFieldList) {
 			field.drawTextBox();
 		}
+		super.drawScreen(mouseX, mouseY, partialTicks);
 
 		if (GuiOverlay.positionInOverlay(mouseX, mouseY)) {
 			ArrayList<Integer> positions = GuiOverlay.getBackgroundPositions(0, 0, true);
@@ -238,7 +241,12 @@ public class GuiConfig extends GuiScreen {
 		if (this.scaleTextSlider != null) ModConfig.scaleText = scaleTextSlider.getValue() / 100d;
 
 		if (this.colorBackgroundButton != null) ModConfig.setBackgroundColor(this.colorBackgroundButton.getColor());
-		if (this.paddingBackgroundField != null) ModConfig.paddingBackground = Integer.valueOf(paddingBackgroundField.getText().replace("", "0"));
+		
+		if (this.paddingBackgroundField != null) {
+			String sPadding = paddingBackgroundField.getText();
+			int padding = sPadding.isEmpty() ? 0 : Integer.valueOf(sPadding);
+			ModConfig.paddingBackground = padding;
+		}
 
 		// ModConfig.rainbowSpeed = rainbowSpeedSlider.getValue();
 		// ModConfig.rainbowPrecision = rainbowPrecisionSlider.getValue();
