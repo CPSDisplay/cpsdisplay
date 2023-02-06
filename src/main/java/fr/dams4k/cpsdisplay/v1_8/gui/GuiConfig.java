@@ -115,7 +115,7 @@ public class GuiConfig extends GuiScreen {
 		scaleTextSlider = new ModSlider(
 			GuiButtons.SCALE_TEXT.id, x, GuiButtons.SCALE_TEXT.getY(y), 150, 20,
 			I18n.format("cpsdisplay.button.scale_text", new Object[0]),
-			0.1f * 100, 4 * 100, 0.01f, (float) (ModConfig.textScale * 100), 10
+			0.1f * 100, 4 * 100, 0.01f, (float) (ModConfig.scaleText * 100), 10
 		);
 
 		modeTextButton = new GuiButton(GuiButtons.MODE_TEXT.id, x, GuiButtons.MODE_TEXT.getY(y), 150, 20, "");
@@ -145,6 +145,7 @@ public class GuiConfig extends GuiScreen {
 		paddingBackgroundField.letters = false;
 		paddingBackgroundField.punctuation = false;
 		paddingBackgroundField.anythings = false;
+		paddingBackgroundField.placeHolder = "§oxx";
 
 		buttonList.add(colorBackgroundButton);
 
@@ -213,7 +214,7 @@ public class GuiConfig extends GuiScreen {
 		ArrayList<Integer> positions = GuiOverlay.getBackgroundPositions(0, 0, true);
 
 		int color = -1072689136;
-		int padding = (int) (this.height / 10 * ModConfig.textScale);
+		int padding = (int) (this.height / 10 * ModConfig.scaleText);
 		// TOP
 		this.drawGradientRect(0, 0, this.width, positions.get(1)-padding, color, color);
 		// BOTTOM
@@ -234,9 +235,10 @@ public class GuiConfig extends GuiScreen {
 		if (this.textField != null) ModConfig.text = textField.getText();
 		if (this.colorTextButton != null) ModConfig.setTextColor(colorTextButton.getColor());
 		if (this.showText != null) ModConfig.showText = showText.getBool();
-		if (this.scaleTextSlider != null) ModConfig.textScale = scaleTextSlider.getValue() / 100d;
+		if (this.scaleTextSlider != null) ModConfig.scaleText = scaleTextSlider.getValue() / 100d;
 
 		if (this.colorBackgroundButton != null) ModConfig.setBackgroundColor(this.colorBackgroundButton.getColor());
+		if (this.paddingBackgroundField != null) ModConfig.paddingBackground = Integer.valueOf(paddingBackgroundField.getText().replace("", "0"));
 
 		// ModConfig.rainbowSpeed = rainbowSpeedSlider.getValue();
 		// ModConfig.rainbowPrecision = rainbowPrecisionSlider.getValue();

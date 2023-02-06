@@ -26,7 +26,7 @@ public class GuiOverlay extends Gui {
 					textColor = ModConfig.getTextColor();
 				} catch (Exception e) {
 					textColor = Color.WHITE;
-					ModConfig.textHexColor = "ffffff";
+					ModConfig.hexColorText = "ffffff";
 					ModConfig.syncConfig(false);
 				}
 			} else {
@@ -34,7 +34,7 @@ public class GuiOverlay extends Gui {
 			}
 			
 			GL11.glPushMatrix();
-			GL11.glScaled(ModConfig.textScale, ModConfig.textScale, 1d);
+			GL11.glScaled(ModConfig.scaleText, ModConfig.scaleText, 1d);
 
 			ArrayList<Integer> positions = GuiOverlay.getBackgroundPositions(l, r, false);
 
@@ -42,7 +42,8 @@ public class GuiOverlay extends Gui {
 			int y = positions.get(1);
 
 			if (color.getAlpha() > 0) {
-				drawRect(x, y, positions.get(2), positions.get(3), color.getRGB());
+				int padding = ModConfig.paddingBackground / 100;
+				drawRect(x-padding, y-padding, positions.get(2)+padding, positions.get(3)+padding, color.getRGB());
 			}
 			
 			// modFontRenderer.drawGradientString(text, x, y, 0x00ffff, 0x0000ff, true, true);
@@ -64,14 +65,14 @@ public class GuiOverlay extends Gui {
 		
 		int[] textPosition = ModConfig.getTextPosition();
 
-		list.add((int) (textPosition[0] / ModConfig.textScale));
-		list.add((int) (textPosition[1] / ModConfig.textScale));
+		list.add((int) (textPosition[0] / ModConfig.scaleText));
+		list.add((int) (textPosition[1] / ModConfig.scaleText));
 		list.add(list.get(0)+mc.fontRendererObj.getStringWidth(text));
 		list.add(list.get(1)+mc.fontRendererObj.FONT_HEIGHT-1);
 
 		if (scaled) {
 			for (int i = 0; i < list.size(); i++) {
-				list.set(i, (int) Math.round(list.get(i) * ModConfig.textScale));
+				list.set(i, (int) Math.round(list.get(i) * ModConfig.scaleText));
 			}
 		}
 
