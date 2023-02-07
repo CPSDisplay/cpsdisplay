@@ -7,10 +7,10 @@ import java.util.List;
 
 import fr.dams4k.cpsdisplay.v1_8.config.ModConfig;
 import fr.dams4k.cpsdisplay.v1_8.enums.MouseModeEnum;
-import fr.dams4k.cpsdisplay.v1_8.enums.ToggleEnum;
 import fr.dams4k.cpsdisplay.v1_8.gui.buttons.ModColorButton;
 import fr.dams4k.cpsdisplay.v1_8.gui.buttons.ModSlider;
 import fr.dams4k.cpsdisplay.v1_8.gui.buttons.ModTextField;
+import fr.dams4k.cpsdisplay.v1_8.gui.buttons.ModToggleButton;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiLabel;
@@ -49,14 +49,13 @@ public class GuiConfig extends GuiScreen {
 	private List<GuiTextField> textFieldList = new ArrayList<>();
 
 	// Text
-	private GuiButton showTextButton;
+	private ModToggleButton showTextToggle;
 	private ModSlider scaleTextSlider;
 	private GuiButton modeTextButton;
 	private GuiTextField textField;
 	private ModColorButton colorTextButton;
 
 	private MouseModeEnum mouseModeSelected;
-	private ToggleEnum showText;
 
 	// Background
 	private ModColorButton colorBackgroundButton;
@@ -64,9 +63,8 @@ public class GuiConfig extends GuiScreen {
 	private ModTextField paddingBackgroundField;
 
 	// Rainbow
-	private GuiButton showRainbowButton;
+	private ModToggleButton showRainbowToggle;
 	private ModSlider speedRainbowSlider;
-	private ToggleEnum showRainbow;
 	// private GuiSlider rainbowSpeedSlider;
 	// private GuiSlider rainbowPrecisionSlider;
 
@@ -105,6 +103,8 @@ public class GuiConfig extends GuiScreen {
 		// buttonList.add(rainbowSpeedSlider);
 		// buttonList.add(rainbowPrecisionSlider);
 		textFieldList.clear();
+		buttonList.clear();
+		labelList.clear();
 
 		this.addTextButtons(width / 2 - 152, 10 + top);
 		this.addBackgroundButtons(width / 2 + 2, 10 + top);
@@ -114,10 +114,8 @@ public class GuiConfig extends GuiScreen {
 
 	public void addTextButtons(int x, int y) {
 		mouseModeSelected = MouseModeEnum.getByText(ModConfig.text);
-		showText = ToggleEnum.get(ModConfig.showText);
 
-		showTextButton = new GuiButton(GuiButtons.SHOW_TEXT.id, x, GuiButtons.SHOW_TEXT.getY(y), 150, 20, "");
-		updateShowTextButton();
+		showTextToggle = new ModToggleButton(GuiButtons.SHOW_TEXT.id, x, GuiButtons.SHOW_TEXT.getY(y), 150, 20, I18n.format("cpsdisplay.button.show_text", new Object[0]), "", ModConfig.showText);
 
 		colorTextButton = new ModColorButton(
 			GuiButtons.COLOR_TEXT.id, x, GuiButtons.COLOR_TEXT.getY(y), 150, 20,
@@ -138,7 +136,7 @@ public class GuiConfig extends GuiScreen {
 		textField.setMaxStringLength(999);
 		textField.setText(ModConfig.text);
 		
-		buttonList.add(showTextButton);
+		buttonList.add(showTextToggle);
 		buttonList.add(scaleTextSlider);
 		buttonList.add(modeTextButton);
 		buttonList.add(colorTextButton);
@@ -156,7 +154,7 @@ public class GuiConfig extends GuiScreen {
 		paddingBackgroundLabel = new GuiLabel(fontRendererObj, GuiButtons.PADDING_BACKGROUND_LABEL.id, x+7, GuiButtons.PADDING_BACKGROUND_LABEL.getY(y), 75, 20, 0xffffff);
 		paddingBackgroundLabel.func_175202_a("Padding background:");
 
-		paddingBackgroundField = new ModTextField(GuiButtons.PADDING_BACKGROUND_FIELD.id, fontRendererObj, x+75+10, GuiButtons.PADDING_BACKGROUND_FIELD.getY(y), 65, 20);
+		paddingBackgroundField = new ModTextField(GuiButtons.PADDING_BACKGROUND_FIELD.id, fontRendererObj, x+115+10, GuiButtons.PADDING_BACKGROUND_FIELD.getY(y), 25, 20);
 		paddingBackgroundField.setMaxStringLength(2);
 		paddingBackgroundField.setText(Integer.toString(ModConfig.paddingBackground));
 		paddingBackgroundField.letters = false;
@@ -170,16 +168,14 @@ public class GuiConfig extends GuiScreen {
 	}
 
 	public void addRainbowButtons(int x, int y) {
-		showRainbow = ToggleEnum.get(ModConfig.showRainbow);
-		showRainbowButton = new GuiButton(GuiButtons.SHOW_RAINBOW.id, x, GuiButtons.SHOW_RAINBOW.getY(y), 150, 20, "");
-		updateShowRainbowButton();
+		showRainbowToggle = new ModToggleButton(GuiButtons.SHOW_RAINBOW.id, x, GuiButtons.SHOW_TEXT.getY(y), 150, 20, I18n.format("cpsdisplay.button.show_rainbow", new Object[0]), "", ModConfig.showRainbow);
 
 		speedRainbowSlider = new ModSlider(
 			GuiButtons.SPEED_RAINBOW.id, x, GuiButtons.SPEED_RAINBOW.getY(y), 150, 20,
 			"Speed", 0.1f, 3f, 0.1f, 0.5f, 10
 		);
 
-		buttonList.add(showRainbowButton);
+		buttonList.add(showRainbowToggle);
 		buttonList.add(speedRainbowSlider);
 	}
 	
@@ -239,7 +235,7 @@ public class GuiConfig extends GuiScreen {
 			new GuiOverlay(Minecraft.getMinecraft(), 0, 0);
 		}
 
-		saveConfig();
+		updateConfig();
 	}
 	public void drawBackground() {
 		ArrayList<Integer> positions = GuiOverlay.getBackgroundPositions(0, 0, true);
@@ -256,15 +252,10 @@ public class GuiConfig extends GuiScreen {
 		this.drawGradientRect(positions.get(2)+padding, positions.get(1)-padding, this.width, positions.get(3)+padding, color, color);
 	}
 	
-	public void saveConfig() {
-		changeConfig();
-		updateButtons();
-	}
-	
-	public void changeConfig() {
+	public void updateConfig() {
 		if (this.textField != null) ModConfig.text = textField.getText();
 		if (this.colorTextButton != null) ModConfig.setTextColor(colorTextButton.getColor());
-		if (this.showText != null) ModConfig.showText = showText.isEnabled();
+		if (this.showTextToggle != null) ModConfig.showText = showTextToggle.getValue();
 		if (this.scaleTextSlider != null) ModConfig.scaleText = scaleTextSlider.getValue() / 100d;
 
 		if (this.colorBackgroundButton != null) ModConfig.setBackgroundColor(this.colorBackgroundButton.getColor());
@@ -275,10 +266,12 @@ public class GuiConfig extends GuiScreen {
 			ModConfig.paddingBackground = padding;
 		}
 
-		if (this.showRainbowButton != null) ModConfig.showRainbow = showRainbow.isEnabled();
+		if (this.showRainbowToggle != null) ModConfig.showRainbow = showRainbowToggle.getValue();
+		if (this.speedRainbowSlider != null) ModConfig.speedRainbow = speedRainbowSlider.getValue();
 
 		// ModConfig.rainbowSpeed = rainbowSpeedSlider.getValue();
 		// ModConfig.rainbowPrecision = rainbowPrecisionSlider.getValue();
+		updateButtons();
 	}
 	
 	@Override
@@ -291,28 +284,14 @@ public class GuiConfig extends GuiScreen {
 				ModConfig.text = I18n.format(mouseModeSelected.getText(), new Object[0]);
 			}
 			textField.setText(ModConfig.text);
-		} else if (button.id == GuiButtons.SHOW_TEXT.id) {
-			showText = showText.toggle();
-			updateShowTextButton();
-		} else if (button.id == GuiButtons.SHOW_RAINBOW.id) {
-			showRainbow = showRainbow.toggle();
-			updateShowRainbowButton();
 		}
 
-		saveConfig();
+		updateConfig();
 	}
 	
-	public void updateShowTextButton() {
-		if (showTextButton == null) return;
-		showTextButton.displayString = I18n.format("cpsdisplay.button.show_text", new Object[0]) + showText.getText();
-	}
 	public void updateMouseModeButton() {
 		if (modeTextButton == null) return;
 		modeTextButton.displayString = I18n.format("cpsdisplay.button.display_mode", new Object[0]) + mouseModeSelected.getName();
-	}
-	public void updateShowRainbowButton() {
-		if (showRainbow == null) return;
-		showRainbowButton.displayString = I18n.format("cpsdisplay.button.show_rainbow", new Object[0]) + showRainbow.getText();
 	}
 
 	public void updateButtons() {
