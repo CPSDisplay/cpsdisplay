@@ -258,7 +258,6 @@ public class GuiConfig extends GuiScreen {
 	
 	public void saveConfig() {
 		changeConfig();
-		ModConfig.syncConfig(false);
 		updateButtons();
 	}
 	
@@ -324,7 +323,12 @@ public class GuiConfig extends GuiScreen {
 			} else {
 				textField.setVisible(false);
 			}
-		}
-		
+		}	
+	}
+
+	@Override
+	public void onGuiClosed() {
+		super.onGuiClosed();
+		ModConfig.syncConfig(false);
 	}
 }
