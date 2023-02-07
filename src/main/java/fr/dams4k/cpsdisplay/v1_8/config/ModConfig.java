@@ -74,7 +74,7 @@ public class ModConfig {
 
 			positionText = positionTextProperty.getDoubleList();
 			scaleText = scaleTextProperty.getDouble();
-			hexColorBackground = hexColorTextProperty.getString();
+			hexColorText = hexColorTextProperty.getString();
 			showText = showTextProperty.getBoolean();
 			text = textProperty.getString();
 
