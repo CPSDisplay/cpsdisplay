@@ -13,7 +13,6 @@ public class ModToggleButton extends GuiButton {
         this.prefix = prefix;
         this.suffix = suffix;
         this.value = ToggleEnum.get(value);
-        System.out.println(value);
 
         this.displayString = getDisplayString();
     }
