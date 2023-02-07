@@ -50,7 +50,7 @@ public enum MouseModeEnum {
 	
 	public static MouseModeEnum getByText(String text) {
 		for (MouseModeEnum val : MouseModeEnum.values()) {
-			if (val.getText() == I18n.format(text, new Object[0])) {
+			if (val.getText().equals(I18n.format(text, new Object[0]))) {
 				return val;
 			}
 		}
