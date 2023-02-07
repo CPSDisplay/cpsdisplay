@@ -7,7 +7,7 @@ import java.util.List;
 
 import fr.dams4k.cpsdisplay.v1_8.config.ModConfig;
 import fr.dams4k.cpsdisplay.v1_8.enums.MouseModeEnum;
-import fr.dams4k.cpsdisplay.v1_8.enums.ShowTextEnum;
+import fr.dams4k.cpsdisplay.v1_8.enums.ToggleEnum;
 import fr.dams4k.cpsdisplay.v1_8.gui.buttons.ModColorButton;
 import fr.dams4k.cpsdisplay.v1_8.gui.buttons.ModSlider;
 import fr.dams4k.cpsdisplay.v1_8.gui.buttons.ModTextField;
@@ -55,19 +55,20 @@ public class GuiConfig extends GuiScreen {
 	private GuiTextField textField;
 	private ModColorButton colorTextButton;
 
+	private MouseModeEnum mouseModeSelected;
+	private ToggleEnum showText;
+
 	// Background
 	private ModColorButton colorBackgroundButton;
 	private GuiLabel paddingBackgroundLabel;
 	private ModTextField paddingBackgroundField;
 
 	// Rainbow
-	private GuiButton showRainbow;
+	private GuiButton showRainbowButton;
 	private ModSlider speedRainbowSlider;
+	private ToggleEnum showRainbow;
 	// private GuiSlider rainbowSpeedSlider;
 	// private GuiSlider rainbowPrecisionSlider;
-
-	private MouseModeEnum mouseModeSelected;
-	private ShowTextEnum showText;
 
 	private int top = 20;
 	
@@ -113,7 +114,7 @@ public class GuiConfig extends GuiScreen {
 
 	public void addTextButtons(int x, int y) {
 		mouseModeSelected = MouseModeEnum.getByText(ModConfig.text);
-		showText = ShowTextEnum.getByBool(ModConfig.showText);
+		showText = ToggleEnum.get(ModConfig.showText);
 
 		showTextButton = new GuiButton(GuiButtons.SHOW_TEXT.id, x, GuiButtons.SHOW_TEXT.getY(y), 150, 20, "");
 		updateShowTextButton();
@@ -169,14 +170,16 @@ public class GuiConfig extends GuiScreen {
 	}
 
 	public void addRainbowButtons(int x, int y) {
-		showRainbow = new GuiButton(GuiButtons.SHOW_RAINBOW.id, x, GuiButtons.SHOW_RAINBOW.getY(y), 150, 20, "");
+		showRainbow = ToggleEnum.get(ModConfig.showRainbow);
+		showRainbowButton = new GuiButton(GuiButtons.SHOW_RAINBOW.id, x, GuiButtons.SHOW_RAINBOW.getY(y), 150, 20, "");
+		updateShowRainbowButton();
 
 		speedRainbowSlider = new ModSlider(
 			GuiButtons.SPEED_RAINBOW.id, x, GuiButtons.SPEED_RAINBOW.getY(y), 150, 20,
 			"Speed", 0.1f, 3f, 0.1f, 0.5f, 10
 		);
 
-		buttonList.add(showRainbow);
+		buttonList.add(showRainbowButton);
 		buttonList.add(speedRainbowSlider);
 	}
 	
@@ -262,7 +265,7 @@ public class GuiConfig extends GuiScreen {
 	public void changeConfig() {
 		if (this.textField != null) ModConfig.text = textField.getText();
 		if (this.colorTextButton != null) ModConfig.setTextColor(colorTextButton.getColor());
-		if (this.showText != null) ModConfig.showText = showText.getBool();
+		if (this.showText != null) ModConfig.showText = showText.isEnabled();
 		if (this.scaleTextSlider != null) ModConfig.scaleText = scaleTextSlider.getValue() / 100d;
 
 		if (this.colorBackgroundButton != null) ModConfig.setBackgroundColor(this.colorBackgroundButton.getColor());
@@ -273,13 +276,15 @@ public class GuiConfig extends GuiScreen {
 			ModConfig.paddingBackground = padding;
 		}
 
+		if (this.showRainbowButton != null) ModConfig.showRainbow = showRainbow.isEnabled();
+
 		// ModConfig.rainbowSpeed = rainbowSpeedSlider.getValue();
 		// ModConfig.rainbowPrecision = rainbowPrecisionSlider.getValue();
 	}
 	
 	@Override
 	protected void actionPerformed(GuiButton button) throws IOException {
-		if (button == modeTextButton) {
+		if (button.id == GuiButtons.MODE_TEXT.id) {
 			mouseModeSelected = MouseModeEnum.getById(mouseModeSelected.getId() + 1);
 			updateMouseModeButton();
 
@@ -287,9 +292,12 @@ public class GuiConfig extends GuiScreen {
 				ModConfig.text = I18n.format(mouseModeSelected.getText(), new Object[0]);
 			}
 			textField.setText(ModConfig.text);
-		} else if (button == showTextButton) {
-			showText = ShowTextEnum.getByBool(!showText.getBool());
+		} else if (button.id == GuiButtons.SHOW_TEXT.id) {
+			showText = showText.toggle();
 			updateShowTextButton();
+		} else if (button.id == GuiButtons.SHOW_RAINBOW.id) {
+			showRainbow = showRainbow.toggle();
+			updateShowRainbowButton();
 		}
 
 		saveConfig();
@@ -305,7 +313,7 @@ public class GuiConfig extends GuiScreen {
 	}
 	public void updateShowRainbowButton() {
 		if (showRainbow == null) return;
-		showRainbow.displayString = I18n.format("cpsdisplay.button.show_rainbow", new Object[0]);
+		showRainbowButton.displayString = I18n.format("cpsdisplay.button.show_rainbow", new Object[0]) + showRainbow.getText();
 	}
 
 	public void updateButtons() {

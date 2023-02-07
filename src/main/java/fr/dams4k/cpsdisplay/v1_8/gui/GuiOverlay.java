@@ -21,7 +21,7 @@ public class GuiOverlay extends Gui {
 		if (ModConfig.showText) {
 			String text = ModConfig.text.replace("{0}", l.toString()).replace("{1}", r.toString()).replace("&", "§");
 			Color textColor;
-			if (!ModConfig.rainbow) {
+			if (!ModConfig.showRainbow) {
 				try {
 					textColor = ModConfig.getTextColor();
 				} catch (Exception e) {

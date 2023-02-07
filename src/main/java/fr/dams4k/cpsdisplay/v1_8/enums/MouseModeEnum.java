@@ -48,9 +48,9 @@ public enum MouseModeEnum {
 		return getById(0);
 	}
 	
-	public static MouseModeEnum getByText(String str) {
+	public static MouseModeEnum getByText(String text) {
 		for (MouseModeEnum val : MouseModeEnum.values()) {
-			if (val.getText() == str) {
+			if (val.getText() == I18n.format(text, new Object[0])) {
 				return val;
 			}
 		}

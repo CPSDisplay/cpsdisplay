@@ -1,6 +1,7 @@
 cpsdisplay.key.opengui=Open Config Gui
 cpsdisplay.category.cpsdisplay=CPS Display
 cpsdisplay.button.show_text=Show text: 
+cpsdisplay.button.show_rainbow=Show rainbow: 
 cpsdisplay.button.enable=§aEnable
 cpsdisplay.button.disable=§cDisable
 cpsdisplay.button.display_mode=Mode: 

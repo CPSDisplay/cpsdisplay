@@ -60,7 +60,7 @@ public enum ColorsEnum {
 				return color;
 			}
 		}
-		if (ModConfig.rainbow == true) {
+		if (ModConfig.showRainbow == true) {
 			return ColorsEnum.RAINBOW;
 		} else {
 			return ColorsEnum.CUSTOM;
