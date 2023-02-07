@@ -42,8 +42,8 @@ public class GuiOverlay extends Gui {
 			int y = positions.get(1);
 
 			if (color.getAlpha() > 0) {
-				int padding = ModConfig.paddingBackground;
-				drawRect(x-padding, y-padding, positions.get(2)+padding, positions.get(3)+padding, color.getRGB());
+				int margin = ModConfig.marginBackground;
+				drawRect(x-margin, y-margin, positions.get(2)+margin, positions.get(3)+margin, color.getRGB());
 			}
 			
 			// modFontRenderer.drawGradientString(text, x, y, 0x00ffff, 0x0000ff, true, true);

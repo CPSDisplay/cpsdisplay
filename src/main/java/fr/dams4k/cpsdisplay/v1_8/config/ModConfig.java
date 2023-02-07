@@ -28,7 +28,7 @@ public class ModConfig {
 
 	// Background
 	public static String hexColorBackground = "2a2a2a80";
-	public static int paddingBackground = 4;
+	public static int marginBackground = 4;
 	
 	// Rainbow
 	public static boolean showRainbow = false;
@@ -44,7 +44,7 @@ public class ModConfig {
 	private static Property textProperty;
 
 	private static Property hexColorBackgroundProperty;
-	private static Property paddingBackgroundProperty;
+	private static Property marginBackgroundProperty;
 	
 	private static Property showRainbowProperty;
 	private static Property speedRainbowProperty;
@@ -67,7 +67,7 @@ public class ModConfig {
 			textProperty = config.get(CATEGORY_TEXT, "text", text);
 
 			hexColorBackgroundProperty = config.get(CATEGORY_BACKGROUND, "color", hexColorBackground);
-			paddingBackgroundProperty = config.get(CATEGORY_BACKGROUND, "padding", paddingBackground);
+			marginBackgroundProperty = config.get(CATEGORY_BACKGROUND, "margin", marginBackground);
 
 			showRainbowProperty = config.get(CATEGORY_RAINBOW, "rainbow", showRainbow);
 			speedRainbowProperty = config.get(CATEGORY_RAINBOW, "chroma_speed", speedRainbow);
@@ -79,7 +79,7 @@ public class ModConfig {
 			text = textProperty.getString();
 
 			hexColorBackground = hexColorBackgroundProperty.getString();
-			paddingBackground = paddingBackgroundProperty.getInt();
+			marginBackground = marginBackgroundProperty.getInt();
 
 			showRainbow = showRainbowProperty.getBoolean();
 			speedRainbow = speedRainbowProperty.getDouble();
@@ -91,7 +91,7 @@ public class ModConfig {
 			textProperty.set(text);
 
 			hexColorBackgroundProperty.set(hexColorBackground);
-			paddingBackgroundProperty.set(paddingBackground);
+			marginBackgroundProperty.set(marginBackground);
 
 			showRainbowProperty.set(showRainbow);
 			speedRainbowProperty.set(speedRainbow);

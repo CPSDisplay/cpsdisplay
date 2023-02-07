@@ -29,8 +29,8 @@ public class GuiConfig extends GuiScreen {
 		TEXT(4),
 
 		COLOR_BACKGROUND(10),
-		PADDING_BACKGROUND_LABEL(11),
-		PADDING_BACKGROUND_FIELD(11),
+		MARGIN_BACKGROUND_LABEL(11),
+		MARGIN_BACKGROUND_FIELD(11),
 
 		SHOW_RAINBOW(20),
 		SPEED_RAINBOW(21);
@@ -59,14 +59,12 @@ public class GuiConfig extends GuiScreen {
 
 	// Background
 	private ModColorButton colorBackgroundButton;
-	private GuiLabel paddingBackgroundLabel;
-	private ModTextField paddingBackgroundField;
+	private GuiLabel marginBackgroundLabel;
+	private ModTextField marginBackgroundField;
 
 	// Rainbow
 	private ModToggleButton showRainbowToggle;
 	private ModSlider speedRainbowSlider;
-	// private GuiSlider rainbowSpeedSlider;
-	// private GuiSlider rainbowPrecisionSlider;
 
 	private int top = 20;
 	
@@ -78,37 +76,13 @@ public class GuiConfig extends GuiScreen {
 		super.initGui();
 		MinecraftForge.EVENT_BUS.register(this);
 
-		// rainbowSpeedSlider = new GuiSlider(13, width / 2 + 2, 60 + top, 150, 20, "", 0.1f, 3f, 0.1f, (float) ModConfig.rainbowSpeed, 10);
-		// rainbowSpeedSlider.setFormatHelper(new FormatHelper() {
-
-		// 	@Override
-		// 	public String getText(int id, String name, float value) {
-		// 		return "Speed: " + value + "x";
-		// 	}
-			
-		// });
-		// rainbowPrecisionSlider = new GuiSlider(14, width / 2 + 2, 85 + top, 150, 20, "Precision", 0.1f, 1f, 0.1f, (float) ModConfig.rainbowPrecision, 10);
-		// rainbowPrecisionSlider.setFormatHelper(new FormatHelper() {
-
-		// 	@Override
-		// 	public String getText(int id, String name, float value) {
-		// 		return "Precision: " + value + "";
-		// 	}
-			
-		// });
-
-		
-		
-		
-		// buttonList.add(rainbowSpeedSlider);
-		// buttonList.add(rainbowPrecisionSlider);
 		textFieldList.clear();
 		buttonList.clear();
 		labelList.clear();
 
 		this.addTextButtons(width / 2 - 152, 10 + top);
 		this.addBackgroundButtons(width / 2 + 2, 10 + top);
-		this.addRainbowButtons(width / 2 + 2, GuiButtons.PADDING_BACKGROUND_FIELD.getY(10 + top) + 25);
+		this.addRainbowButtons(width / 2 + 2, GuiButtons.MARGIN_BACKGROUND_FIELD.getY(10 + top) + 25);
 		updateButtons();
 	}
 
@@ -125,7 +99,7 @@ public class GuiConfig extends GuiScreen {
 		
 		scaleTextSlider = new ModSlider(
 			GuiButtons.SCALE_TEXT.id, x, GuiButtons.SCALE_TEXT.getY(y), 150, 20,
-			I18n.format("cpsdisplay.button.scale_text", new Object[0]),
+			I18n.format("cpsdisplay.slider.scale_text", new Object[0]),
 			0.1f * 100, 4 * 100, 0.01f, (float) (ModConfig.scaleText * 100), 10
 		);
 
@@ -151,20 +125,20 @@ public class GuiConfig extends GuiScreen {
 		);
 		colorBackgroundButton.setColor(ModConfig.getBackgroundColor());
 
-		paddingBackgroundLabel = new GuiLabel(fontRendererObj, GuiButtons.PADDING_BACKGROUND_LABEL.id, x+7, GuiButtons.PADDING_BACKGROUND_LABEL.getY(y), 75, 20, 0xffffff);
-		paddingBackgroundLabel.func_175202_a("Padding background:");
+		marginBackgroundLabel = new GuiLabel(fontRendererObj, GuiButtons.MARGIN_BACKGROUND_LABEL.id, x+7, GuiButtons.MARGIN_BACKGROUND_LABEL.getY(y), 75, 20, 0xffffff);
+		marginBackgroundLabel.func_175202_a(I18n.format("cpsdisplay.button.margin_background", new Object[0]));
 
-		paddingBackgroundField = new ModTextField(GuiButtons.PADDING_BACKGROUND_FIELD.id, fontRendererObj, x+115+10, GuiButtons.PADDING_BACKGROUND_FIELD.getY(y), 25, 20);
-		paddingBackgroundField.setMaxStringLength(2);
-		paddingBackgroundField.setText(Integer.toString(ModConfig.paddingBackground));
-		paddingBackgroundField.letters = false;
-		paddingBackgroundField.punctuation = false;
-		paddingBackgroundField.anythings = false;
-		paddingBackgroundField.placeHolder = "§oxx";
+		marginBackgroundField = new ModTextField(GuiButtons.MARGIN_BACKGROUND_FIELD.id, fontRendererObj, x+110, GuiButtons.MARGIN_BACKGROUND_FIELD.getY(y), 40, 20);
+		marginBackgroundField.setMaxStringLength(2);
+		marginBackgroundField.setText(Integer.toString(ModConfig.marginBackground));
+		marginBackgroundField.letters = false;
+		marginBackgroundField.punctuation = false;
+		marginBackgroundField.anythings = false;
+		marginBackgroundField.placeHolder = "§oxx";
 
 		buttonList.add(colorBackgroundButton);
-		labelList.add(paddingBackgroundLabel);
-		textFieldList.add(paddingBackgroundField);
+		labelList.add(marginBackgroundLabel);
+		textFieldList.add(marginBackgroundField);
 	}
 
 	public void addRainbowButtons(int x, int y) {
@@ -172,7 +146,7 @@ public class GuiConfig extends GuiScreen {
 
 		speedRainbowSlider = new ModSlider(
 			GuiButtons.SPEED_RAINBOW.id, x, GuiButtons.SPEED_RAINBOW.getY(y), 150, 20,
-			"Speed", 0.1f, 3f, 0.1f, 0.5f, 10
+			I18n.format("cpsdisplay.slider.speed_rainbow", new Object[0]), 0.1f, 3f, 0.1f, 0.5f, 10
 		);
 
 		buttonList.add(showRainbowToggle);
@@ -241,15 +215,15 @@ public class GuiConfig extends GuiScreen {
 		ArrayList<Integer> positions = GuiOverlay.getBackgroundPositions(0, 0, true);
 
 		int color = -1072689136;
-		int padding = (int) (this.height / 10 * ModConfig.scaleText);
+		int margin = (int) (this.height / 10 * ModConfig.scaleText);
 		// TOP
-		this.drawGradientRect(0, 0, this.width, positions.get(1)-padding, color, color);
+		this.drawGradientRect(0, 0, this.width, positions.get(1)-margin, color, color);
 		// BOTTOM
-		this.drawGradientRect(0, positions.get(3)+padding, this.width, this.height, color, color);
+		this.drawGradientRect(0, positions.get(3)+margin, this.width, this.height, color, color);
 		// LEFT
-		this.drawGradientRect(0, positions.get(1)-padding, positions.get(0)-padding, positions.get(3)+padding, color, color);
+		this.drawGradientRect(0, positions.get(1)-margin, positions.get(0)-margin, positions.get(3)+margin, color, color);
 		// RIGHT
-		this.drawGradientRect(positions.get(2)+padding, positions.get(1)-padding, this.width, positions.get(3)+padding, color, color);
+		this.drawGradientRect(positions.get(2)+margin, positions.get(1)-margin, this.width, positions.get(3)+margin, color, color);
 	}
 	
 	public void updateConfig() {
@@ -260,17 +234,15 @@ public class GuiConfig extends GuiScreen {
 
 		if (this.colorBackgroundButton != null) ModConfig.setBackgroundColor(this.colorBackgroundButton.getColor());
 		
-		if (this.paddingBackgroundField != null) {
-			String sPadding = paddingBackgroundField.getText();
-			int padding = sPadding.isEmpty() ? 0 : Integer.valueOf(sPadding);
-			ModConfig.paddingBackground = padding;
+		if (this.marginBackgroundField != null) {
+			String sMargin = marginBackgroundField.getText();
+			int margin = sMargin.isEmpty() ? 0 : Integer.valueOf(sMargin);
+			ModConfig.marginBackground = margin;
 		}
 
 		if (this.showRainbowToggle != null) ModConfig.showRainbow = showRainbowToggle.getValue();
 		if (this.speedRainbowSlider != null) ModConfig.speedRainbow = speedRainbowSlider.getValue();
 
-		// ModConfig.rainbowSpeed = rainbowSpeedSlider.getValue();
-		// ModConfig.rainbowPrecision = rainbowPrecisionSlider.getValue();
 		updateButtons();
 	}
 	
