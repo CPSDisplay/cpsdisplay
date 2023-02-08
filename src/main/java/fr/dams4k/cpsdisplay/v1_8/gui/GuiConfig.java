@@ -289,6 +289,12 @@ public class GuiConfig extends GuiScreen {
 	@Override
 	public void onGuiClosed() {
 		super.onGuiClosed();
+		for (GuiButton button : this.buttonList) {
+			if (button instanceof ModColorButton) {
+				ModColorButton colorButton = (ModColorButton) button;
+				colorButton.killColorPicker();
+			}
+		}
 		ModConfig.syncConfig(false);
 	}
 }

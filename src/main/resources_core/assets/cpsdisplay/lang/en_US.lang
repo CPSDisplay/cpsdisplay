@@ -18,3 +18,4 @@ cpsdisplay.button.color_text=Text color
 cpsdisplay.button.color_background=Background color
 cpsdisplay.button.margin_background=Background margin:
 cpsdisplay.slider.speed_rainbow=Speed
+cpsdisplay.external.color_picker=Color Picker

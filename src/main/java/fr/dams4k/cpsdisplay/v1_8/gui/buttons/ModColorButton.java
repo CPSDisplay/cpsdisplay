@@ -2,6 +2,7 @@ package fr.dams4k.cpsdisplay.v1_8.gui.buttons;
 
 import java.awt.Color;
 import java.awt.Insets;
+import java.awt.event.WindowEvent;
 
 import fr.dams4k.cpsdisplay.core.colorpicker.ColorPicker;
 import fr.dams4k.cpsdisplay.core.colorpicker.ColorPickerListener;
@@ -10,6 +11,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.resources.I18n;
 
 public class ModColorButton extends GuiButton implements ColorPickerListener {
     private final Minecraft mc = Minecraft.getMinecraft();
@@ -84,7 +86,10 @@ public class ModColorButton extends GuiButton implements ColorPickerListener {
             this.wasOriginallyFullscreen = true;
             WindowDisplay.disableFullscreen();
         }
+
+        this.killColorPicker();
         this.colorPicker = new ColorPicker(color, this.alphaChannel);
+        this.colorPicker.setTitle(String.join(" - ", I18n.format("cpsdisplay.external.color_picker", new Object[0]), this.displayString));
         this.colorPicker.addListener(this);
         this.colorPicker.popup();
     }
@@ -104,5 +109,11 @@ public class ModColorButton extends GuiButton implements ColorPickerListener {
     @Override
     public void closed() {
         this.colorPicker = null;
+    }
+
+    public void killColorPicker() {
+        if (this.colorPicker != null) {
+            this.colorPicker.dispatchEvent(new WindowEvent(colorPicker, WindowEvent.WINDOW_CLOSING));
+        }
     }
 }
