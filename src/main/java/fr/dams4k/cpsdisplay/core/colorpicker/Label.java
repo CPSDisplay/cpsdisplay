@@ -1,6 +1,8 @@
 package fr.dams4k.cpsdisplay.core.colorpicker;
 
 import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -9,38 +11,79 @@ import javax.swing.JPanel;
 import org.apache.commons.io.IOUtils;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraft.util.ResourceLocation;
 
 public class Label extends JPanel {
-    protected byte[] glyphWidth = new byte[65536];
-    private static final ResourceLocation[] unicodePageLocations = new ResourceLocation[256];
-    
+    private ResourceLocation defaultFontLocation = new ResourceLocation("textures/font/ascii.png");
+    private int[] charWidth = new int[256];
+    private byte[] glyphWidth = new byte[65536];
+
+    private boolean unicodeFlag = false;
     private String text;
 
+    public float fontSize = 2;
+
     public Label(String text) {
+        this.setOpaque(false);
         this.text = text;
+
+        this.unicodeFlag = Minecraft.getMinecraft().fontRendererObj.getUnicodeFlag();
+
+        if (!this.unicodeFlag) {
+            readFontTexture();
+        } else {
+            readGlyphSizes();
+        }
     }
     
-    private ResourceLocation getUnicodePageLocation(int page) {
-        if (unicodePageLocations[page] == null) {
-            unicodePageLocations[page] = new ResourceLocation(String.format("textures/font/unicode_page_%02x.png", new Object[] {Integer.valueOf(page)}));
+    private void readFontTexture() {
+        BufferedImage bufferedimage;
+
+        try {
+            bufferedimage = TextureUtil.readBufferedImage(Minecraft.getMinecraft().getResourceManager().getResource(this.defaultFontLocation).getInputStream());
+        } catch (IOException ioexception) {
+            throw new RuntimeException(ioexception);
         }
 
-        return unicodePageLocations[page];
-    }
-    
-    private void paintCharacter(Graphics g, char c) {
-        int page = c / 256;
-        ResourceLocation unicodePageLocation = this.getUnicodePageLocation(c);
-        // unicodePageLocation.getResourcePath()
-        System.out.println(unicodePageLocation.getResourcePath());
-    }
+        int i = bufferedimage.getWidth();
+        int j = bufferedimage.getHeight();
+        int[] aint = new int[i * j];
+        bufferedimage.getRGB(0, 0, i, j, aint, 0, i);
+        int k = j / 16;
+        int l = i / 16;
+        int i1 = 1;
+        float f = 8.0F / (float)l;
 
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        for (char c : this.text.toCharArray()) {
-            paintCharacter(g, c);
+        for (int j1 = 0; j1 < 256; ++j1) {
+            int k1 = j1 % 16;
+            int l1 = j1 / 16;
+
+            if (j1 == 32) {
+                this.charWidth[j1] = 3 + i1;
+            }
+
+            int i2;
+
+            for (i2 = l - 1; i2 >= 0; --i2) {
+                int j2 = k1 * l + i2;
+                boolean flag = true;
+
+                for (int k2 = 0; k2 < k && flag; ++k2) {
+                    int l2 = (l1 * l + k2) * i;
+
+                    if ((aint[j2 + l2] >> 24 & 255) != 0) {
+                        flag = false;
+                    }
+                }
+
+                if (!flag) {
+                    break;
+                }
+            }
+
+            ++i2;
+            this.charWidth[j1] = (int)(0.5D + (double)((float)i2 * f)) + i1;
         }
     }
 
@@ -48,15 +91,148 @@ public class Label extends JPanel {
         InputStream inputstream = null;
 
         try {
-            inputstream = getResourceInputStream(new ResourceLocation("font/glyph_sizes.bin"));
+            inputstream = Minecraft.getMinecraft().getResourceManager().getResource(new ResourceLocation("font/glyph_sizes.bin")).getInputStream();
             inputstream.read(this.glyphWidth);
         } catch (IOException ioexception) {
+            throw new RuntimeException(ioexception);
         } finally {
             IOUtils.closeQuietly(inputstream);
         }
     }
 
-    protected InputStream getResourceInputStream(ResourceLocation location) throws IOException {
-        return Minecraft.getMinecraft().getResourceManager().getResource(location).getInputStream();
+    public int getCharWidth(char character) {
+        if (character == 167) {
+            return (int) (-1 * this.fontSize);
+        } else if (character == 32) {
+            return (int) (4 * this.fontSize);
+        }
+
+        int i = "\u00c0\u00c1\u00c2\u00c8\u00ca\u00cb\u00cd\u00d3\u00d4\u00d5\u00da\u00df\u00e3\u00f5\u011f\u0130\u0131\u0152\u0153\u015e\u015f\u0174\u0175\u017e\u0207\u0000\u0000\u0000\u0000\u0000\u0000\u0000 !\"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~\u0000\u00c7\u00fc\u00e9\u00e2\u00e4\u00e0\u00e5\u00e7\u00ea\u00eb\u00e8\u00ef\u00ee\u00ec\u00c4\u00c5\u00c9\u00e6\u00c6\u00f4\u00f6\u00f2\u00fb\u00f9\u00ff\u00d6\u00dc\u00f8\u00a3\u00d8\u00d7\u0192\u00e1\u00ed\u00f3\u00fa\u00f1\u00d1\u00aa\u00ba\u00bf\u00ae\u00ac\u00bd\u00bc\u00a1\u00ab\u00bb\u2591\u2592\u2593\u2502\u2524\u2561\u2562\u2556\u2555\u2563\u2551\u2557\u255d\u255c\u255b\u2510\u2514\u2534\u252c\u251c\u2500\u253c\u255e\u255f\u255a\u2554\u2569\u2566\u2560\u2550\u256c\u2567\u2568\u2564\u2565\u2559\u2558\u2552\u2553\u256b\u256a\u2518\u250c\u2588\u2584\u258c\u2590\u2580\u03b1\u03b2\u0393\u03c0\u03a3\u03c3\u03bc\u03c4\u03a6\u0398\u03a9\u03b4\u221e\u2205\u2208\u2229\u2261\u00b1\u2265\u2264\u2320\u2321\u00f7\u2248\u00b0\u2219\u00b7\u221a\u207f\u00b2\u25a0\u0000".indexOf(character);
+
+        if (character > 0 && i != -1 && !this.unicodeFlag) {
+            return this.charWidth[i];
+        } else if (this.glyphWidth[character] != 0) {
+            int j = this.glyphWidth[character] >>> 4;
+            int k = this.glyphWidth[character] & 15;
+
+            if (k > 7) {
+                k = 15;
+                j = 0;
+            }
+
+            ++k;
+            return (int) ((k - j) / 2 + 1 * this.fontSize);
+        } else {
+            return 0;
+        }
+    }
+
+    public int getStringWidth(String text) {
+        if (text == null) {
+            return 0;
+        }
+
+        int i = 0;
+        boolean flag = false;
+
+        for (int j = 0; j < text.length(); ++j) {
+            char c0 = text.charAt(j);
+            int k = this.getCharWidth(c0);
+
+            if (k < 0 && j < text.length() - 1) {
+                ++j;
+                c0 = text.charAt(j);
+
+                if (c0 != 108 && c0 != 76) {
+                    if (c0 == 114 || c0 == 82) {
+                        flag = false;
+                    }
+                } else {
+                    flag = true;
+                }
+
+                k = 0;
+            }
+
+            i += k;
+
+            if (flag && k > 0) {
+                ++i;
+            }
+        }
+
+        return (int) (i * this.fontSize);
+    }
+
+    public float paintChar(Graphics g, char c, int x, int y) {
+        if (c == 32) {
+            return 4 * this.fontSize;
+        }
+        int i = "\u00c0\u00c1\u00c2\u00c8\u00ca\u00cb\u00cd\u00d3\u00d4\u00d5\u00da\u00df\u00e3\u00f5\u011f\u0130\u0131\u0152\u0153\u015e\u015f\u0174\u0175\u017e\u0207\u0000\u0000\u0000\u0000\u0000\u0000\u0000 !\"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~\u0000\u00c7\u00fc\u00e9\u00e2\u00e4\u00e0\u00e5\u00e7\u00ea\u00eb\u00e8\u00ef\u00ee\u00ec\u00c4\u00c5\u00c9\u00e6\u00c6\u00f4\u00f6\u00f2\u00fb\u00f9\u00ff\u00d6\u00dc\u00f8\u00a3\u00d8\u00d7\u0192\u00e1\u00ed\u00f3\u00fa\u00f1\u00d1\u00aa\u00ba\u00bf\u00ae\u00ac\u00bd\u00bc\u00a1\u00ab\u00bb\u2591\u2592\u2593\u2502\u2524\u2561\u2562\u2556\u2555\u2563\u2551\u2557\u255d\u255c\u255b\u2510\u2514\u2534\u252c\u251c\u2500\u253c\u255e\u255f\u255a\u2554\u2569\u2566\u2560\u2550\u256c\u2567\u2568\u2564\u2565\u2559\u2558\u2552\u2553\u256b\u256a\u2518\u250c\u2588\u2584\u258c\u2590\u2580\u03b1\u03b2\u0393\u03c0\u03a3\u03c3\u03bc\u03c4\u03a6\u0398\u03a9\u03b4\u221e\u2205\u2208\u2229\u2261\u00b1\u2265\u2264\u2320\u2321\u00f7\u2248\u00b0\u2219\u00b7\u221a\u207f\u00b2\u25a0\u0000".indexOf(c);
+        return i != -1 && !this.unicodeFlag ? this.paintDefaultCharacter(g, c, x, y) : this.paintUnicodeCharacter(g, c, x, y);
+    }
+
+    public float paintDefaultCharacter(Graphics g, char c, int x, int y) {
+        try {
+            int cx = c % 16 * 8;
+            int cy = c / 16 * 8;
+            int cwidth = this.charWidth[c];
+            int cheight = 7;
+
+            BufferedImage fontImage = TextureUtil.readBufferedImage(Minecraft.getMinecraft().getResourceManager().getResource(this.defaultFontLocation).getInputStream());
+            Image subImage = fontImage.getSubimage(cx, cy, cwidth, cheight);
+            g.drawImage(subImage, x, y, (int) (subImage.getWidth(this) * this.fontSize), (int) (subImage.getHeight(this) * this.fontSize), this);
+
+            return cwidth * this.fontSize;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return 0f;
+    }
+
+    public float paintUnicodeCharacter(Graphics g, char c, int x, int y) {
+        if (this.glyphWidth[c] == 0) return 0;
+
+        try {
+            int j = this.glyphWidth[c] >>> 4;
+            int k = this.glyphWidth[c] & 15;
+
+            int cx = c % 16 * 16 + j;
+            int cy = (c & 255) / 16 * 16;
+
+            int cwidth = k+1 - j;
+            int cheight = 16;
+
+
+            int unicodePage = c / 256;
+            ResourceLocation unicodeLocation = new ResourceLocation(String.format("textures/font/unicode_page_%02x.png", new Object[] {Integer.valueOf(unicodePage)}));
+            BufferedImage fontImage = TextureUtil.readBufferedImage(Minecraft.getMinecraft().getResourceManager().getResource(unicodeLocation).getInputStream());
+            Image subImage = fontImage.getSubimage(cx, cy, cwidth, cheight);
+            g.drawImage(subImage, x, y, (int) (subImage.getWidth(this) * this.fontSize), (int) (subImage.getHeight(this) * this.fontSize), this);
+
+            return (cwidth + 1) * this.fontSize;
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
+
+    public void paintString(Graphics g, String text, int x, int y) {
+        for (char c : text.toCharArray()) {
+            x += (int) this.paintChar(g, c, x, y);
+        }
+    }
+
+    public void paintCenteredString(Graphics g, String text, int x, int y) {
+        y = unicodeFlag == false ? (int) ((this.getHeight() - 7*this.fontSize)/2) : (int) ((this.getHeight() - 16*this.fontSize)/2);
+        this.paintString(g, text, (int) (x - this.getStringWidth(text)/2), y);
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        this.paintCenteredString(g, this.text, this.getWidth()/2, this.getHeight()/2);
     }
 }

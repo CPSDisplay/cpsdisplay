@@ -37,7 +37,8 @@ public class Slider extends JPanel implements PointerListener {
 
         InventoryBorder border = new InventoryBorder(textureScale);
         
-        this.label = new Label(name);
+        this.label = new Label(name + ":");
+        this.label.setPreferredSize(new Dimension(32, 32));
 
         List<Color> colors = new ArrayList<>();
         colors.add(new Color(1f, 1f, 1f));

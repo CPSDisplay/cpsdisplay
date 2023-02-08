@@ -108,7 +108,7 @@ public class GuiConfig extends GuiScreen {
 		);
 
 		for (int i = 50; i < 400; i+=50) {
-			scaleTextSlider.addMainPoint(new ModSliderMainPoint(i, 2.5f));
+			scaleTextSlider.addMainPoint(new ModSliderMainPoint(i, 4f));
 		}
 
 		modeTextButton = new GuiButton(GuiButtons.MODE_TEXT.id, x, GuiButtons.MODE_TEXT.getY(y), 150, 20, "");
