@@ -19,6 +19,7 @@ import fr.dams4k.cpsdisplay.core.colorpicker.border.Border;
 import fr.dams4k.cpsdisplay.core.colorpicker.border.InventoryBorder;
 import fr.dams4k.cpsdisplay.core.colorpicker.imagepanel.ImagePanel;
 import fr.dams4k.cpsdisplay.core.colorpicker.imagepanel.ImageType;
+import fr.dams4k.cpsdisplay.core.colorpicker.imagepanel.pointer.Button;
 import fr.dams4k.cpsdisplay.core.colorpicker.imagepanel.pointer.HPointerListener;
 import fr.dams4k.cpsdisplay.core.colorpicker.imagepanel.pointer.HPointerPanel;
 import fr.dams4k.cpsdisplay.core.colorpicker.imagepanel.pointer.PointerPanel;
@@ -58,7 +59,7 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
         this.setTitle("ColorPicker");
         int borderSize = 8;
 
-        int sizeY = alphaChannel == true ? 550 : 510;
+        int sizeY = alphaChannel == true ? 600 : 550;
         Dimension size = new Dimension(300, sizeY);
         this.setSize(size);
         this.setMinimumSize(size);
@@ -120,13 +121,13 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
 
         JPanel colorsPreview = new JPanel(new FlowLayout());
         colorsPreview.setOpaque(false);
-        colorsPreview.setPreferredSize(new Dimension(size.width, 64));
-        colorsPreview.setMaximumSize(new Dimension(size.width, 64));
+        colorsPreview.setPreferredSize(new Dimension(size.width, 44));
+        colorsPreview.setMaximumSize(new Dimension(size.width, 44));
 
         oldColorPreview.setColor(oldColor);
         updateColorPreview();
-        int colorPreviewHeight = 36;
         int colorPreviewWidth = (int) (size.width/2)-48;
+        int colorPreviewHeight = 36;
         newColorPreview.setPreferredSize(new Dimension(colorPreviewWidth, colorPreviewHeight));
         newColorPreview.setMaximumSize(new Dimension(colorPreviewWidth, colorPreviewHeight));
         oldColorPreview.setPreferredSize(new Dimension(colorPreviewWidth, colorPreviewHeight));
@@ -149,6 +150,20 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
             }
         });
 
+        JPanel closeButtons = new JPanel(new FlowLayout());
+        closeButtons.setOpaque(false);
+        closeButtons.setPreferredSize(new Dimension(size.width, 64));
+        closeButtons.setMaximumSize(new Dimension(size.width, 64));
+        background.add(closeButtons);
+
+        Button cancelButton = new Button("Cancel", this.texturesSize);
+        cancelButton.setPreferredSize(new Dimension(size.width / 2 - 8, 48));
+        closeButtons.add(cancelButton);
+
+        Button okButton = new Button("OK", this.texturesSize);
+        okButton.setPreferredSize(new Dimension(size.width / 2 - 8, 48));
+        closeButtons.add(okButton);
+
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
@@ -167,6 +182,7 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
         this.updateVGradient();
         this.updateAGradient();
         this.updateColorPreview();
+        System.out.println(this.getSize());
     }
 
     @Override
