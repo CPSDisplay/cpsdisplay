@@ -259,6 +259,7 @@ public class GuiConfig extends GuiScreen {
 		}
 
 		updateConfig();
+		ModConfig.syncConfig(false);
 	}
 	
 	public void updateMouseModeButton() {

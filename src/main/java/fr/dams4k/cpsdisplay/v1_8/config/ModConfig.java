@@ -2,6 +2,7 @@ package fr.dams4k.cpsdisplay.v1_8.config;
 
 import java.awt.Color;
 import java.io.File;
+import java.util.Collections;
 
 import fr.dams4k.cpsdisplay.core.References;
 import net.minecraft.client.Minecraft;
@@ -131,22 +132,23 @@ public class ModConfig {
 	}
 
 	public static Color getTextColor() {
-		return ModConfig.HexToColor(ModConfig.hexColorText);
+		return ModConfig.HexToColor(ModConfig.hexColorText, 6);
 	}
 	public static void setTextColor(Color color) {
 		ModConfig.hexColorText = Integer.toHexString(color.getRGB()).substring(2);
 	}
 
 	public static Color getBackgroundColor() {
-		return ModConfig.HexToColor(ModConfig.hexColorBackground);
+		return ModConfig.HexToColor(ModConfig.hexColorBackground, 8);
 	}
 	public static void setBackgroundColor(Color color) {
 		String hexString = Integer.toHexString(color.getRGB()); // aarrggbbb
 		ModConfig.hexColorBackground = hexString.substring(2) + hexString.subSequence(0, 2); // rrggbbaa
 	}
 
-	public static Color HexToColor(String hex) {
-		hex = hex.replace("#", "");
+	public static Color HexToColor(String hex, int size) {
+		hex = hex.replace("#", "");;
+		hex += String.join("", Collections.nCopies(Math.max(0, size-hex.length()), "0"));
 		switch (hex.length()) {
 			case 6:
 				return new Color(
