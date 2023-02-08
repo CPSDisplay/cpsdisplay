@@ -5,10 +5,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.logging.log4j.core.layout.SyslogLayout;
+
 import fr.dams4k.cpsdisplay.v1_8.config.ModConfig;
 import fr.dams4k.cpsdisplay.v1_8.enums.MouseModeEnum;
 import fr.dams4k.cpsdisplay.v1_8.gui.buttons.ModColorButton;
 import fr.dams4k.cpsdisplay.v1_8.gui.buttons.ModSlider;
+import fr.dams4k.cpsdisplay.v1_8.gui.buttons.ModSliderMainPoint;
 import fr.dams4k.cpsdisplay.v1_8.gui.buttons.ModTextField;
 import fr.dams4k.cpsdisplay.v1_8.gui.buttons.ModToggleButton;
 import net.minecraft.client.Minecraft;
@@ -89,7 +92,10 @@ public class GuiConfig extends GuiScreen {
 	public void addTextButtons(int x, int y) {
 		mouseModeSelected = MouseModeEnum.getByText(ModConfig.text);
 
-		showTextToggle = new ModToggleButton(GuiButtons.SHOW_TEXT.id, x, GuiButtons.SHOW_TEXT.getY(y), 150, 20, I18n.format("cpsdisplay.button.show_text", new Object[0]), "", ModConfig.showText);
+		showTextToggle = new ModToggleButton(
+			GuiButtons.SHOW_TEXT.id, x, GuiButtons.SHOW_TEXT.getY(y), 150, 20,
+			I18n.format("cpsdisplay.button.show_text", new Object[0]), "", ModConfig.showText
+		);
 
 		colorTextButton = new ModColorButton(
 			GuiButtons.COLOR_TEXT.id, x, GuiButtons.COLOR_TEXT.getY(y), 150, 20,
@@ -102,6 +108,10 @@ public class GuiConfig extends GuiScreen {
 			I18n.format("cpsdisplay.slider.scale_text", new Object[0]),
 			0.1f * 100, 4 * 100, 0.01f, (float) (ModConfig.scaleText * 100), 10
 		);
+
+		for (int i = 50; i < 400; i+=50) {
+			scaleTextSlider.addMainPoint(new ModSliderMainPoint(i, 2.5f));
+		}
 
 		modeTextButton = new GuiButton(GuiButtons.MODE_TEXT.id, x, GuiButtons.MODE_TEXT.getY(y), 150, 20, "");
 		updateMouseModeButton();

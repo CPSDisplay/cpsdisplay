@@ -1,5 +1,8 @@
 package fr.dams4k.cpsdisplay.v1_8.gui.buttons;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiPageButtonList;
@@ -17,6 +20,8 @@ public class ModSlider extends GuiButton {
     private final int decimals;
     private final GuiPageButtonList.GuiResponder responder;
     private ModSlider.FormatHelper formatHelper;
+
+    private List<ModSliderMainPoint> mainPoints = new ArrayList<>();
 
     public ModSlider(GuiPageButtonList.GuiResponder guiResponder, int idIn, int x, int y, int width, int height, String name, float min, float max, float step, float defaultValue, ModSlider.FormatHelper formatter, int decimals) {
         super(idIn, x, y, width, height, "");
@@ -57,6 +62,9 @@ public class ModSlider extends GuiButton {
 		}, decimals);
     }
 
+    public void setValue(float value) {
+        this.sliderPosition = valueToPosition(value);
+    }
     public float getValue() {
         return Math.round(this.positionToValue(this.sliderPosition) * (float) this.decimals) / (float) this.decimals;
     }
@@ -107,6 +115,11 @@ public class ModSlider extends GuiButton {
         if (this.visible) {
             if (this.isMouseDown) {
                 this.sliderPosition = (float)(mouseX - (this.xPosition + 4)) / (float)(this.width - 8);
+                for (ModSliderMainPoint mainPoint : this.mainPoints) {
+                    if (mainPoint.isNear(this.getValue())) {
+                        this.sliderPosition = this.valueToPosition(mainPoint.getValue());
+                    }
+                }
                 
                 if (this.sliderPosition < 0.0f) {
                     this.sliderPosition = 0.0f;
@@ -140,6 +153,12 @@ public class ModSlider extends GuiButton {
         if (super.mousePressed(mc, mouseX, mouseY)) {
             this.sliderPosition = (float)(mouseX - (this.xPosition + 4)) / (float)(this.width - 8);
 
+            for (ModSliderMainPoint mainPoint : this.mainPoints) {
+                if (mainPoint.isNear(this.getValue())) {
+                    this.sliderPosition = this.valueToPosition(mainPoint.getValue());
+                }
+            }
+
             if (this.sliderPosition < 0.0f) {
                 this.sliderPosition = 0.0f;
             }
@@ -166,5 +185,9 @@ public class ModSlider extends GuiButton {
 
     public interface FormatHelper {
         String getText(int id, String name, float value);
+    }
+
+    public void addMainPoint(ModSliderMainPoint mainPoint) {
+        this.mainPoints.add(mainPoint);
     }
 }
