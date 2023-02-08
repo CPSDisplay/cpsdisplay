@@ -9,6 +9,7 @@ import java.util.List;
 import javax.swing.JPanel;
 
 import fr.dams4k.cpsdisplay.core.colorpicker.ColorPickerImages;
+import fr.dams4k.cpsdisplay.core.colorpicker.Label;
 import fr.dams4k.cpsdisplay.core.colorpicker.border.InventoryBorder;
 import fr.dams4k.cpsdisplay.core.colorpicker.imagepanel.ImageType;
 import fr.dams4k.cpsdisplay.core.colorpicker.imagepanel.pointer.PointerListener;
@@ -17,6 +18,7 @@ import fr.dams4k.cpsdisplay.core.colorpicker.imagepanel.pointer.PointerPanel;
 public class Slider extends JPanel implements PointerListener {
     private List<SliderListener> listeners = new ArrayList<>();
 
+    private Label label;
     private PointerPanel pointerPanel;
     public int gradientSizeX = 256;
     public int gradientSizeY = 1;
@@ -35,6 +37,8 @@ public class Slider extends JPanel implements PointerListener {
 
         InventoryBorder border = new InventoryBorder(textureScale);
         
+        this.label = new Label(name);
+
         List<Color> colors = new ArrayList<>();
         colors.add(new Color(1f, 1f, 1f));
         colors.add(new Color(0f, 0f, 0f));
@@ -45,6 +49,7 @@ public class Slider extends JPanel implements PointerListener {
         this.pointerPanel.addListener(this);
         this.pointerPanel.setOpaque(false);
 
+        this.add(label);
         this.add(this.pointerPanel);
     }
 

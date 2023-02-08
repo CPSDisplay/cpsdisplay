@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.logging.log4j.core.layout.SyslogLayout;
-
 import fr.dams4k.cpsdisplay.v1_8.config.ModConfig;
 import fr.dams4k.cpsdisplay.v1_8.enums.MouseModeEnum;
 import fr.dams4k.cpsdisplay.v1_8.gui.buttons.ModColorButton;
