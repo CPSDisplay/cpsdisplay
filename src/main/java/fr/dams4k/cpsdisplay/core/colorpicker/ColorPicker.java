@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -20,6 +19,7 @@ import fr.dams4k.cpsdisplay.core.colorpicker.border.InventoryBorder;
 import fr.dams4k.cpsdisplay.core.colorpicker.imagepanel.ImagePanel;
 import fr.dams4k.cpsdisplay.core.colorpicker.imagepanel.ImageType;
 import fr.dams4k.cpsdisplay.core.colorpicker.imagepanel.pointer.Button;
+import fr.dams4k.cpsdisplay.core.colorpicker.imagepanel.pointer.ButtonListener;
 import fr.dams4k.cpsdisplay.core.colorpicker.imagepanel.pointer.HPointerListener;
 import fr.dams4k.cpsdisplay.core.colorpicker.imagepanel.pointer.HPointerPanel;
 import fr.dams4k.cpsdisplay.core.colorpicker.imagepanel.pointer.PointerPanel;
@@ -138,17 +138,6 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
 
 
         background.add(colorsPreview);
-        
-        this.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                super.windowClosing(e);
-                for (ColorPickerListener listener : listeners) {
-                    listener.newColor(getColor());
-                    listener.closed();
-                }
-            }
-        });
 
         JPanel closeButtons = new JPanel(new FlowLayout());
         closeButtons.setOpaque(false);
@@ -158,10 +147,27 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
 
         Button cancelButton = new Button("Cancel", this.texturesSize);
         cancelButton.setPreferredSize(new Dimension(size.width / 2 - 8, 48));
+        cancelButton.addButtonListener(new ButtonListener() {
+            @Override
+            public void buttonClicked() {
+                close();
+            }
+            
+        });
         closeButtons.add(cancelButton);
 
         Button okButton = new Button("OK", this.texturesSize);
         okButton.setPreferredSize(new Dimension(size.width / 2 - 8, 48));
+        okButton.addButtonListener(new ButtonListener() {
+            @Override
+            public void buttonClicked() {
+                for (ColorPickerListener listener : listeners) {
+                    close();
+                    listener.newColor(getColor());
+                    listener.closed();
+                }
+            }
+        });
         closeButtons.add(okButton);
 
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -182,7 +188,6 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
         this.updateVGradient();
         this.updateAGradient();
         this.updateColorPreview();
-        System.out.println(this.getSize());
     }
 
     @Override
@@ -279,5 +284,9 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
 
     public void addListener(ColorPickerListener listener) {
         this.listeners.add(listener);
+    }
+
+    public void close() {
+        this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
     }
 }
