@@ -1,4 +1,4 @@
-package fr.dams4k.cpsdisplay.core.colorpicker.imagepanel.pointer;
+package fr.dams4k.cpsdisplay.core.colorpicker.gui;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -8,10 +8,9 @@ import java.util.List;
 
 import javax.swing.event.MouseInputListener;
 
-import fr.dams4k.cpsdisplay.core.colorpicker.Label;
-import fr.dams4k.cpsdisplay.core.colorpicker.border.Border;
-import fr.dams4k.cpsdisplay.core.colorpicker.border.ButtonBorder;
-import fr.dams4k.cpsdisplay.core.colorpicker.border.ButtonMode;
+import fr.dams4k.cpsdisplay.core.colorpicker.gui.border.Border;
+import fr.dams4k.cpsdisplay.core.colorpicker.gui.border.ButtonBorder;
+import fr.dams4k.cpsdisplay.core.colorpicker.gui.border.ButtonMode;
 import fr.dams4k.cpsdisplay.v1_8.config.ModConfig;
 
 public class Button extends Label implements MouseInputListener {

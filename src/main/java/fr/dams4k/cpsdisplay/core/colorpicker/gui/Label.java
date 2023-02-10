@@ -1,4 +1,4 @@
-package fr.dams4k.cpsdisplay.core.colorpicker;
+package fr.dams4k.cpsdisplay.core.colorpicker.gui;
 
 import java.awt.Color;
 import java.awt.Graphics;

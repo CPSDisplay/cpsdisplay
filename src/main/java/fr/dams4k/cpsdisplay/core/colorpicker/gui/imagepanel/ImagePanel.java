@@ -1,4 +1,4 @@
-package fr.dams4k.cpsdisplay.core.colorpicker.imagepanel;
+package fr.dams4k.cpsdisplay.core.colorpicker.gui.imagepanel;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -9,7 +9,7 @@ import java.net.URL;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
-import fr.dams4k.cpsdisplay.core.colorpicker.border.Border;
+import fr.dams4k.cpsdisplay.core.colorpicker.gui.border.Border;
 
 public class ImagePanel extends JPanel {
     private Image image;

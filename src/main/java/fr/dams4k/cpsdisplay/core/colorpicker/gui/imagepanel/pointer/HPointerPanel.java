@@ -1,11 +1,11 @@
-package fr.dams4k.cpsdisplay.core.colorpicker.imagepanel.pointer;
+package fr.dams4k.cpsdisplay.core.colorpicker.gui.imagepanel.pointer;
 
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
 import fr.dams4k.cpsdisplay.core.colorpicker.ColorPickerImages;
-import fr.dams4k.cpsdisplay.core.colorpicker.imagepanel.ImageType;
+import fr.dams4k.cpsdisplay.core.colorpicker.gui.imagepanel.ImageType;
 
 public class HPointerPanel extends PointerPanel {
     public List<HPointerListener> listeners = new ArrayList<>();

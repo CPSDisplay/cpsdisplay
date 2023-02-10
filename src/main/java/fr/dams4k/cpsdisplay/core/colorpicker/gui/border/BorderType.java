@@ -1,4 +1,4 @@
-package fr.dams4k.cpsdisplay.core.colorpicker.border;
+package fr.dams4k.cpsdisplay.core.colorpicker.gui.border;
 
 public enum BorderType {
     TOP_LEFT_CORNER,

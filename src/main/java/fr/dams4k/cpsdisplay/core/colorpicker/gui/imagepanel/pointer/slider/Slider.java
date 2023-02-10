@@ -1,4 +1,4 @@
-package fr.dams4k.cpsdisplay.core.colorpicker.imagepanel.pointer.slider;
+package fr.dams4k.cpsdisplay.core.colorpicker.gui.imagepanel.pointer.slider;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -9,11 +9,11 @@ import java.util.List;
 import javax.swing.JPanel;
 
 import fr.dams4k.cpsdisplay.core.colorpicker.ColorPickerImages;
-import fr.dams4k.cpsdisplay.core.colorpicker.Label;
-import fr.dams4k.cpsdisplay.core.colorpicker.border.InventoryBorder;
-import fr.dams4k.cpsdisplay.core.colorpicker.imagepanel.ImageType;
-import fr.dams4k.cpsdisplay.core.colorpicker.imagepanel.pointer.PointerListener;
-import fr.dams4k.cpsdisplay.core.colorpicker.imagepanel.pointer.PointerPanel;
+import fr.dams4k.cpsdisplay.core.colorpicker.gui.Label;
+import fr.dams4k.cpsdisplay.core.colorpicker.gui.border.InventoryBorder;
+import fr.dams4k.cpsdisplay.core.colorpicker.gui.imagepanel.ImageType;
+import fr.dams4k.cpsdisplay.core.colorpicker.gui.imagepanel.pointer.PointerListener;
+import fr.dams4k.cpsdisplay.core.colorpicker.gui.imagepanel.pointer.PointerPanel;
 
 public class Slider extends JPanel implements PointerListener {
     private List<SliderListener> listeners = new ArrayList<>();

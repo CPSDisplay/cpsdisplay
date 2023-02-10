@@ -1,10 +1,10 @@
-package fr.dams4k.cpsdisplay.core.colorpicker;
+package fr.dams4k.cpsdisplay.core.colorpicker.gui;
 
 import java.awt.Color;
 import java.awt.Graphics;
 
-import fr.dams4k.cpsdisplay.core.colorpicker.border.InventoryBorder;
-import fr.dams4k.cpsdisplay.core.colorpicker.imagepanel.ImagePanel;
+import fr.dams4k.cpsdisplay.core.colorpicker.gui.border.InventoryBorder;
+import fr.dams4k.cpsdisplay.core.colorpicker.gui.imagepanel.ImagePanel;
 
 public class ColorPreview extends ImagePanel {
     private Color color = Color.WHITE;

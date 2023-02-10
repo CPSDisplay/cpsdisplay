@@ -1,4 +1,4 @@
-package fr.dams4k.cpsdisplay.core.colorpicker.imagepanel.pointer;
+package fr.dams4k.cpsdisplay.core.colorpicker.gui.imagepanel.pointer;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -9,8 +9,8 @@ import java.util.List;
 
 import javax.swing.event.MouseInputListener;
 
-import fr.dams4k.cpsdisplay.core.colorpicker.imagepanel.ImagePanel;
-import fr.dams4k.cpsdisplay.core.colorpicker.imagepanel.ImageType;
+import fr.dams4k.cpsdisplay.core.colorpicker.gui.imagepanel.ImagePanel;
+import fr.dams4k.cpsdisplay.core.colorpicker.gui.imagepanel.ImageType;
 
 public class PointerPanel extends ImagePanel implements MouseInputListener {
     private List<PointerListener> listeners = new ArrayList<>();

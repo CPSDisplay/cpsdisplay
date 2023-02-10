@@ -14,35 +14,44 @@ import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import fr.dams4k.cpsdisplay.core.colorpicker.border.Border;
-import fr.dams4k.cpsdisplay.core.colorpicker.border.InventoryBorder;
-import fr.dams4k.cpsdisplay.core.colorpicker.imagepanel.ImagePanel;
-import fr.dams4k.cpsdisplay.core.colorpicker.imagepanel.ImageType;
-import fr.dams4k.cpsdisplay.core.colorpicker.imagepanel.pointer.Button;
-import fr.dams4k.cpsdisplay.core.colorpicker.imagepanel.pointer.ButtonListener;
-import fr.dams4k.cpsdisplay.core.colorpicker.imagepanel.pointer.HPointerListener;
-import fr.dams4k.cpsdisplay.core.colorpicker.imagepanel.pointer.HPointerPanel;
-import fr.dams4k.cpsdisplay.core.colorpicker.imagepanel.pointer.PointerPanel;
-import fr.dams4k.cpsdisplay.core.colorpicker.imagepanel.pointer.SVPointerListener;
-import fr.dams4k.cpsdisplay.core.colorpicker.imagepanel.pointer.SVPointerPanel;
-import fr.dams4k.cpsdisplay.core.colorpicker.imagepanel.pointer.slider.Slider;
-import fr.dams4k.cpsdisplay.core.colorpicker.imagepanel.pointer.slider.SliderListener;
+import fr.dams4k.cpsdisplay.core.colorpicker.gui.Button;
+import fr.dams4k.cpsdisplay.core.colorpicker.gui.ButtonListener;
+import fr.dams4k.cpsdisplay.core.colorpicker.gui.ColorPreview;
+import fr.dams4k.cpsdisplay.core.colorpicker.gui.Label;
+import fr.dams4k.cpsdisplay.core.colorpicker.gui.TextField;
+import fr.dams4k.cpsdisplay.core.colorpicker.gui.border.Border;
+import fr.dams4k.cpsdisplay.core.colorpicker.gui.border.InventoryBorder;
+import fr.dams4k.cpsdisplay.core.colorpicker.gui.imagepanel.ImagePanel;
+import fr.dams4k.cpsdisplay.core.colorpicker.gui.imagepanel.ImageType;
+import fr.dams4k.cpsdisplay.core.colorpicker.gui.imagepanel.pointer.HPointerListener;
+import fr.dams4k.cpsdisplay.core.colorpicker.gui.imagepanel.pointer.HPointerPanel;
+import fr.dams4k.cpsdisplay.core.colorpicker.gui.imagepanel.pointer.PointerPanel;
+import fr.dams4k.cpsdisplay.core.colorpicker.gui.imagepanel.pointer.SVPointerListener;
+import fr.dams4k.cpsdisplay.core.colorpicker.gui.imagepanel.pointer.SVPointerPanel;
+import fr.dams4k.cpsdisplay.core.colorpicker.gui.imagepanel.pointer.slider.Slider;
+import fr.dams4k.cpsdisplay.core.colorpicker.gui.imagepanel.pointer.slider.SliderListener;
 
 public class ColorPicker extends JFrame implements HPointerListener, SVPointerListener, SliderListener {
     private List<ColorPickerListener> listeners = new ArrayList<>();
 
-    private final float texturesSize = 3f;
+    private final float texturesScale = 3f;
 
     private SVPointerPanel svPointerPanel = new SVPointerPanel();
     private HPointerPanel hPointerPanel = new HPointerPanel();
 
-    private Slider hSlider = new Slider("H", 0, 360, this.texturesSize);
-    private Slider sSlider = new Slider("S", 0, 100, this.texturesSize);
-    private Slider vSlider = new Slider("V", 0, 100, this.texturesSize);
-    private Slider aSlider = new Slider("A", 0, 100, this.texturesSize);
+    private Slider hSlider = new Slider("H", 0, 360, this.texturesScale);
+    private Slider sSlider = new Slider("S", 0, 100, this.texturesScale);
+    private Slider vSlider = new Slider("V", 0, 100, this.texturesScale);
+    private Slider aSlider = new Slider("A", 0, 100, this.texturesScale);
 
-    private ColorPreview oldColorPreview = new ColorPreview(Color.WHITE, this.texturesSize);
-    private ColorPreview newColorPreview = new ColorPreview(Color.WHITE, this.texturesSize);
+    private Label hexColorLabel = new Label("Hex color:");
+    private TextField hexColorField = new TextField(this.texturesScale);
+
+    private ColorPreview oldColorPreview = new ColorPreview(Color.WHITE, this.texturesScale);
+    private ColorPreview newColorPreview = new ColorPreview(Color.WHITE, this.texturesScale);
+
+    private Button okButton = new Button("OK", this.texturesScale);
+    private Button cancelButton = new Button("Cancel", this.texturesScale);
 
     private float h = 0f;
     private float s = 1f;
@@ -64,9 +73,9 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
         this.setSize(size);
         this.setMinimumSize(size);
 
-        Border inventoryImageBorder = new InventoryBorder(texturesSize);
+        Border inventoryImageBorder = new InventoryBorder(texturesScale);
 
-        ImagePanel background = new ImagePanel("assets/minecraft/textures/gui/options_background.png", ImageType.TILING, texturesSize);
+        ImagePanel background = new ImagePanel("assets/minecraft/textures/gui/options_background.png", ImageType.TILING, texturesScale);
         background.setDarkness(0.5f);
         background.setLayout(new BoxLayout(background, BoxLayout.PAGE_AXIS));
         this.getContentPane().add(background);
@@ -118,6 +127,22 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
             sliders.add(this.aSlider);
         }
 
+        JPanel hexColorPanel = new JPanel(new FlowLayout());
+        hexColorPanel.setOpaque(false);
+        hexColorPanel.setPreferredSize(new Dimension(size.width, 34));
+        hexColorPanel.setMaximumSize(new Dimension(size.width, 34));
+
+        hexColorLabel.setPreferredSize(new Dimension(size.width/2-4, 24));
+        hexColorLabel.setMaximumSize(new Dimension(size.width/2-4, 24));
+        hexColorPanel.add(hexColorLabel);
+
+        hexColorField.setPreferredSize(new Dimension(size.width/2-4, 32));
+        hexColorField.setMaximumSize(new Dimension(size.width/2-4, 32));
+        hexColorPanel.add(hexColorField);
+        
+        background.add(hexColorPanel);
+
+
 
         JPanel colorsPreview = new JPanel(new FlowLayout());
         colorsPreview.setOpaque(false);
@@ -145,7 +170,6 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
         closeButtons.setMaximumSize(new Dimension(size.width, 64));
         background.add(closeButtons);
 
-        Button cancelButton = new Button("Cancel", this.texturesSize);
         cancelButton.setPreferredSize(new Dimension(size.width / 2 - 8, 48));
         cancelButton.addButtonListener(new ButtonListener() {
             @Override
@@ -156,7 +180,6 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
         });
         closeButtons.add(cancelButton);
 
-        Button okButton = new Button("OK", this.texturesSize);
         okButton.setPreferredSize(new Dimension(size.width / 2 - 8, 48));
         okButton.addButtonListener(new ButtonListener() {
             @Override
