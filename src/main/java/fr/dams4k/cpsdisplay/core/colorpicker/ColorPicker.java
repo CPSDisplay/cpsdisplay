@@ -129,15 +129,15 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
 
         JPanel hexColorPanel = new JPanel(new FlowLayout());
         hexColorPanel.setOpaque(false);
-        hexColorPanel.setPreferredSize(new Dimension(size.width, 34));
-        hexColorPanel.setMaximumSize(new Dimension(size.width, 34));
+        hexColorPanel.setPreferredSize(new Dimension(size.width, 44));
+        hexColorPanel.setMaximumSize(new Dimension(size.width, 44));
 
-        hexColorLabel.setPreferredSize(new Dimension(size.width/2-4, 24));
-        hexColorLabel.setMaximumSize(new Dimension(size.width/2-4, 24));
+        hexColorLabel.setPreferredSize(new Dimension((size.width-12)/2, 24));
+        hexColorLabel.setMaximumSize(new Dimension((size.width-12)/2, 24));
         hexColorPanel.add(hexColorLabel);
 
-        hexColorField.setPreferredSize(new Dimension(size.width/2-4, 32));
-        hexColorField.setMaximumSize(new Dimension(size.width/2-4, 32));
+        hexColorField.setPreferredSize(new Dimension((size.width-12)/2, 32));
+        hexColorField.setMaximumSize(new Dimension((size.width-12)/2, 32));
         hexColorPanel.add(hexColorField);
         
         background.add(hexColorPanel);
