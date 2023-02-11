@@ -28,6 +28,7 @@ import fr.dams4k.cpsdisplay.core.colorpicker.gui.imagepanel.pointer.SVPointerLis
 import fr.dams4k.cpsdisplay.core.colorpicker.gui.imagepanel.pointer.SVPointerPanel;
 import fr.dams4k.cpsdisplay.core.colorpicker.gui.imagepanel.pointer.slider.Slider;
 import fr.dams4k.cpsdisplay.core.colorpicker.gui.imagepanel.pointer.slider.SliderListener;
+import fr.dams4k.cpsdisplay.core.colorpicker.gui.textfield.LimitedDocument;
 import fr.dams4k.cpsdisplay.core.colorpicker.gui.textfield.TextField;
 
 public class ColorPicker extends JFrame implements HPointerListener, SVPointerListener, SliderListener {
@@ -156,6 +157,11 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
         hexColorField = new TextField(this.texturesScale, alphaChannel == true ? 8 : 6);
         hexColorField.setPreferredSize(new Dimension((size.width-12)/2, 32));
         hexColorField.setMaximumSize(new Dimension((size.width-12)/2, 32));
+        LimitedDocument document = (LimitedDocument) this.hexColorField.getDocument();
+        document.anythings = false;
+        document.digits = true;
+        document.letters = true;
+        this.hexColorField.setDocument(document);
         this.updateTextField();
         hexColorPanel.add(hexColorField);
         
@@ -225,7 +231,6 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
         this.hSlider.setValue((int) (this.h*360));
 
         this.updateAll();
-        System.out.println(getHeight());
     }
 
     @Override

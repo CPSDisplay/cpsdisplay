@@ -14,6 +14,7 @@ import fr.dams4k.cpsdisplay.core.colorpicker.gui.border.InventoryBorder;
 import fr.dams4k.cpsdisplay.core.colorpicker.gui.imagepanel.ImageType;
 import fr.dams4k.cpsdisplay.core.colorpicker.gui.imagepanel.pointer.PointerListener;
 import fr.dams4k.cpsdisplay.core.colorpicker.gui.imagepanel.pointer.PointerPanel;
+import fr.dams4k.cpsdisplay.core.colorpicker.gui.textfield.LimitedDocument;
 import fr.dams4k.cpsdisplay.core.colorpicker.gui.textfield.TextField;
 import fr.dams4k.cpsdisplay.core.colorpicker.gui.textfield.TextFieldListener;
 
@@ -58,6 +59,10 @@ public class Slider extends JPanel implements PointerListener, TextFieldListener
         this.textField.setText(Integer.toString(this.value));
         this.textField.setPreferredSize(new Dimension(48, 32));
         this.textField.addTextFieldListener(this);
+        LimitedDocument document = (LimitedDocument) this.textField.getDocument();
+        document.anythings = false;
+        document.digits = true;
+        this.textField.setDocument(document);
 
         this.add(this.label);
         this.add(this.pointerPanel);
@@ -107,14 +112,14 @@ public class Slider extends JPanel implements PointerListener, TextFieldListener
     }
 
     @Override
-    public void xPointerChanged(float x) {
+    public void xPointerDragged(float x) {
         this.value = Math.round(x * this.max);
-        this.textField.setText(Integer.toString(this.value));
+        System.out.println(value);
         callListeners();
     }
 
     @Override
-    public void yPointerChanged(float y) {}
+    public void yPointerDragged(float y) {}
 
     @Override
     public void textChanged(String before, String after) {
@@ -126,4 +131,14 @@ public class Slider extends JPanel implements PointerListener, TextFieldListener
         setValue(value);
         callListeners();
     }
+
+    @Override
+    public void xPointerSelected(float x) {
+        this.value = Math.round(x * this.max);
+        this.textField.setText(Integer.toString(this.value));
+        callListeners();
+    }
+
+    @Override
+    public void yPointerSelected(float y) {}
 }
