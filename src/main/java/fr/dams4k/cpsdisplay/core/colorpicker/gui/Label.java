@@ -225,7 +225,7 @@ public class Label extends JPanel {
     }
 
     
-    protected void paintStringWithShadow(Graphics g, String str, int x, int y) {
+    public void paintStringWithShadow(Graphics g, String str, int x, int y) {
         this.paintString(g, str, x + (int) this.fontSize, y + (int) this.fontSize, ModConfig.HexToColor("383838", 6));
         this.paintString(g, str, x, y, ModConfig.HexToColor("E0E0E0", 6));
     }

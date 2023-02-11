@@ -1,4 +1,4 @@
-package fr.dams4k.cpsdisplay.core.colorpicker.gui;
+package fr.dams4k.cpsdisplay.core.colorpicker.gui.textfield;
 
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
@@ -8,34 +8,28 @@ import java.awt.event.MouseListener;
 
 import javax.swing.JTextField;
 
+import fr.dams4k.cpsdisplay.core.colorpicker.gui.Label;
 import fr.dams4k.cpsdisplay.core.colorpicker.gui.border.Border;
 import fr.dams4k.cpsdisplay.core.colorpicker.gui.border.TextFieldBorder;
 import fr.dams4k.cpsdisplay.v1_8.config.ModConfig;
 
-public class TextField extends JTextField implements MouseListener {
+public class TextField extends JTextField implements MouseListener, KeyListener {
     private Border imageBorder;
     private Label label = new Label("");
 
     private int startX = 0;
 
-    public TextField(float textureScale) {
+    public TextField(float textureScale, int maxLength) {
         setOpaque(false);
         setBorder(null);
 
         this.imageBorder = new TextFieldBorder(textureScale);
         this.startX = (int) (textureScale*2);
 
+        setDocument(new LimitedDocument(maxLength));
+
         addMouseListener(this);
-        addKeyListener(new KeyListener() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                repaint();
-            }
-            @Override
-            public void keyReleased(KeyEvent e) {}
-            @Override
-            public void keyTyped(KeyEvent e) {}
-        });
+        addKeyListener(this);
     }
 
     protected void paintCaret(Graphics g) {
@@ -59,8 +53,14 @@ public class TextField extends JTextField implements MouseListener {
     public void mouseClicked(MouseEvent e) {
         int x = e.getX();
         float txtWidth = startX + this.label.getStringWidth(getText());
-        setCaretPosition((int) (x/txtWidth*getText().length()));
+        int pos = (int) (x/txtWidth*getText().length());
+        setCaretPosition(clamp(pos, 0, getText().length()));
         repaint();
+    }
+
+    @Override
+    public void setText(String str) {
+        super.setText(str);
     }
 
     @Override
@@ -74,4 +74,18 @@ public class TextField extends JTextField implements MouseListener {
 
     @Override
     public void mouseReleased(MouseEvent e) {}
+
+    
+    @Override
+    public void keyPressed(KeyEvent e) {
+        repaint();
+    }
+    @Override
+    public void keyReleased(KeyEvent e) {}
+    @Override
+    public void keyTyped(KeyEvent e) {}
+
+    private int clamp(int value, int min, int max) {
+        return Math.max(min, Math.min(max, value));
+    }
 }
