@@ -31,7 +31,7 @@ public class Button extends Label implements MouseInputListener {
 
     @Override
     protected void paintComponent(Graphics g) {
-        imageBorder.drawBorder(g, this, true);
+        imageBorder.paintBorder(g, this, true);
         
         Color color = this.hovered ? ModConfig.HexToColor("FFFFA0", 6) : ModConfig.HexToColor("E0E0E0", 6);
         Color shadowColor = this.hovered ? ModConfig.HexToColor("3F3F28", 6) : ModConfig.HexToColor("383838", 6);

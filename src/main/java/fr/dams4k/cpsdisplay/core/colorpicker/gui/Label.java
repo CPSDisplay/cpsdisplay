@@ -224,22 +224,32 @@ public class Label extends JPanel {
         return 0;
     }
 
-    public void paintString(Graphics g, String text, int x, int y, Color color) {
-        for (char c : text.toCharArray()) {
+    
+    protected void paintStringWithShadow(Graphics g, String str, int x, int y) {
+        this.paintString(g, str, x + (int) this.fontSize, y + (int) this.fontSize, ModConfig.HexToColor("383838", 6));
+        this.paintString(g, str, x, y, ModConfig.HexToColor("E0E0E0", 6));
+    }
+
+    protected void paintString(Graphics g, String str, int x, int y, Color color) {
+        for (char c : str.toCharArray()) {
             x += (int) this.paintChar(g, c, x, y, color);
         }
     }
 
-    public void paintCenteredString(Graphics g, String text, int x, int y, Color color) {
-        y -= unicodeFlag == false ? (int) (7*this.fontSize)/2 : (int) (18*this.fontSize)/2;
-        this.paintString(g, text, (int) (x - this.getStringWidth(text)/2), y, color);
+    protected void paintCenteredStringWithShadow(Graphics g, String str, int x, int y) {
+        this.paintCenteredString(g, str, x + (int) this.fontSize, y + (int) this.fontSize, ModConfig.HexToColor("383838", 6));
+        this.paintCenteredString(g, str, x, y, ModConfig.HexToColor("E0E0E0", 6));
+    }
+
+    protected void paintCenteredString(Graphics g, String str, int x, int y, Color color) {
+        y -= getFontHeight()/2;
+        this.paintString(g, str, (int) (x - this.getStringWidth(str)/2), y, color);
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        this.paintCenteredString(g, this.text, this.getWidth()/2 + (int) this.fontSize, this.getHeight()/2 + (int) this.fontSize, ModConfig.HexToColor("383838", 6));
-        this.paintCenteredString(g, this.text, this.getWidth()/2, this.getHeight()/2, ModConfig.HexToColor("E0E0E0", 6));
+        this.paintCenteredStringWithShadow(g, this.text, this.getWidth()/2, this.getHeight()/2);
     }
 
     public BufferedImage tintImage(BufferedImage image, Color color) {
@@ -255,5 +265,13 @@ public class Label extends JPanel {
         }
 
         return tintedImage;
+    }
+
+    public boolean getUnicodeFlag() {
+        return this.unicodeFlag;
+    }
+
+    public int getFontHeight() {
+        return unicodeFlag == false ? (int) (7*this.fontSize) : (int) (18*this.fontSize);
     }
 }

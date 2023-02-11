@@ -92,7 +92,7 @@ public class ImagePanel extends JPanel {
         }
 
         if (this.imageBorder != null) {
-            this.imageBorder.drawBorder(g, this, this.drawBackground);
+            this.imageBorder.paintBorder(g, this, this.drawBackground);
         }
 
         g.setColor(new Color(1f, 1f, 1f, this.brightness));

@@ -1,88 +1,77 @@
 package fr.dams4k.cpsdisplay.core.colorpicker.gui;
 
 import java.awt.Graphics;
-import java.awt.HeadlessException;
-import java.awt.Toolkit;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.IOException;
+
+import javax.swing.JTextField;
 
 import fr.dams4k.cpsdisplay.core.colorpicker.gui.border.Border;
 import fr.dams4k.cpsdisplay.core.colorpicker.gui.border.TextFieldBorder;
+import fr.dams4k.cpsdisplay.v1_8.config.ModConfig;
 
-public class TextField extends Label implements MouseListener, KeyListener {
+public class TextField extends JTextField implements MouseListener {
     private Border imageBorder;
+    private Label label = new Label("");
 
-    private boolean isFocused = false;
+    private int startX = 0;
 
     public TextField(float textureScale) {
-        super("");
-        this.imageBorder = new TextFieldBorder(textureScale);
+        setOpaque(false);
+        setBorder(null);
 
-        this.setFocusable(true);
-        this.addMouseListener(this);
-        this.addKeyListener(this);
+        this.imageBorder = new TextFieldBorder(textureScale);
+        this.startX = (int) (textureScale*2);
+
+        addMouseListener(this);
+        addKeyListener(new KeyListener() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                repaint();
+            }
+            @Override
+            public void keyReleased(KeyEvent e) {}
+            @Override
+            public void keyTyped(KeyEvent e) {}
+        });
     }
 
+    protected void paintCaret(Graphics g) {
+        g.setColor(ModConfig.HexToColor("D0D0D0", 6));
+        int x = startX + label.getStringWidth(getText().substring(0, getCaretPosition()));
+        int caretHeight = this.label.getFontHeight();
+        g.fillRect(x-(int) (label.fontSize/2), getHeight()/2-(caretHeight+8)/2, (int) label.fontSize, caretHeight+8);
+    }
+
+    @Override
     protected void paintComponent(Graphics g) {
-        this.imageBorder.drawBorder(g, this, true);
         super.paintComponent(g);
+
+        this.imageBorder.paintBorder(g, this, true);
+        int y = this.getHeight()/2 - label.getFontHeight()/2;
+        label.paintStringWithShadow(g, this.getText(), startX, y);
+        this.paintCaret(g);
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        this.isFocused = true;
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-    }
-
-    @Override
-    public void keyPressed(KeyEvent e) {
-        if (!this.isFocused) return;
-
-        if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
-            if (this.text.length() <= 0) return;
-            this.text = this.text.substring(0, this.text.length()-1);
-        } else if (e.getKeyCode() == KeyEvent.VK_V && (e.getModifiersEx() & KeyEvent.CTRL_DOWN_MASK) != 0) {
-            String data = "";
-            try {
-                data = (String) Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor);
-            } catch (HeadlessException | UnsupportedFlavorException | IOException e1) {
-                e1.printStackTrace();
-            }
-            this.text += data;
-        } else {
-            this.text += e.getKeyChar();
-        }
-
-        System.out.println(this.text.length());
-
+        int x = e.getX();
+        float txtWidth = startX + this.label.getStringWidth(getText());
+        setCaretPosition((int) (x/txtWidth*getText().length()));
         repaint();
     }
 
     @Override
-    public void keyReleased(KeyEvent e) {
-    }
+    public void mouseEntered(MouseEvent e) {}
 
     @Override
-    public void keyTyped(KeyEvent e) {
-    }
+    public void mouseExited(MouseEvent e) {}
+
+    @Override
+    public void mousePressed(MouseEvent e) {}
+
+    @Override
+    public void mouseReleased(MouseEvent e) {}
 }

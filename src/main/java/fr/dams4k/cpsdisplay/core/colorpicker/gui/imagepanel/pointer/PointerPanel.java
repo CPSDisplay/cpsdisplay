@@ -100,7 +100,7 @@ public class PointerPanel extends ImagePanel implements MouseInputListener {
         }
 
         if (this.imageBorder != null) {
-            this.imageBorder.drawBorder(g, this, this.drawBackground);
+            this.imageBorder.paintBorder(g, this, this.drawBackground);
         }
     }
 

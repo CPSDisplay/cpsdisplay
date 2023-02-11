@@ -102,11 +102,11 @@ public class Border {
         return outImage;
     }
 
-    public void drawBorder(Graphics graphics, JComponent component, boolean drawBackground) {
+    public void paintBorder(Graphics graphics, JComponent component, boolean drawBackground) {
         // draw sides before corners if sides walks on corners
-        if (drawBackground) drawBackground(graphics, component);
-        drawSides(graphics, component);
-        drawCorners(graphics, component);
+        if (drawBackground) paintBackground(graphics, component);
+        paintSides(graphics, component);
+        paintCorners(graphics, component);
     }
 
     public int getCorrectXSize(int maxW, int imageWidth) {
@@ -119,7 +119,7 @@ public class Border {
         return this.clamp(h, 1, imageH);
     }
 
-    public void drawBackground(Graphics graphics, JComponent component) {
+    public void paintBackground(Graphics graphics, JComponent component) {
         if (backgroundImage == null) return;
         int startX = topLeftImage.getWidth(component) + insets.left;
         int startY = topLeftImage.getHeight(component) + insets.top;
@@ -139,14 +139,14 @@ public class Border {
         }
     }
 
-    public void drawCorners(Graphics graphics, JComponent component) {
+    public void paintCorners(Graphics graphics, JComponent component) {
         graphics.drawImage(topLeftImage, insets.left, insets.top, topLeftImage.getWidth(component), topLeftImage.getHeight(component), component);
         graphics.drawImage(bottomLeftImage, insets.left, component.getHeight()-bottomLeftImage.getHeight(component)-insets.bottom, bottomLeftImage.getWidth(component), bottomLeftImage.getHeight(component), component);
         graphics.drawImage(bottomRightImage, component.getWidth()-bottomRightImage.getWidth(component)-insets.right, component.getHeight()-bottomRightImage.getHeight(component)-insets.bottom, bottomRightImage.getWidth(component), bottomRightImage.getHeight(component), component);
         graphics.drawImage(topRightImage, component.getWidth()-topRightImage.getWidth(component)-insets.right, insets.top, topRightImage.getWidth(component), topRightImage.getHeight(component), component);
     }
 
-    public void drawSides(Graphics graphics, JComponent component) {
+    public void paintSides(Graphics graphics, JComponent component) {
         //-- LEFT SIDE
         int lsMaxHeight = component.getHeight() - bottomLeftImage.getHeight(component); // height of the component - bottom left corner height
         int lsHeight = leftSideImage.getHeight(component);
