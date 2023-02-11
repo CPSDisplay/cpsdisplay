@@ -34,8 +34,11 @@ import fr.dams4k.cpsdisplay.core.colorpicker.gui.textfield.TextField;
 public class ColorPicker extends JFrame implements HPointerListener, SVPointerListener, SliderListener {
     private List<ColorPickerListener> listeners = new ArrayList<>();
     private final float texturesScale = 3f;
+    private final int borderSize = 8;
     private boolean alphaChannel;
+    private Dimension size;
 
+    private ImagePanel background;
 
     private SVPointerPanel svPointerPanel = new SVPointerPanel();
     private HPointerPanel hPointerPanel = new HPointerPanel();
@@ -70,25 +73,33 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
         this.alphaChannel = alphaChannel;
 
         this.setTitle("ColorPicker");
-        int borderSize = 8;
 
-        int sizeY = alphaChannel == true ? 600 : 550;
-        Dimension size = new Dimension(300, sizeY);
+        int sizeY = alphaChannel == true ? 640 : 590;
+        size = new Dimension(300, sizeY);
         this.setSize(size);
         this.setMinimumSize(size);
 
-        Border inventoryImageBorder = new InventoryBorder(texturesScale);
-
-        ImagePanel background = new ImagePanel("assets/minecraft/textures/gui/options_background.png", ImageType.TILING, texturesScale);
+        background = new ImagePanel("assets/minecraft/textures/gui/options_background.png", ImageType.TILING, texturesScale);
         background.setDarkness(0.5f);
         background.setLayout(new BoxLayout(background, BoxLayout.PAGE_AXIS));
         this.getContentPane().add(background);
 
+        this.addColorPointers();
+        this.addGradientSliders();
+        this.addHexTextField();
+        this.addPreviews(oldColor);
+        this.addCloseButtons();
+        
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    }
+
+    private void addColorPointers() {
+        Border inventoryImageBorder = new InventoryBorder(texturesScale);
 
         JPanel colorsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, borderSize, borderSize));
         colorsPanel.setOpaque(false);
         colorsPanel.setMaximumSize(new Dimension(500, 256));
-        background.add(colorsPanel, BorderLayout.PAGE_START);
+        background.add(colorsPanel);
 
         this.svPointerPanel.setImage(ColorPickerImages.svColorSelector(this.h, SVPointerPanel.sizeX, SVPointerPanel.sizeY));
         this.svPointerPanel.setPreferredSize(new Dimension(250, 250));
@@ -103,11 +114,12 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
         this.hPointerPanel.addListener(this);
         this.hPointerPanel.defaultY = this.h;
         colorsPanel.add(this.hPointerPanel);
+    }
 
-
+    private void addGradientSliders() {
         JPanel sliders = new JPanel(new FlowLayout(FlowLayout.CENTER));
         sliders.setOpaque(false);
-        background.add(sliders, BorderLayout.CENTER);
+        this.background.add(sliders);
 
         this.hSlider.addListener(this);
         this.hSlider.setValue((int) (this.h * 360));
@@ -124,13 +136,15 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
         this.updateVGradient();
         sliders.add(this.vSlider);
 
-        if (alphaChannel) {
+        if (this.alphaChannel) {
             this.aSlider.addListener(this);
             this.aSlider.setValue((int) (this.a * 100));
             this.updateAGradient();
             sliders.add(this.aSlider);
         }
+    }
 
+    public void addHexTextField() {
         JPanel hexColorPanel = new JPanel(new FlowLayout());
         hexColorPanel.setOpaque(false);
         hexColorPanel.setPreferredSize(new Dimension(size.width, 44));
@@ -147,13 +161,14 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
         hexColorPanel.add(hexColorField);
         
         background.add(hexColorPanel);
+    }
 
-
-
+    public void addPreviews(Color oldColor) {
         JPanel colorsPreview = new JPanel(new FlowLayout());
         colorsPreview.setOpaque(false);
         colorsPreview.setPreferredSize(new Dimension(size.width, 44));
         colorsPreview.setMaximumSize(new Dimension(size.width, 44));
+        background.add(colorsPreview);
 
         oldColorPreview.setColor(oldColor);
         updateColorPreview();
@@ -166,10 +181,9 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
 
         colorsPreview.add(newColorPreview);
         colorsPreview.add(oldColorPreview);
+    }
 
-
-        background.add(colorsPreview);
-
+    public void addCloseButtons() {
         JPanel closeButtons = new JPanel(new FlowLayout());
         closeButtons.setOpaque(false);
         closeButtons.setPreferredSize(new Dimension(size.width, 64));
@@ -198,8 +212,6 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
             }
         });
         closeButtons.add(okButton);
-        
-        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
     public void popup() {
