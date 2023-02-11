@@ -1,6 +1,5 @@
 package fr.dams4k.cpsdisplay.core.colorpicker;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -48,7 +47,7 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
     private Slider vSlider = new Slider("V", 0, 100, this.texturesScale);
     private Slider aSlider = new Slider("A", 0, 100, this.texturesScale);
 
-    private Label hexColorLabel = new Label("Hex jjjcolor:");
+    private Label hexColorLabel = new Label("Hex color:");
     private TextField hexColorField;
 
     private ColorPreview oldColorPreview = new ColorPreview(Color.WHITE, this.texturesScale);
@@ -74,8 +73,8 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
 
         this.setTitle("ColorPicker");
 
-        int sizeY = alphaChannel == true ? 640 : 590;
-        size = new Dimension(300, sizeY);
+        int sizeY = alphaChannel == true ? 640 : 600;
+        size = new Dimension(320, sizeY);
         this.setSize(size);
         this.setMinimumSize(size);
 

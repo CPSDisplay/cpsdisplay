@@ -26,11 +26,14 @@ public class ModTextField extends GuiTextField {
 
     @Override
     public void writeText(String text) {
-        if (!anythings) {
-            if (LETTERS.contains(text) && !letters) return;
-            if (DIGITS.contains(text) && !digits) return;
-            if (PUNCTUATIONS.contains(text) && !punctuation) return;
+        for (char c : text.toCharArray()) {
+            if (!anythings) {
+                if (LETTERS.indexOf(c) > -1 && !letters) return;
+                if (DIGITS.indexOf(c) > -1 && !digits) return;
+                if (PUNCTUATIONS.indexOf(c) > -1 && !punctuation) return;
+            }
         }
+        
 
         super.writeText(text);
     }

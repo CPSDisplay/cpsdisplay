@@ -5,6 +5,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JTextField;
 
@@ -14,10 +16,14 @@ import fr.dams4k.cpsdisplay.core.colorpicker.gui.border.TextFieldBorder;
 import fr.dams4k.cpsdisplay.v1_8.config.ModConfig;
 
 public class TextField extends JTextField implements MouseListener, KeyListener {
+    private List<TextFieldListener> textFieldListeners = new ArrayList<>();
+
     private Border imageBorder;
     private Label label = new Label("");
 
     private int startX = 0;
+
+    private String lastText = "";
 
     public TextField(float textureScale, int maxLength) {
         setOpaque(false);
@@ -37,6 +43,13 @@ public class TextField extends JTextField implements MouseListener, KeyListener 
         int x = startX + label.getStringWidth(getText().substring(0, getCaretPosition()));
         int caretHeight = this.label.getFontHeight();
         g.fillRect(x-(int) (label.fontSize/2), getHeight()/2-(caretHeight+8)/2, (int) label.fontSize, caretHeight+8);
+
+        if (!getText().equals(lastText)) {
+            for (TextFieldListener listener : this.textFieldListeners) {
+                listener.textChanged(lastText, getText());
+            }
+            lastText = getText();
+        }
     }
 
     @Override
@@ -60,6 +73,7 @@ public class TextField extends JTextField implements MouseListener, KeyListener 
 
     @Override
     public void setText(String str) {
+        this.lastText = str;
         super.setText(str);
     }
 
@@ -87,5 +101,9 @@ public class TextField extends JTextField implements MouseListener, KeyListener 
 
     private int clamp(int value, int min, int max) {
         return Math.max(min, Math.min(max, value));
+    }
+
+    public void addTextFieldListener(TextFieldListener listener) {
+        this.textFieldListeners.add(listener);
     }
 }

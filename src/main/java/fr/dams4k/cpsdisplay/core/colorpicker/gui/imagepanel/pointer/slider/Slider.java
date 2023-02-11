@@ -14,12 +14,16 @@ import fr.dams4k.cpsdisplay.core.colorpicker.gui.border.InventoryBorder;
 import fr.dams4k.cpsdisplay.core.colorpicker.gui.imagepanel.ImageType;
 import fr.dams4k.cpsdisplay.core.colorpicker.gui.imagepanel.pointer.PointerListener;
 import fr.dams4k.cpsdisplay.core.colorpicker.gui.imagepanel.pointer.PointerPanel;
+import fr.dams4k.cpsdisplay.core.colorpicker.gui.textfield.TextField;
+import fr.dams4k.cpsdisplay.core.colorpicker.gui.textfield.TextFieldListener;
 
-public class Slider extends JPanel implements PointerListener {
+public class Slider extends JPanel implements PointerListener, TextFieldListener {
     private List<SliderListener> listeners = new ArrayList<>();
 
     private Label label;
     private PointerPanel pointerPanel;
+    private TextField textField;
+
     public int gradientSizeX = 256;
     public int gradientSizeY = 1;
 
@@ -50,8 +54,14 @@ public class Slider extends JPanel implements PointerListener {
         this.pointerPanel.addListener(this);
         this.pointerPanel.setOpaque(false);
 
-        this.add(label);
+        this.textField = new TextField(textureScale, 3);
+        this.textField.setText(Integer.toString(this.value));
+        this.textField.setPreferredSize(new Dimension(48, 32));
+        this.textField.addTextFieldListener(this);
+
+        this.add(this.label);
         this.add(this.pointerPanel);
+        this.add(this.textField);
     }
 
     public int getValue() {
@@ -62,6 +72,7 @@ public class Slider extends JPanel implements PointerListener {
         float fValue = this.value/(float) (max);
         this.pointerPanel.defaultX = fValue;
         this.pointerPanel.setPointerX(fValue);
+        this.textField.setText(Integer.toString(this.value));
     }
 
     public void setGradient(List<Color> colors) {
@@ -98,9 +109,21 @@ public class Slider extends JPanel implements PointerListener {
     @Override
     public void xPointerChanged(float x) {
         this.value = Math.round(x * this.max);
+        this.textField.setText(Integer.toString(this.value));
         callListeners();
     }
 
     @Override
-    public void yPointerChanged(float y) { }
+    public void yPointerChanged(float y) {}
+
+    @Override
+    public void textChanged(String before, String after) {
+        if (after.equals("")) {
+            after = "0";
+        }
+
+        this.value = Integer.valueOf(after);
+        setValue(value);
+        callListeners();
+    }
 }
