@@ -153,13 +153,13 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
         hexColorPanel.setPreferredSize(new Dimension(size.width, 44));
         hexColorPanel.setMaximumSize(new Dimension(size.width, 44));
 
-        hexColorLabel.setPreferredSize(new Dimension((size.width-12)/2, 24));
-        hexColorLabel.setMaximumSize(new Dimension((size.width-12)/2, 24));
+        hexColorLabel.setPreferredSize(new Dimension((size.width-16)/2, 24));
+        hexColorLabel.setMaximumSize(new Dimension((size.width-16)/2, 24));
         hexColorPanel.add(hexColorLabel);
 
         hexColorField = new TextField(this.TEXTURES_SCALE, alphaChannel == true ? 8 : 6);
-        hexColorField.setPreferredSize(new Dimension((size.width-12)/2, 32));
-        hexColorField.setMaximumSize(new Dimension((size.width-12)/2, 32));
+        hexColorField.setPreferredSize(new Dimension(140, 32));
+        hexColorField.setMaximumSize(new Dimension(140, 32));
         LimitedDocument document = (LimitedDocument) this.hexColorField.getDocument();
         document.anythings = false;
         document.digits = true;
@@ -181,7 +181,7 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
 
         oldColorPreview.setColor(oldColor);
         updateColorPreview();
-        int colorPreviewWidth = (int) (size.width/2)-48;
+        int colorPreviewWidth = 140;
         int colorPreviewHeight = 36;
         newColorPreview.setPreferredSize(new Dimension(colorPreviewWidth, colorPreviewHeight));
         newColorPreview.setMaximumSize(new Dimension(colorPreviewWidth, colorPreviewHeight));
@@ -199,7 +199,7 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
         closeButtons.setMaximumSize(new Dimension(size.width, 64));
         background.add(closeButtons);
 
-        cancelButton.setPreferredSize(new Dimension(size.width / 2 - 8, 48));
+        cancelButton.setPreferredSize(new Dimension(140, 48));
         cancelButton.addButtonListener(new ButtonListener() {
             @Override
             public void buttonClicked() {
@@ -212,7 +212,7 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
         });
         closeButtons.add(cancelButton);
 
-        okButton.setPreferredSize(new Dimension(size.width / 2 - 8, 48));
+        okButton.setPreferredSize(new Dimension(140, 48));
         okButton.addButtonListener(new ButtonListener() {
             @Override
             public void buttonClicked() {
