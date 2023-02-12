@@ -31,11 +31,15 @@ import fr.dams4k.cpsdisplay.core.colorpicker.gui.imagepanel.pointer.slider.Slide
 import fr.dams4k.cpsdisplay.core.colorpicker.gui.textfield.LimitedDocument;
 import fr.dams4k.cpsdisplay.core.colorpicker.gui.textfield.TextField;
 import fr.dams4k.cpsdisplay.core.colorpicker.gui.textfield.TextFieldListener;
+import fr.dams4k.cpsdisplay.v1_8.config.ModConfig;
 
 public class ColorPicker extends JFrame implements HPointerListener, SVPointerListener, SliderListener, TextFieldListener {
     private List<ColorPickerListener> listeners = new ArrayList<>();
-    private final float texturesScale = 3f;
-    private final int borderSize = 8;
+   
+    private final float TEXTURES_SCALE = 3f;
+    private final int BORDER_SIZE = 8;
+    private final String HEX_CODE = "0123456789abcdef";
+
     private boolean alphaChannel;
     private Dimension size;
 
@@ -44,19 +48,19 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
     private SVPointerPanel svPointerPanel = new SVPointerPanel();
     private HPointerPanel hPointerPanel = new HPointerPanel();
 
-    private Slider hSlider = new Slider("H", 0, 360, this.texturesScale);
-    private Slider sSlider = new Slider("S", 0, 100, this.texturesScale);
-    private Slider vSlider = new Slider("V", 0, 100, this.texturesScale);
-    private Slider aSlider = new Slider("A", 0, 100, this.texturesScale);
+    private Slider hSlider = new Slider("H", 0, 360, this.TEXTURES_SCALE);
+    private Slider sSlider = new Slider("S", 0, 100, this.TEXTURES_SCALE);
+    private Slider vSlider = new Slider("V", 0, 100, this.TEXTURES_SCALE);
+    private Slider aSlider = new Slider("A", 0, 100, this.TEXTURES_SCALE);
 
     private Label hexColorLabel = new Label("Hex color:");
     private TextField hexColorField;
 
-    private ColorPreview oldColorPreview = new ColorPreview(Color.WHITE, this.texturesScale);
-    private ColorPreview newColorPreview = new ColorPreview(Color.WHITE, this.texturesScale);
+    private ColorPreview oldColorPreview = new ColorPreview(Color.WHITE, this.TEXTURES_SCALE);
+    private ColorPreview newColorPreview = new ColorPreview(Color.WHITE, this.TEXTURES_SCALE);
 
-    private Button okButton = new Button("OK", this.texturesScale);
-    private Button cancelButton = new Button("Cancel", this.texturesScale);
+    private Button okButton = new Button("OK", this.TEXTURES_SCALE);
+    private Button cancelButton = new Button("Cancel", this.TEXTURES_SCALE);
 
 
     private float h = 0f;
@@ -76,7 +80,7 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
         this.setSize(size);
         this.setMinimumSize(size);
 
-        background = new ImagePanel("assets/minecraft/textures/gui/options_background.png", ImageType.TILING, texturesScale);
+        background = new ImagePanel("assets/minecraft/textures/gui/options_background.png", ImageType.TILING, this.TEXTURES_SCALE);
         background.setDarkness(0.5f);
         background.setLayout(new BoxLayout(background, BoxLayout.PAGE_AXIS));
         this.getContentPane().add(background);
@@ -91,9 +95,9 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
     }
 
     private void addColorPointers() {
-        Border inventoryImageBorder = new InventoryBorder(texturesScale);
+        Border inventoryImageBorder = new InventoryBorder(this.TEXTURES_SCALE);
 
-        JPanel colorsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, borderSize, borderSize));
+        JPanel colorsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, this.BORDER_SIZE, this.BORDER_SIZE));
         colorsPanel.setOpaque(false);
         colorsPanel.setMaximumSize(new Dimension(500, 256));
         background.add(colorsPanel);
@@ -120,23 +124,23 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
 
         this.hSlider.addListener(this);
         this.hSlider.setValue((int) (this.h * 360));
-        this.updateHGradient();
+        this.updateHSlider(true, true, true);
         sliders.add(this.hSlider);
 
         this.sSlider.addListener(this);
         this.sSlider.setValue((int) (this.s * 100));
-        this.updateSGradient();
+        this.updateSSlider(true, true, true);
         sliders.add(this.sSlider);
 
         this.vSlider.addListener(this);
         this.vSlider.setValue((int) (this.v * 100));
-        this.updateVGradient();
+        this.updateVSlider(true, true, true);
         sliders.add(this.vSlider);
 
         if (this.alphaChannel) {
             this.aSlider.addListener(this);
             this.aSlider.setValue((int) (this.a * 100));
-            this.updateAGradient();
+            this.updateASlider(true, true, true);
             sliders.add(this.aSlider);
         }
     }
@@ -151,7 +155,7 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
         hexColorLabel.setMaximumSize(new Dimension((size.width-12)/2, 24));
         hexColorPanel.add(hexColorLabel);
 
-        hexColorField = new TextField(this.texturesScale, alphaChannel == true ? 8 : 6);
+        hexColorField = new TextField(this.TEXTURES_SCALE, alphaChannel == true ? 8 : 6);
         hexColorField.setPreferredSize(new Dimension((size.width-12)/2, 32));
         hexColorField.setMaximumSize(new Dimension((size.width-12)/2, 32));
         LimitedDocument document = (LimitedDocument) this.hexColorField.getDocument();
@@ -225,97 +229,110 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
     }
 
     
+    //== LISTENERS ==//
+    //-   Changed   -//
     @Override
     public void HColorChanged(float h) {
         this.HColorChanging(h);
         this.updateHexTextField();
-        this.hSlider.setTextValue(this.hSlider.getValue());
+        this.updateHSlider(false, false, true);
     }
-
     @Override
     public void SColorChanged(float s) {
         this.SColorChanging(s);
         this.updateHexTextField();
-        this.sSlider.setTextValue(this.sSlider.getValue());
+        this.updateSSlider(false, false, true);
     }
-
     @Override
     public void VColorChanged(float v) {
         this.VColorChanging(v);
         this.updateHexTextField();
-        this.vSlider.setTextValue(this.vSlider.getValue());
+        this.updateVSlider(false, false, true);
+    }
+    @Override
+    public void sliderValueChanged(String sliderName, int value) {
+        this.sliderValueChanging(sliderName, value);
+        this.updateHexTextField();
     }
     
-    
+    //-  Changing   -//
+    //   Pointers    //
     @Override
     public void HColorChanging(float h) {
         this.h = h;
         this.svPointerPanel.setImage(ColorPickerImages.svColorSelector(this.h, SVPointerPanel.sizeX, SVPointerPanel.sizeY));
-        this.hSlider.setValue((int) (this.h*360), true, false);
 
-        this.updateAll();
+        this.updateAllSliders(true, true, false);
+        this.updateColorPreview();
     }
-
     @Override
     public void SColorChanging(float s) {
         this.s = s;
-        this.sSlider.setValue((int) (this.s*100), true, false);
 
-        this.updateAll();
+        this.updateAllSliders(true, true, false);
+        this.updateColorPreview();
     }
-
     @Override
     public void VColorChanging(float v) {
         this.v = 1f-v;
-        this.vSlider.setValue((int) (this.v*100), true, false);
 
-        this.updateAll();
+        this.updateAllSliders(true, true, false);
+        this.updateColorPreview();
     }
 
+    //-  Changing   -//
+    //    Sliders    //
     @Override
     public void sliderValueChanging(String sliderName, int value) {
         switch (sliderName) {
             case "H":
                 this.h = value/360f;
-                this.hPointerPanel.setPointerY(this.h);
-                this.svPointerPanel.setImage(ColorPickerImages.svColorSelector(this.h, SVPointerPanel.sizeX, SVPointerPanel.sizeY));
                 break;
             case "S":
                 this.s = value / 100f;
-                this.svPointerPanel.setPointerX(this.s);
                 break;
             case "V":
                 this.v = value / 100f;
-                this.svPointerPanel.setPointerY(1f-this.v);
                 break;
             case "A":
                 this.a = value / 100f;
                 break;
         }
 
-        this.updateAll();
-    }
-
-    @Override
-    public void sliderValueChanged(String sliderName, int value) {
-        this.sliderValueChanging(sliderName, value);
-        this.updateHexTextField();
-    }
-
-
-    public void updateAll() {
-        this.updateHGradient();
-        this.updateSGradient();
-        this.updateVGradient();
-        this.updateAGradient();
+        this.updateAllSliders(false, true, false);
+        this.updateAllPointers();
         this.updateColorPreview();
+    }
+
+    //== GUI UPDATES ==//
+    public void updateAllPointers() {
+        this.updateHPointer();
+        this.updateSVPointer();
+    }
+
+    public void updateAllSliders(boolean updateValue, boolean updatePointer, boolean updateText) {
+        this.updateHSlider(updateValue, updatePointer, updateText);
+        this.updateSSlider(updateValue, updatePointer, updateText);
+        this.updateVSlider(updateValue, updatePointer, updateText);
+        this.updateASlider(updateValue, updatePointer, updateText);
+    }
+
+    public void updateHPointer() {
+        this.hPointerPanel.setPointerY(this.h);
+        this.svPointerPanel.setImage(ColorPickerImages.svColorSelector(this.h, SVPointerPanel.sizeX, SVPointerPanel.sizeY));
+    }
+    public void updateSVPointer() {
+        this.svPointerPanel.setPointerX(this.s);
+        this.svPointerPanel.setPointerY(1f-this.v);
     }
 
     public void updateColorPreview() {
         this.newColorPreview.setColor(this.getColor());
     }
 
-    public void updateHGradient() {
+    public void updateHSlider(boolean updateValue, boolean updatePointer, boolean updateText) {
+        this.hSlider.setValue(Math.round(this.h*360), updateValue, updatePointer, updateText);
+        
         PointerPanel pointerPanel = this.hSlider.getPointerPanel();
         BufferedImage image = ColorPickerImages.hColorSelector(this.hSlider.gradientSizeX, this.hSlider.gradientSizeY, ColorPickerImages.ImageDisposition.HORIZONTAL);
         pointerPanel.setImage(image);
@@ -323,17 +340,23 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
         pointerPanel.setDarkness(1f-this.v);
     }
 
-    public void updateSGradient() {
+    public void updateSSlider(boolean updateValue, boolean updatePointer, boolean updateText) {
+        this.sSlider.setValue(Math.round(this.s*100), updateValue, updatePointer, updateText);
+
         List<Color> colors = Arrays.asList(Color.WHITE, Color.getHSBColor(this.h, 1f, 1f));
         this.sSlider.setGradient(colors, 1f-this.v, 0f);
     }
 
-    public void updateVGradient() {
+    public void updateVSlider(boolean updateValue, boolean updatePointer, boolean updateText) {
+        this.vSlider.setValue(Math.round(this.v*100), updateValue, updatePointer, updateText);
+
         List<Color> colors = Arrays.asList(Color.BLACK, Color.getHSBColor(this.h, this.s, 1f));
         this.vSlider.setGradient(colors);
     }
 
-    public void updateAGradient() {
+    public void updateASlider(boolean updateValue, boolean updatePointer, boolean updateText) {
+        this.aSlider.setValue(Math.round(this.a*100), updateValue, updatePointer, updateText);
+
         Color color = this.getColor();
         Color colorAlpha0 = new Color(color.getRed(), color.getGreen(), color.getBlue(), 0);
         List<Color> colors = Arrays.asList(colorAlpha0, this.getColorNoAlpha());
@@ -378,14 +401,18 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
 
     @Override
     public void textChanged(String before, String after) {
-        System.out.println(after);
-        // int size = this.alphaChannel == true ? 8 : 6;
-		// after = after.replace("#", "");;
-		// after += String.join("", Collections.nCopies(Math.max(0, size-after.length()), "0"));
+        for (char c : after.toCharArray()) {
+            if (this.HEX_CODE.indexOf(c) == -1) return; 
+        }
 
-        // Color color = ModConfig.HexToColor(after, size);
-        // this.setColor(color);
-
-        // updateAll();
+        int size = this.alphaChannel == true ? 8 : 6;
+        if (after.length() == size) {
+            Color color = ModConfig.HexToColor(after, size);
+            this.setColor(color);
+    
+            this.updateAllSliders(true, true, true);
+            this.updateAllPointers();
+            this.updateColorPreview();
+        }
     }
 }

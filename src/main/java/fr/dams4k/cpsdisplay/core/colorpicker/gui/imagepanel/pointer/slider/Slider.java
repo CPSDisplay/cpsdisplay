@@ -73,11 +73,10 @@ public class Slider extends JPanel implements PointerListener, TextFieldListener
         return this.value;
     }
     public void setValue(int value) {
-        this.setValue(value, true, true);
+        this.setValue(value, true, true, true);
     }
-    public void setValue(int value, boolean setPointer, boolean setText) {
-        this.value = this.clampValue(value);
-
+    public void setValue(int value, boolean setValue, boolean setPointer, boolean setText) {
+        if (setValue) this.value = this.clampValue(value);
         if (setPointer) this.setPointerValue(value);
         if (setText) this.setTextValue(value);
     }
