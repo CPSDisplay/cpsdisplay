@@ -7,6 +7,7 @@ import java.util.Collections;
 import fr.dams4k.cpsdisplay.core.References;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.resources.I18n;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 import net.minecraftforge.fml.common.Loader;
@@ -22,10 +23,10 @@ public class ModConfig {
 	
 	public static boolean showText = true;
 	// Text
-	private static double[] positionText = {0, 0};
+	private static double[] positionText = {0.5, 0.5};
 	public static double scaleText = 1d;
 	public static String hexColorText = "ffffff";
-	public static String text = "{0} | {1} CPS";
+	public static String text = I18n.format("cpsdisplay.display_template.left_right", new Object[0]);
 
 	// Background
 	public static String hexColorBackground = "2a2a2a80";
