@@ -16,6 +16,9 @@ import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraft.util.ResourceLocation;
 
 public class Label extends JPanel {
+    private static final int DEFAULT_CHAR_HEIGHT = 8;
+    private static final int UNICODE_CHAR_HEIGHT = 16;
+
     private ResourceLocation defaultFontLocation = new ResourceLocation("textures/font/ascii.png");
     private BufferedImage defaultFontImage;
     private int[] charWidth = new int[256];
@@ -187,7 +190,7 @@ public class Label extends JPanel {
         int cx = c % 16 * 8;
         int cy = c / 16 * 8;
         int cwidth = this.charWidth[c];
-        int cheight = 7;
+        int cheight = Label.DEFAULT_CHAR_HEIGHT;
 
         BufferedImage subImage = defaultFontImage.getSubimage(cx, cy, cwidth, cheight);
         g.drawImage(this.tintImage(subImage, color), x, y, (int) (subImage.getWidth(this) * this.fontSize), (int) (subImage.getHeight(this) * this.fontSize), this);
@@ -206,7 +209,7 @@ public class Label extends JPanel {
             int cy = (c & 255) / 16 * 16;
 
             int cwidth = k+1 - j;
-            int cheight = 16;
+            int cheight = Label.UNICODE_CHAR_HEIGHT;
 
             int unicodePage = c / 256;
             ResourceLocation unicodeLocation = new ResourceLocation(String.format("textures/font/unicode_page_%02x.png", new Object[] {Integer.valueOf(unicodePage)}));
@@ -272,6 +275,6 @@ public class Label extends JPanel {
     }
 
     public int getFontHeight() {
-        return unicodeFlag == false ? (int) (7*this.fontSize) : (int) (18*this.fontSize);
+        return unicodeFlag == false ? (int) (Label.DEFAULT_CHAR_HEIGHT*this.fontSize) : (int) (Label.UNICODE_CHAR_HEIGHT*this.fontSize);
     }
 }

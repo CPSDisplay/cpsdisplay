@@ -75,16 +75,17 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
 
         this.setTitle("ColorPicker");
 
+        background = new ImagePanel("assets/minecraft/textures/gui/options_background.png", ImageType.TILING, this.TEXTURES_SCALE);
+        background.setDarkness(0.5f);
+        background.setLayout(new BoxLayout(background, BoxLayout.PAGE_AXIS));
+        this.setContentPane(background);
+
         int sizeY = alphaChannel == true ? 640 : 600;
         size = new Dimension(320, sizeY);
         this.setSize(size);
         this.setMinimumSize(size);
 
-        background = new ImagePanel("assets/minecraft/textures/gui/options_background.png", ImageType.TILING, this.TEXTURES_SCALE);
-        background.setDarkness(0.5f);
-        background.setLayout(new BoxLayout(background, BoxLayout.PAGE_AXIS));
-        this.getContentPane().add(background);
-
+        //TODO: replace all gradients by shader???
         this.addColorPointers();
         this.addGradientSliders();
         this.addHexTextField();
