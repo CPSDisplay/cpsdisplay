@@ -1,6 +1,8 @@
 package fr.dams4k.cpsdisplay.core.colorpicker.gui.textfield;
 
 import java.awt.Graphics;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -15,15 +17,15 @@ import fr.dams4k.cpsdisplay.core.colorpicker.gui.border.Border;
 import fr.dams4k.cpsdisplay.core.colorpicker.gui.border.TextFieldBorder;
 import fr.dams4k.cpsdisplay.v1_8.config.ModConfig;
 
-public class TextField extends JTextField implements MouseListener, KeyListener {
+public class TextField extends JTextField implements MouseListener, KeyListener, FocusListener {
     private List<TextFieldListener> textFieldListeners = new ArrayList<>();
 
     private Border imageBorder;
     private Label label = new Label("");
 
     private int startX = 0;
-
     private String lastText = "";
+    private boolean hasFocus = false;
 
     public TextField(float textureScale, int maxLength) {
         setOpaque(false);
@@ -34,6 +36,7 @@ public class TextField extends JTextField implements MouseListener, KeyListener 
 
         setDocument(new LimitedDocument(maxLength));
 
+        addFocusListener(this);
         addMouseListener(this);
         addKeyListener(this);
     }
@@ -59,7 +62,7 @@ public class TextField extends JTextField implements MouseListener, KeyListener 
         this.imageBorder.paintBorder(g, this, true);
         int y = this.getHeight()/2 - label.getFontHeight()/2;
         label.paintStringWithShadow(g, this.getText(), startX, y);
-        this.paintCaret(g);
+        if (this.hasFocus) this.paintCaret(g);
     }
 
     @Override
@@ -105,5 +108,17 @@ public class TextField extends JTextField implements MouseListener, KeyListener 
 
     public void addTextFieldListener(TextFieldListener listener) {
         this.textFieldListeners.add(listener);
+    }
+
+    @Override
+    public void focusGained(FocusEvent e) {
+        this.hasFocus = true;
+        // repaint will be call by mouseClicked
+    }
+
+    @Override
+    public void focusLost(FocusEvent e) {
+        this.hasFocus = false;
+        repaint();
     }
 }
