@@ -29,7 +29,6 @@ public class ModFontRenderer extends FontRenderer {
     private float blue;
     private float green;
     private float alpha;
-    private int textColor;
 
     private boolean randomStyle;
     private boolean boldStyle;
@@ -147,7 +146,6 @@ public class ModFontRenderer extends FontRenderer {
                     }
 
                     int j1 = this.colorCode[i1];
-                    this.textColor = j1;
                     GlStateManager.color((float)(j1 >> 16) / 255.0F, (float)(j1 >> 8 & 255) / 255.0F, (float)(j1 & 255) / 255.0F, this.alpha);
                 }
                 else if (i1 == 16)
@@ -300,7 +298,6 @@ public class ModFontRenderer extends FontRenderer {
     public int drawGradientString(String text, float x, float y, int topColor, int bottomColor, boolean dropShadow, boolean horizontal) {
         GlStateManager.enableAlpha();
 
-        textColor = -1;
         resetStyles();
         int i;
 
@@ -369,9 +366,6 @@ public class ModFontRenderer extends FontRenderer {
 
                     if (i1 < 0 || i1 > 15) i1 = 15;
                     if (shadow) i1 += 16;
-
-                    int j1 = this.colorCode[i1];
-                    this.textColor = j1;
                 } else if (i1 == 16) {
                     this.randomStyle = true;
                 } else if (i1 == 17) {

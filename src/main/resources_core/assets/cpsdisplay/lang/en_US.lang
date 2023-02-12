@@ -26,3 +26,7 @@ cpsdisplay.external.color_picker=Color Picker
 cpsdisplay.external.button.cancel=Cancel
 cpsdisplay.external.button.ok=OK
 cpsdisplay.external.label.hex_code=Hex code:
+
+cpsdisplay.version.mod_name=§7[CPS Display]
+cpsdisplay.version.description=§eA newer version of the mod is
+cpsdisplay.version.url=§b§navailable

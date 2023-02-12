@@ -12,11 +12,11 @@ import com.google.gson.JsonParser;
 import fr.dams4k.cpsdisplay.core.References;
 import fr.dams4k.cpsdisplay.core.VersionChecker;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.event.ClickEvent;
 import net.minecraft.event.ClickEvent.Action;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatStyle;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -44,43 +44,25 @@ public class VersionCheckerEvent {
 					if (modVersion.compareTo(objectVersion) == VersionChecker.LOWER) {
 						EntityPlayerSP player = (EntityPlayerSP) event.entity;
 
-						// BRACKETS
-						ChatStyle bracketStyle = new ChatStyle();
-						bracketStyle.setBold(true);
-						bracketStyle.setColor(EnumChatFormatting.RED);
-
-						IChatComponent leftBracketMessage = new ChatComponentText("[");
-						IChatComponent rightBracketMessage = new ChatComponentText("] ");
-						leftBracketMessage.setChatStyle(bracketStyle);
-						rightBracketMessage.setChatStyle(bracketStyle);
-
 						// MOD NAME
-						ChatStyle modNameStyle = new ChatStyle();
-						modNameStyle.setColor(EnumChatFormatting.GRAY);
-						IChatComponent modNameMessage = new ChatComponentText("CPS Display");
-						modNameMessage.setChatStyle(modNameStyle);
+						IChatComponent modNameMessage = new ChatComponentText(I18n.format("cpsdisplay.version.mod_name", new Object[0]));
 
-						// INFO
-						ChatStyle infoStyle = new ChatStyle();
-						infoStyle.setColor(EnumChatFormatting.YELLOW);
-						IChatComponent infoMessage = new ChatComponentText("A newer version of this mod exist: ");
-						infoMessage.setChatStyle(infoStyle);
+						// DESCRIPTION
+						IChatComponent description = new ChatComponentText(I18n.format("cpsdisplay.version.description", new Object[0]));
 
 						// LINK
-						IChatComponent link = new ChatComponentText("download here");
-						ChatStyle style = new ChatStyle().setChatClickEvent(new ClickEvent(Action.OPEN_URL, "https://www.curseforge.com/minecraft/mc-mods/cps-mod/files"));
-						style.setUnderlined(true);
-						style.setBold(true);
-						style.setColor(EnumChatFormatting.GREEN);
+						IChatComponent link = new ChatComponentText(I18n.format("cpsdisplay.version.url", new Object[0]));
+						ChatStyle style = new ChatStyle().setChatClickEvent(new ClickEvent(Action.OPEN_URL, References.MOD_DOWNLOAD_URL));
 						link.setChatStyle(style);
 
 
 						// WHOLE MESSAGE
 						IChatComponent message = new ChatComponentText("");
-						message.appendSibling(leftBracketMessage);
+
 						message.appendSibling(modNameMessage);
-						message.appendSibling(rightBracketMessage);
-						message.appendSibling(infoMessage);
+						message.appendText(" ");
+						message.appendSibling(description);
+						message.appendText(" ");
 						message.appendSibling(link);
 
 						player.addChatMessage(message);

@@ -26,6 +26,7 @@ minecraft {
     replace "{mod_id}", mod_id
     replace "{mod_name}", mod_name
     replace "{mod_version}", mod_version
+    replace "{mod_download_url}", mod_download_url
     replaceIn "References.java"
     
     mappings = "stable_20"
@@ -46,17 +47,17 @@ sourceSets {
 
 processResources {
     // this will ensure that this task is redone when the versions change.
-    inputs.property "modid", mod_id
-    inputs.property "modversion", mod_version
-    inputs.property "mcversion", project.minecraft.version
-    inputs.property "modname", mod_name
+    inputs.property "mod_id", mod_id
+    inputs.property "mod_name", mod_name
+    inputs.property "mod_version", mod_version
+    inputs.property "mc_version", project.minecraft.version
 
     // replace stuff in mcmod.info, nothing else
     from(sourceSets.main.resources.srcDirs) {
         include 'mcmod.info'
                 
         // replace version and mcversion
-        expand 'modversion':mod_version, 'mcversion':project.minecraft.version, "modid":mod_id, "modname":mod_name
+        expand "mod_version":mod_version, "mc_version":project.minecraft.version, "mod_id":mod_id, "mod_name":mod_name
     }
         
     // copy everything else, thats not the mcmod.info

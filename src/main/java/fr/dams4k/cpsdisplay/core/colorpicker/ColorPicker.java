@@ -204,6 +204,9 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
             @Override
             public void buttonClicked() {
                 close();
+                for (ColorPickerListener listener : listeners) {
+                    listener.closed();
+                }
             }
             
         });
@@ -213,8 +216,8 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
         okButton.addButtonListener(new ButtonListener() {
             @Override
             public void buttonClicked() {
+                close();
                 for (ColorPickerListener listener : listeners) {
-                    close();
                     listener.newColor(getColor());
                     listener.closed();
                 }
