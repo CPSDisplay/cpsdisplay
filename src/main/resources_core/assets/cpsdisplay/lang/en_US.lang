@@ -19,3 +19,5 @@ cpsdisplay.button.color_background=Background color
 cpsdisplay.button.margin_background=Background margin:
 cpsdisplay.slider.speed_rainbow=Speed
 cpsdisplay.external.color_picker=Color Picker
+cpsdisplay.external.button.cancel=Cancel
+cpsdisplay.external.button.ok=OK

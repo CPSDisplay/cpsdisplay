@@ -32,6 +32,7 @@ import fr.dams4k.cpsdisplay.core.colorpicker.gui.textfield.LimitedDocument;
 import fr.dams4k.cpsdisplay.core.colorpicker.gui.textfield.TextField;
 import fr.dams4k.cpsdisplay.core.colorpicker.gui.textfield.TextFieldListener;
 import fr.dams4k.cpsdisplay.v1_8.config.ModConfig;
+import net.minecraft.client.resources.I18n;
 
 public class ColorPicker extends JFrame implements HPointerListener, SVPointerListener, SliderListener, TextFieldListener {
     private List<ColorPickerListener> listeners = new ArrayList<>();
@@ -59,8 +60,8 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
     private ColorPreview oldColorPreview = new ColorPreview(Color.WHITE, this.TEXTURES_SCALE);
     private ColorPreview newColorPreview = new ColorPreview(Color.WHITE, this.TEXTURES_SCALE);
 
-    private Button okButton = new Button("OK", this.TEXTURES_SCALE);
-    private Button cancelButton = new Button("Cancel", this.TEXTURES_SCALE);
+    private Button okButton = new Button(I18n.format("cpsdisplay.external.button.ok", new Object[0]), this.TEXTURES_SCALE);
+    private Button cancelButton = new Button(I18n.format("cpsdisplay.external.button.cancel", new Object[0]), this.TEXTURES_SCALE);
 
 
     private float h = 0f;
