@@ -108,7 +108,7 @@ public class PointerPanel extends ImagePanel implements MouseInputListener {
     public void mouseClicked(MouseEvent e) {
         this.x = this.clampX(e.getX());
         this.y = this.clampY(e.getY());
-        this.callSelectListeners();
+        this.callChangedListeners();
         this.repaint();
     }
 
@@ -125,7 +125,7 @@ public class PointerPanel extends ImagePanel implements MouseInputListener {
     public void mouseReleased(MouseEvent e) {
         this.x = this.clampX(e.getX());
         this.y = this.clampY(e.getY());
-        this.callSelectListeners();
+        this.callChangedListeners();
         repaint();
     }
 
@@ -133,7 +133,7 @@ public class PointerPanel extends ImagePanel implements MouseInputListener {
     public void mouseDragged(MouseEvent e) {
         x = this.clampX(e.getX());
         y = this.clampY(e.getY());
-        this.callDragListeners();
+        this.callChangingListeners();
         this.repaint();
     }
 
@@ -151,17 +151,17 @@ public class PointerPanel extends ImagePanel implements MouseInputListener {
         return Math.max(min, Math.min(max, value));
     }
 
-    private void callSelectListeners() {
+    protected void callChangedListeners() {
         for (PointerListener listener : this.listeners) {
-            listener.xPointerSelected(this.getPointerX());
-            listener.yPointerSelected(this.getPointerY());
+            listener.xPointerChanged(this.getPointerX());
+            listener.yPointerChanged(this.getPointerY());
         }
     }
 
-    private void callDragListeners() {
+    protected void callChangingListeners() {
         for (PointerListener listener : this.listeners) {
-            listener.xPointerDragged(this.getPointerX());
-            listener.yPointerDragged(this.getPointerY());
+            listener.xPointerChanging(this.getPointerX());
+            listener.yPointerChanging(this.getPointerY());
         }
     }
     public void addListener(PointerListener listener) {

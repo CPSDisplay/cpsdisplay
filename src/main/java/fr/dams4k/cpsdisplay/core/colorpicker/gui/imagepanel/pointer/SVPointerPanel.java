@@ -1,6 +1,5 @@
 package fr.dams4k.cpsdisplay.core.colorpicker.gui.imagepanel.pointer;
 
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,22 +16,20 @@ public class SVPointerPanel extends PointerPanel {
         super(ColorPickerImages.svColorSelector(0f, sizeX, sizeY), ImageType.NORMAL, 1f, true, true);
     }
 
-    private void callListeners() {
+
+    @Override
+    protected void callChangingListeners() {
+        for (SVPointerListener listener : this.listeners) {
+            listener.SColorChanging(this.getPointerX());
+            listener.VColorChanging(this.getPointerY());
+        }
+    }
+    @Override
+    protected void callChangedListeners() {
         for (SVPointerListener listener : this.listeners) {
             listener.SColorChanged(this.getPointerX());
             listener.VColorChanged(this.getPointerY());
         }
-    }
-
-    @Override
-    public void mouseDragged(MouseEvent e) {
-        super.mouseDragged(e);
-        this.callListeners();
-    }
-    @Override
-    public void mouseClicked(MouseEvent e) {
-        super.mouseClicked(e);
-        this.callListeners();
     }
 
     public void addListener(SVPointerListener listener) {

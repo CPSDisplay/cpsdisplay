@@ -73,12 +73,24 @@ public class Slider extends JPanel implements PointerListener, TextFieldListener
         return this.value;
     }
     public void setValue(int value) {
+        this.setValue(value, true, true);
+    }
+    public void setValue(int value, boolean setPointer, boolean setText) {
         this.value = this.clampValue(value);
-        float fValue = this.value/(float) (max);
+
+        if (setPointer) this.setPointerValue(value);
+        if (setText) this.setTextValue(value);
+    }
+
+    public void setPointerValue(int value) {
+        float fValue = value/(float) (max);
         this.pointerPanel.defaultX = fValue;
         this.pointerPanel.setPointerX(fValue);
+    }
+    public void setTextValue(int value) {
         this.textField.setText(Integer.toString(this.value));
     }
+
 
     public void setGradient(List<Color> colors) {
         this.pointerPanel.setImage(ColorPickerImages.createGradient(this.gradientSizeX, this.gradientSizeY, colors));
@@ -101,7 +113,12 @@ public class Slider extends JPanel implements PointerListener, TextFieldListener
     }
 
 
-    public void callListeners() {
+    public void callChangingListeners() {
+        for (SliderListener listener : this.listeners) {
+            listener.sliderValueChanging(this.getName(), this.value);
+        }
+    }
+    public void callChangedListeners() {
         for (SliderListener listener : this.listeners) {
             listener.sliderValueChanged(this.getName(), this.value);
         }
@@ -112,14 +129,23 @@ public class Slider extends JPanel implements PointerListener, TextFieldListener
     }
 
     @Override
-    public void xPointerDragged(float x) {
+    public void xPointerChanging(float x) {
         this.value = Math.round(x * this.max);
-        System.out.println(value);
-        callListeners();
+        callChangingListeners();
     }
 
     @Override
-    public void yPointerDragged(float y) {}
+    public void yPointerChanging(float y) {}
+
+    @Override
+    public void xPointerChanged(float x) {
+        this.value = Math.round(x * this.max);
+        this.textField.setText(Integer.toString(this.value));
+        callChangedListeners();
+    }
+
+    @Override
+    public void yPointerChanged(float y) {}
 
     @Override
     public void textChanged(String before, String after) {
@@ -129,16 +155,6 @@ public class Slider extends JPanel implements PointerListener, TextFieldListener
 
         this.value = Integer.valueOf(after);
         setValue(value);
-        callListeners();
+        callChangedListeners();
     }
-
-    @Override
-    public void xPointerSelected(float x) {
-        this.value = Math.round(x * this.max);
-        this.textField.setText(Integer.toString(this.value));
-        callListeners();
-    }
-
-    @Override
-    public void yPointerSelected(float y) {}
 }

@@ -30,8 +30,9 @@ import fr.dams4k.cpsdisplay.core.colorpicker.gui.imagepanel.pointer.slider.Slide
 import fr.dams4k.cpsdisplay.core.colorpicker.gui.imagepanel.pointer.slider.SliderListener;
 import fr.dams4k.cpsdisplay.core.colorpicker.gui.textfield.LimitedDocument;
 import fr.dams4k.cpsdisplay.core.colorpicker.gui.textfield.TextField;
+import fr.dams4k.cpsdisplay.core.colorpicker.gui.textfield.TextFieldListener;
 
-public class ColorPicker extends JFrame implements HPointerListener, SVPointerListener, SliderListener {
+public class ColorPicker extends JFrame implements HPointerListener, SVPointerListener, SliderListener, TextFieldListener {
     private List<ColorPickerListener> listeners = new ArrayList<>();
     private final float texturesScale = 3f;
     private final int borderSize = 8;
@@ -64,11 +65,7 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
     private float a = 1f;
 
     public ColorPicker(Color oldColor, boolean alphaChannel) {
-        float[] hsb =  Color.RGBtoHSB(oldColor.getRed(), oldColor.getGreen(), oldColor.getBlue(), null);
-        this.h = hsb[0];
-        this.s = hsb[1];
-        this.v = hsb[2];
-        this.a = (float) oldColor.getAlpha() / 255;
+        this.setColor(oldColor);
 
         this.alphaChannel = alphaChannel;
 
@@ -162,7 +159,8 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
         document.digits = true;
         document.letters = true;
         this.hexColorField.setDocument(document);
-        this.updateTextField();
+        this.updateHexTextField();
+        this.hexColorField.addTextFieldListener(this);
         hexColorPanel.add(hexColorField);
         
         background.add(hexColorPanel);
@@ -219,38 +217,63 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
         closeButtons.add(okButton);
     }
 
+
+
     public void popup() {
         this.setLocationRelativeTo(null);
         this.setVisible(true);
     }
 
+    
     @Override
     public void HColorChanged(float h) {
-        this.h = h;
-        this.svPointerPanel.setImage(ColorPickerImages.svColorSelector(this.h, SVPointerPanel.sizeX, SVPointerPanel.sizeY));
-        this.hSlider.setValue((int) (this.h*360));
-
-        this.updateAll();
+        this.HColorChanging(h);
+        this.updateHexTextField();
+        this.hSlider.setTextValue(this.hSlider.getValue());
     }
 
     @Override
     public void SColorChanged(float s) {
-        this.s = s;
-        this.sSlider.setValue((int) (this.s*100));
-
-        this.updateAll();
+        this.SColorChanging(s);
+        this.updateHexTextField();
+        this.sSlider.setTextValue(this.sSlider.getValue());
     }
 
     @Override
     public void VColorChanged(float v) {
-        this.v = 1f-v;
-        this.vSlider.setValue((int) (this.v*100));
+        this.VColorChanging(v);
+        this.updateHexTextField();
+        this.vSlider.setTextValue(this.vSlider.getValue());
+    }
+    
+    
+    @Override
+    public void HColorChanging(float h) {
+        this.h = h;
+        this.svPointerPanel.setImage(ColorPickerImages.svColorSelector(this.h, SVPointerPanel.sizeX, SVPointerPanel.sizeY));
+        this.hSlider.setValue((int) (this.h*360), true, false);
 
         this.updateAll();
     }
 
     @Override
-    public void sliderValueChanged(String sliderName, int value) {
+    public void SColorChanging(float s) {
+        this.s = s;
+        this.sSlider.setValue((int) (this.s*100), true, false);
+
+        this.updateAll();
+    }
+
+    @Override
+    public void VColorChanging(float v) {
+        this.v = 1f-v;
+        this.vSlider.setValue((int) (this.v*100), true, false);
+
+        this.updateAll();
+    }
+
+    @Override
+    public void sliderValueChanging(String sliderName, int value) {
         switch (sliderName) {
             case "H":
                 this.h = value/360f;
@@ -271,6 +294,12 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
         }
 
         this.updateAll();
+    }
+
+    @Override
+    public void sliderValueChanged(String sliderName, int value) {
+        this.sliderValueChanging(sliderName, value);
+        this.updateHexTextField();
     }
 
 
@@ -311,7 +340,7 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
         this.aSlider.setAGradient(colors);
     }
 
-    public void updateTextField() {
+    public void updateHexTextField() {
         String ARGBHex = Integer.toHexString(this.getColor().getRGB());
         String RGBAHex = ARGBHex.substring(2, 8) + ARGBHex.substring(0, 2);
         hexColorField.setText(this.alphaChannel == true ? RGBAHex : RGBAHex.substring(0, 6));
@@ -319,6 +348,14 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
 
     public Color getColorNoAlpha() {
         return Color.getHSBColor(this.h, this.s, this.v);
+    }
+
+    public void setColor(Color color) {
+        float[] hsb =  Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), null);
+        this.h = hsb[0];
+        this.s = hsb[1];
+        this.v = hsb[2];
+        this.a = (float) color.getAlpha() / 255;
     }
 
     public Color getColor() {
@@ -337,5 +374,18 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
 
     public void close() {
         this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+    }
+
+    @Override
+    public void textChanged(String before, String after) {
+        System.out.println(after);
+        // int size = this.alphaChannel == true ? 8 : 6;
+		// after = after.replace("#", "");;
+		// after += String.join("", Collections.nCopies(Math.max(0, size-after.length()), "0"));
+
+        // Color color = ModConfig.HexToColor(after, size);
+        // this.setColor(color);
+
+        // updateAll();
     }
 }

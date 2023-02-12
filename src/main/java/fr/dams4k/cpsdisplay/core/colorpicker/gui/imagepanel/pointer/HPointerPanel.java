@@ -1,6 +1,5 @@
 package fr.dams4k.cpsdisplay.core.colorpicker.gui.imagepanel.pointer;
 
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,20 +16,15 @@ public class HPointerPanel extends PointerPanel {
         super(ColorPickerImages.hColorSelector(sizeX, sizeY), ImageType.STRETCHING, 1f, false, true);
     }
     
-    
+    @Override
+    protected void callChangingListeners() {
+        for (HPointerListener listener : this.listeners) {
+            listener.HColorChanging(this.getPointerY());
+        }
+    }
 
     @Override
-    public void mouseDragged(MouseEvent e) {
-        super.mouseDragged(e);
-        callListeners();
-    }
-    @Override
-    public void mouseClicked(MouseEvent e) {
-        super.mouseClicked(e);
-        callListeners();
-    }
-    
-    private void callListeners() {
+    protected void callChangedListeners() {
         for (HPointerListener listener : this.listeners) {
             listener.HColorChanged(this.getPointerY());
         }
