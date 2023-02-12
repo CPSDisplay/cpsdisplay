@@ -5,21 +5,22 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 import org.apache.commons.io.IOUtils;
 
 import fr.dams4k.cpsdisplay.v1_8.config.ModConfig;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.TextureUtil;
-import net.minecraft.util.ResourceLocation;
 
 public class Label extends JPanel {
     private static final int DEFAULT_CHAR_HEIGHT = 8;
     private static final int UNICODE_CHAR_HEIGHT = 16;
 
-    private ResourceLocation defaultFontLocation = new ResourceLocation("textures/font/ascii.png");
+    private String unicodeFontPath = "assets/minecraft/textures/font/unicode_page_%02x.png";
+    private String defaultFontPath = "assets/minecraft/textures/font/ascii.png";
     private BufferedImage defaultFontImage;
     private int[] charWidth = new int[256];
     private byte[] glyphWidth = new byte[65536];
@@ -37,28 +38,25 @@ public class Label extends JPanel {
         this.unicodeFlag = Minecraft.getMinecraft().fontRendererObj.getUnicodeFlag();
         this.fontSize = this.unicodeFlag ? 1 : 2;
 
+        try {
+            URL url = getClass().getClassLoader().getResource(defaultFontPath);
+            defaultFontImage = ImageIO.read(url);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         if (!this.unicodeFlag) {
             readFontTexture();
         } else {
             readGlyphSizes();
         }
-
-        try {
-            defaultFontImage = TextureUtil.readBufferedImage(Minecraft.getMinecraft().getResourceManager().getResource(this.defaultFontLocation).getInputStream());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     private void readFontTexture() {
-        BufferedImage bufferedimage;
-
-        try {
-            bufferedimage = TextureUtil.readBufferedImage(Minecraft.getMinecraft().getResourceManager().getResource(this.defaultFontLocation).getInputStream());
-            int i = bufferedimage.getWidth();
-        int j = bufferedimage.getHeight();
+        int i = defaultFontImage.getWidth();
+        int j = defaultFontImage.getHeight();
         int[] aint = new int[i * j];
-        bufferedimage.getRGB(0, 0, i, j, aint, 0, i);
+        defaultFontImage.getRGB(0, 0, i, j, aint, 0, i);
         int k = j / 16;
         int l = i / 16;
         int i1 = 1;
@@ -94,16 +92,13 @@ public class Label extends JPanel {
             ++i2;
             this.charWidth[j1] = (int)(0.5D + (double)((float)i2 * f)) + i1;
         }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     private void readGlyphSizes() {
         InputStream inputstream = null;
 
         try {
-            inputstream = Minecraft.getMinecraft().getResourceManager().getResource(new ResourceLocation("font/glyph_sizes.bin")).getInputStream();
+            inputstream = getClass().getClassLoader().getResourceAsStream("assets/minecraft/font/glyph_sizes.bin");
             inputstream.read(this.glyphWidth);
         } catch (IOException e) {
             e.printStackTrace();
@@ -212,8 +207,9 @@ public class Label extends JPanel {
             int cheight = Label.UNICODE_CHAR_HEIGHT;
 
             int unicodePage = c / 256;
-            ResourceLocation unicodeLocation = new ResourceLocation(String.format("textures/font/unicode_page_%02x.png", new Object[] {Integer.valueOf(unicodePage)}));
-            BufferedImage fontImage = TextureUtil.readBufferedImage(Minecraft.getMinecraft().getResourceManager().getResource(unicodeLocation).getInputStream());
+
+            URL url = getClass().getClassLoader().getResource(String.format(unicodeFontPath, new Object[] {Integer.valueOf(unicodePage)}));
+            BufferedImage fontImage = ImageIO.read(url);
             BufferedImage subImage = fontImage.getSubimage(cx, cy, cwidth, cheight);
 
             g.drawImage(this.tintImage(subImage, color), x, y, (int) (subImage.getWidth(this) * this.fontSize), (int) (subImage.getHeight(this) * this.fontSize), this);
