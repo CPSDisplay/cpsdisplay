@@ -1,5 +1,6 @@
 cpsdisplay.key.opengui=Open Config Gui
 cpsdisplay.category.cpsdisplay=CPS Display
+
 cpsdisplay.button.show_text=Show text: 
 cpsdisplay.button.show_rainbow=Rainbow: 
 cpsdisplay.button.enable=§aEnable
@@ -9,15 +10,19 @@ cpsdisplay.button.display_left=Left
 cpsdisplay.button.display_right=Right
 cpsdisplay.button.display_left_right=Left & Right
 cpsdisplay.button.display_custom=Custom
+cpsdisplay.button.color_text=Text color
+cpsdisplay.button.color_background=Background color
+cpsdisplay.button.margin_background=Background margin:
+
+cpsdisplay.slider.scale_text=Text scale
+cpsdisplay.slider.speed_rainbow=Speed
+
 cpsdisplay.display_template.left={0} CPS
 cpsdisplay.display_template.right={1} CPS
 cpsdisplay.display_template.left_right=[{0} | {1}] CPS
 cpsdisplay.display_template.custom=
-cpsdisplay.slider.scale_text=Text scale
-cpsdisplay.button.color_text=Text color
-cpsdisplay.button.color_background=Background color
-cpsdisplay.button.margin_background=Background margin:
-cpsdisplay.slider.speed_rainbow=Speed
+
 cpsdisplay.external.color_picker=Color Picker
 cpsdisplay.external.button.cancel=Cancel
 cpsdisplay.external.button.ok=OK
+cpsdisplay.external.label.hex_code=Hex code:

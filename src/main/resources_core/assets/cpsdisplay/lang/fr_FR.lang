@@ -1,5 +1,6 @@
 cpsdisplay.key.opengui=Ouvrir l'interface de configuration
 cpsdisplay.category.cpsdisplay=CPS Display
+
 cpsdisplay.button.show_text=Afficher le texte : 
 cpsdisplay.button.show_rainbow=Arc en ciel : 
 cpsdisplay.button.enable=§aActivé
@@ -9,15 +10,19 @@ cpsdisplay.button.display_left=Gauche
 cpsdisplay.button.display_right=Droite
 cpsdisplay.button.display_left_right=Gauche & Droite
 cpsdisplay.button.display_custom=Personnalisé
+cpsdisplay.button.color_text=Couleur du texte
+cpsdisplay.button.color_background=Couleur du fond
+cpsdisplay.button.margin_background=Marge du fond :
+
+cpsdisplay.slider.scale_text=Taille du texte
+cpsdisplay.slider.speed_rainbow=Vitesse 
+
 cpsdisplay.display_template.left={0} CPS
 cpsdisplay.display_template.right={1} CPS
 cpsdisplay.display_template.left_right=[{0} | {1}] CPS
 cpsdisplay.display_template.custom=
-cpsdisplay.slider.scale_text=Taille du texte
-cpsdisplay.button.color_text=Couleur du texte
-cpsdisplay.button.color_background=Couleur du fond
-cpsdisplay.button.margin_background=Marge du fond :
-cpsdisplay.slider.speed_rainbow=Vitesse 
+
 cpsdisplay.external.color_picker=Selecteur de couleur
 cpsdisplay.external.button.cancel=Annuler
 cpsdisplay.external.button.ok=Valider
+cpsdisplay.external.label.hex_code=Code hex :

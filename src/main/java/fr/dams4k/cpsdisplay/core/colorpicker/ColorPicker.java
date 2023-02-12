@@ -54,7 +54,7 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
     private Slider vSlider = new Slider("V", 0, 100, this.TEXTURES_SCALE);
     private Slider aSlider = new Slider("A", 0, 100, this.TEXTURES_SCALE);
 
-    private Label hexColorLabel = new Label("Hex color:");
+    private Label hexColorLabel = new Label(I18n.format("cpsdisplay.external.label.hex_code", new Object[0]));
     private TextField hexColorField;
 
     private ColorPreview oldColorPreview = new ColorPreview(Color.WHITE, this.TEXTURES_SCALE);
