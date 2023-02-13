@@ -41,7 +41,7 @@ sourceSets {
             srcDirs = ["src/main/java/fr/dams4k/cpsdisplay/v8", "src/main/java/fr/dams4k/cpsdisplay/core"]
         }
         resources {
-            srcDirs = ["src/main/resources_v8", "src/main/resources_core"]
+            srcDirs = ["src/main/resources/v8", "src/main/resources/core"]
         }
     }
 }
