@@ -108,7 +108,7 @@ public class ModConfig {
 	}
 	
 	public static Color getChroma() {
-		int rgb = Color.HSBtoRGB((float) ((System.currentTimeMillis() * ModConfig.speedRainbow) % .1f) / .1f, 0.8f, 0.8f);
+		int rgb = Color.HSBtoRGB((float) ((System.currentTimeMillis() * ModConfig.speedRainbow) % 2000l) / 2000f, 0.8f, 0.8f);
 		return new Color(rgb);
 	}
 

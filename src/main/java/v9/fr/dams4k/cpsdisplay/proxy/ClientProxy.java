@@ -2,9 +2,12 @@ package fr.dams4k.cpsdisplay.proxy;
 
 import org.lwjgl.input.Keyboard;
 
+import fr.dams4k.cpsdisplay.commands.ConfigCommand;
 import fr.dams4k.cpsdisplay.config.ModConfig;
+import fr.dams4k.cpsdisplay.events.ModEventHandler;
 import fr.dams4k.cpsdisplay.events.VersionCheckerEvent;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 
@@ -20,5 +23,7 @@ public class ClientProxy extends CommonProxy {
     public void init() {
 		ClientRegistry.registerKeyBinding(CPS_OVERLAY_CONFIG);
 		MinecraftForge.EVENT_BUS.register(new VersionCheckerEvent());
+        MinecraftForge.EVENT_BUS.register(new ModEventHandler());
+		ClientCommandHandler.instance.registerCommand(new ConfigCommand());
     }
 }
