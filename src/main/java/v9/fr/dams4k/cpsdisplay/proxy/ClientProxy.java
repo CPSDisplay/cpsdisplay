@@ -1,8 +1,21 @@
 package fr.dams4k.cpsdisplay.proxy;
 
+import org.lwjgl.input.Keyboard;
+
+import fr.dams4k.cpsdisplay.config.ModConfig;
+import net.minecraft.client.settings.KeyBinding;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
+
 public class ClientProxy extends CommonProxy {
+	public static final KeyBinding CPS_OVERLAY_CONFIG = new KeyBinding("cpsdisplay.key.opengui", Keyboard.KEY_P, "cpsdisplay.category.cpsdisplay");
+    
     @Override
     public void preInit() {
-        System.out.println("HI");
+        ModConfig.preInit();
+    }
+
+    @Override
+    public void init() {
+		ClientRegistry.registerKeyBinding(CPS_OVERLAY_CONFIG);
     }
 }
