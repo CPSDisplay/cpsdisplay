@@ -6,15 +6,17 @@ import java.util.ArrayList;
 import org.lwjgl.opengl.GL11;
 
 import fr.dams4k.cpsdisplay.config.ModConfig;
+import fr.dams4k.cpsdisplay.renderer.ModFontRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.util.ResourceLocation;
 
 public class GuiOverlay extends Gui {
-	// private ModFontRenderer modFontRenderer;
+	private ModFontRenderer modFontRenderer;
 
 	public GuiOverlay(Minecraft mc, Integer l, Integer r, Color color) {
-		// modFontRenderer = new ModFontRenderer(mc.gameSettings, new ResourceLocation("textures/font/ascii.png"), mc.renderEngine, mc.isUnicode());
-		// modFontRenderer.onResourceManagerReload(null);
+		modFontRenderer = new ModFontRenderer(mc.gameSettings, new ResourceLocation("textures/font/ascii.png"), mc.renderEngine, mc.isUnicode());
+		modFontRenderer.onResourceManagerReload(null);
 
 		if (ModConfig.showText) {
 			String text = ModConfig.text.replace("{0}", l.toString()).replace("{1}", r.toString()).replace("&", "§");
@@ -44,8 +46,7 @@ public class GuiOverlay extends Gui {
 				drawRect(x-margin, y-margin, positions.get(2)+margin, positions.get(3)+margin, color.getRGB());
 			}
 			
-			// modFontRenderer.drawString(text, x, y, textColor.getRGB(), true);
-            drawString(mc.fontRendererObj, text, x, y, textColor.getRGB());
+			modFontRenderer.drawString(text, x, y, textColor.getRGB(), true);
 
 			GL11.glPopMatrix();
 		}
