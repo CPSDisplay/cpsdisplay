@@ -1,3 +1,4 @@
+
 // For those who want the bleeding edge
 buildscript {
     repositories {
@@ -8,7 +9,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.1-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
     }
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
@@ -17,10 +18,10 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 group = "v8.fr.dams4k.cpsdisplay"
-version = "1.8.9-${mod_version}"
+version = "1.9.4-${mod_version}"
 
 minecraft {
-    version = "1.8.9-11.15.1.1722"
+    version = "1.9.4-12.17.0.2317-1.9.4"
     runDir = "run"
     
     replace "{mod_id}", mod_id
@@ -29,8 +30,8 @@ minecraft {
     replace "{mod_download_url}", mod_download_url
     replaceIn "References.java"
     
-    mappings = "stable_20"
-    makeObfSourceJar = true // an Srg named sources jar is made by default
+    mappings = "snapshot_20160518"
+    makeObfSourceJar = true
 }
 
 dependencies {}
@@ -38,10 +39,10 @@ dependencies {}
 sourceSets {
     main {
         java {
-            srcDirs = ["src/main/java/v8", "src/main/java/core"]
+            srcDirs = ["src/main/java/v9", "src/main/java/core"]
         }
         resources {
-            srcDirs = ["src/main/resources_v8", "src/main/resources_core"]
+            srcDirs = ["src/main/resources_v9", "src/main/resources_core"]
         }
     }
 }
