@@ -3,7 +3,9 @@ package fr.dams4k.cpsdisplay.proxy;
 import org.lwjgl.input.Keyboard;
 
 import fr.dams4k.cpsdisplay.config.ModConfig;
+import fr.dams4k.cpsdisplay.events.VersionCheckerEvent;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 
 public class ClientProxy extends CommonProxy {
@@ -17,5 +19,6 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void init() {
 		ClientRegistry.registerKeyBinding(CPS_OVERLAY_CONFIG);
+		MinecraftForge.EVENT_BUS.register(new VersionCheckerEvent());
     }
 }
