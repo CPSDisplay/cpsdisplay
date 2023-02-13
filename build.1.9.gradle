@@ -17,7 +17,7 @@ apply plugin: 'net.minecraftforge.gradle.forge'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-group = "v8.fr.dams4k.cpsdisplay"
+group = "fr.dams4k.cpsdisplay.v8"
 version = "1.9.4-${mod_version}"
 
 minecraft {
@@ -39,7 +39,7 @@ dependencies {}
 sourceSets {
     main {
         java {
-            srcDirs = ["src/main/java/v9", "src/main/java/core"]
+            srcDirs = ["src/main/java/fr/dams4k/cpsdisplay/v9", "src/main/java/fr/dams4k/cpsdisplay/core"]
         }
         resources {
             srcDirs = ["src/main/resources_v9", "src/main/resources_core"]
