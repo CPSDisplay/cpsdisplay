@@ -10,6 +10,13 @@ But i like customization, so i tried to make this mod easily customizable.
 
 Ok let's break it down
 
+## Summary
+
+1. [Settings GUI](#Settings-GUI)
+2. [CPS Display overlay](#CPS-Display-overlay)
+3. [Text settings](#Text-settings)
+2. [Background settings](#Background-settings)
+
 ## Settings GUI
 
 To open the mod settings gui, you can press the "P" key (you can change the key in the `Controls` menu) or type in the chat one of the two commands: `/cpsd` `/cpsdisplay`.
@@ -20,7 +27,7 @@ To open the mod settings gui, you can press the "P" key (you can change the key 
 
 In settings GUI you still can see how will look the final result.
 
-The background is cut off so you don't need to quit and reopen the menu settings to check if it's looking good or not.
+The background is cut off around the overlay so you don't need to quit and reopen the menu settings to check if it's looking good or not.
 
 ![Overlay](demo_imgs/gui_overlay.png)
 
@@ -90,3 +97,5 @@ Three important things to know:
 So you can do weird things like this with the following text `&a{0}&r &l&k|&r &d{1} &b&m&n&oCPS`
 
 ![Text Mode Customized](demo_imgs/text_settings_mode_customized.png)
+
+## Background settings
