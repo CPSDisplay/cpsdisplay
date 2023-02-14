@@ -22,9 +22,6 @@ import net.minecraft.util.ResourceLocation;
 
 // Original code from deerangle, https://forums.minecraftforge.net/topic/78188-1122-drawing-text-with-gradients/
 public class ModFontRenderer extends FontRenderer {
-    private static final float DEFAULT_CHAR_HEIGHT = 7.99f;
-    private static final float UNICODE_CHAR_HEIGHT = 15.98f;
-    
     private static final String charmap = "\u00c0\u00c1\u00c2\u00c8\u00ca\u00cb\u00cd\u00d3\u00d4\u00d5\u00da\u00df\u00e3\u00f5\u011f\u0130\u0131\u0152\u0153\u015e\u015f\u0174\u0175\u017e\u0207\u0000\u0000\u0000\u0000\u0000\u0000\u0000 !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~\u0000\u00c7\u00fc\u00e9\u00e2\u00e4\u00e0\u00e5\u00e7\u00ea\u00eb\u00e8\u00ef\u00ee\u00ec\u00c4\u00c5\u00c9\u00e6\u00c6\u00f4\u00f6\u00f2\u00fb\u00f9\u00ff\u00d6\u00dc\u00f8\u00a3\u00d8\u00d7\u0192\u00e1\u00ed\u00f3\u00fa\u00f1\u00d1\u00aa\u00ba\u00bf\u00ae\u00ac\u00bd\u00bc\u00a1\u00ab\u00bb\u2591\u2592\u2593\u2502\u2524\u2561\u2562\u2556\u2555\u2563\u2551\u2557\u255d\u255c\u255b\u2510\u2514\u2534\u252c\u251c\u2500\u253c\u255e\u255f\u255a\u2554\u2569\u2566\u2560\u2550\u256c\u2567\u2568\u2564\u2565\u2559\u2558\u2552\u2553\u256b\u256a\u2518\u250c\u2588\u2584\u258c\u2590\u2580\u03b1\u03b2\u0393\u03c0\u03a3\u03c3\u03bc\u03c4\u03a6\u0398\u03a9\u03b4\u221e\u2205\u2208\u2229\u2261\u00b1\u2265\u2264\u2320\u2321\u00f7\u2248\u00b0\u2219\u00b7\u221a\u207f\u00b2\u25a0\u0000";
     private static final String styleCharsmap = "0123456789abcdefklmnor";
     private static final ResourceLocation[] unicodePageLocations = new ResourceLocation[256];
@@ -322,9 +319,9 @@ public class ModFontRenderer extends FontRenderer {
     }
 
     private void renderGradientStringAtPos(String text, boolean shadow, List<Integer> colors, boolean horizontal) {
-        float totalWidth = this.getStringWidth(text);
-        float gradientWidth = totalWidth / (colors.size()-1);
-        float currentCountWidth = 0;
+        double totalWidth = this.getStringWidth(text);
+        double gradientWidth = totalWidth / (colors.size()-1);
+        double currentCountWidth = 0;
         
         for (int i = 0; i < text.length(); i++) {
             char c0 = text.charAt(i);
@@ -382,10 +379,12 @@ public class ModFontRenderer extends FontRenderer {
                 float f;
                 float nextCharWidth = this.getCharWidth(c0);
                 // if firstMix > lastMix, we have 3 colors
-                float firstMix = (currentCountWidth % gradientWidth) / gradientWidth;
-                float lastMix = ((currentCountWidth + nextCharWidth) % gradientWidth) / gradientWidth;
+                double firstMix = (currentCountWidth % gradientWidth) / gradientWidth;
+                double lastMix = ((currentCountWidth + nextCharWidth) % gradientWidth) / gradientWidth;
 
-                int startColorPos = (int) (currentCountWidth / gradientWidth);
+                int startColorPos;
+                startColorPos = (int) (currentCountWidth / gradientWidth);
+                
                 if (firstMix > lastMix && startColorPos+2 >= colors.size()) lastMix = 1f;
 
                 if (horizontal) {
@@ -395,13 +394,13 @@ public class ModFontRenderer extends FontRenderer {
                     int firstColor = colorMix(startGColor, endGColor, firstMix);
                     int lastColor = colorMix(startGColor, endGColor, lastMix);
 
-                    if (firstMix < lastMix) {
+                    if (firstMix <= lastMix) {
                         f = this.renderGradientChar(c0, firstColor, lastColor, true, this.italicStyle);
                     } else {
-                        int middleColor = lastColor;
-                        lastColor = colors.get(startColorPos+2);
+                        int middleColor = endGColor;
+                        lastColor = colorMix(middleColor, colors.get(startColorPos+2), lastMix);
 
-                        f = this.renderGradientChar(c0, firstColor, middleColor, lastColor, (currentCountWidth + nextCharWidth) % gradientWidth, true, this.italicStyle);
+                        f = this.renderGradientChar(c0, firstColor, middleColor, lastColor, (float) (nextCharWidth - ((currentCountWidth + nextCharWidth) % gradientWidth)), true, this.italicStyle);
                     }
                     currentCountWidth += f;
                 } else {
@@ -515,7 +514,7 @@ public class ModFontRenderer extends FontRenderer {
         this.posX += (float)((int)f);
     }
 
-    private int colorMix(int startColor, int endColor, float mix) {
+    private int colorMix(int startColor, int endColor, double mix) {
         float startAlpha = ((startColor >> 24) & 0xFF) / 255f;
         float startRed = ((startColor >> 16) & 0xFF) / 255f;
         float startGreen = ((startColor >> 8) & 0xFF) / 255f;
@@ -564,6 +563,62 @@ public class ModFontRenderer extends FontRenderer {
     }
 
     protected float renderGradientUnicodeChar(char ch, int startColor, int endColor, boolean horizontal, boolean italic) {
+        if (this.glyphWidth[ch] == 0) return 0f;
+
+        float startAlpha = ((startColor >> 24) & 0xFF) / 255f;
+        float startRed = ((startColor >> 16) & 0xFF) / 255f;
+        float startGreen = ((startColor >> 8) & 0xFF) / 255f;
+        float startBlue = (startColor & 0xFF) / 255f;
+
+        float endAlpha = ((endColor >> 24) & 0xFF) / 255f;
+        float endRed = ((endColor >> 16) & 0xFF) / 255f;
+        float endGreen = ((endColor >> 8) & 0xFF) / 255f;
+        float endBlue = (endColor & 0xFF) / 255f;
+
+        int i = ch /256;
+        this.loadGlyphTexture(i);
+        int j = this.glyphWidth[ch] >>> 4;
+        int k = this.glyphWidth[ch] & 15;
+        float f = (float)j;
+        float f1 = (float)(k + 1);
+        float charXPos = (float)(ch % 16 * 16) + f;
+        float charYPos = (float)((ch & 255) / 16 * 16);
+        float width = f1 - f - 0.02F;
+        float f5 = italic ? 1.0F : 0.0F;
+
+        GlStateManager.shadeModel(GL11.GL_SMOOTH);
+        GL11.glBegin(GL11.GL_QUADS);
+
+        GlStateManager.color(startRed, startGreen, startBlue, startAlpha);
+        GL11.glTexCoord2f(charXPos / 256.0F, charYPos / 256.0F);
+        GL11.glVertex3f(this.posX + f5, this.posY, 0.0F);
+
+        if (horizontal) {
+            GlStateManager.color(startRed, startGreen, startBlue, startAlpha);
+        } else {
+            GlStateManager.color(endRed, endGreen, endBlue, endAlpha);
+        }
+        GL11.glTexCoord2f(charXPos / 256.0F, (charYPos + 15.98F) / 256.0F);
+        GL11.glVertex3f(this.posX - f5, this.posY + 7.99F, 0.0F);
+
+        GlStateManager.color(endRed, endGreen, endBlue, endAlpha);
+        GL11.glTexCoord2f((charXPos + width) / 256.0F, (charYPos + 15.98F) / 256.0F);
+        GL11.glVertex3f(this.posX + width / 2.0F - f5, this.posY + 7.99F, 0.0F);
+        
+        if (horizontal) {
+            GlStateManager.color(endRed, endGreen, endBlue, endAlpha);
+        } else {
+            GlStateManager.color(startRed, startGreen, startBlue, startAlpha);
+        }
+        GL11.glTexCoord2f((charXPos + width) / 256.0F, charYPos / 256.0F);
+        GL11.glVertex3f(this.posX + width / 2.0F + f5, this.posY, 0.0F);
+
+
+        GL11.glEnd();
+        GlStateManager.shadeModel(GL11.GL_FLAT);
+        return (f1 - f) / 2.0F + 1.0F;
+    }
+    protected float renderGradientUnicodeChar(char ch, int startColor, int middleColor, int endColor, int middlePosition, boolean horizontal, boolean italic) {
         if (this.glyphWidth[ch] == 0) return 0f;
 
         float startAlpha = ((startColor >> 24) & 0xFF) / 255f;
@@ -697,66 +752,47 @@ public class ModFontRenderer extends FontRenderer {
         bindTexture(this.locationFontTexture);
         int charWidth = this.charWidth[ch];
 
-        System.out.printf("c: %s mp: %s\n", ch, middlePosition);
+        float width = (float) charWidth - 0.01f;
         float fWidth = (float) middlePosition;
-        float sWidth = (float) charWidth - 0.01f - middlePosition;
+        float sWidth = (float) width - middlePosition;
 
         GlStateManager.shadeModel(GL11.GL_SMOOTH);
-
-        // FIRST PART
         GL11.glBegin(GL11.GL_QUADS);
-        GlStateManager.color(startRed, startGreen, startBlue, startAlpha);
-        GL11.glTexCoord2f(fCharXPos / 128.0F, fCharYPos / 128.0F); // 0 0
-        GL11.glVertex3f(this.posX + k, this.posY, 0.0F); // k will move bottom or top vertexs, idk
-
         if (horizontal) {
+            //- FIRST PART
             GlStateManager.color(startRed, startGreen, startBlue, startAlpha);
-        } else {
+
+            GL11.glTexCoord2f(fCharXPos / 128f, fCharYPos / 128f); // 0 0
+            GL11.glVertex3f(this.posX + k, this.posY, 0f);
+
+            GL11.glTexCoord2f(fCharXPos / 128f, (fCharYPos + 7.99f) / 128f); // 0 1
+            GL11.glVertex3f(this.posX - k, this.posY + 7.99f, 0f);
+
             GlStateManager.color(middleRed, middleGreen, middleBlue, middleAlpha);
-        }
-        
-        GL11.glTexCoord2f(fCharXPos / 128.0F, (fCharYPos + 7.99F) / 128.0F); // 0 1
-        GL11.glVertex3f(this.posX - k, this.posY + 7.99F, 0.0F);
 
-        GlStateManager.color(middleRed, middleGreen, middleBlue, middleAlpha);
-        GL11.glTexCoord2f((fCharXPos + fWidth) / 128.0F, (fCharYPos + 7.99F) / 128.0F); // 1 1
-        GL11.glVertex3f(this.posX + fWidth - k, this.posY + 7.99F, 0.0F);
+            GL11.glTexCoord2f((fCharXPos + fWidth) / 128f, (fCharYPos + 7.99f) / 128f); // 0.5 1
+            GL11.glVertex3f(this.posX + fWidth - k, this.posY + 7.99f, 0f);
 
-        if (horizontal) {
-            GlStateManager.color(middleRed, middleGreen, middleBlue, middleAlpha);
-        } else {
-            GlStateManager.color(startRed, startGreen, startBlue, startAlpha);
-        }
-        GL11.glTexCoord2f((fCharXPos + fWidth) / 128.0F, fCharYPos / 128.0F); // 1 0
-        GL11.glVertex3f(this.posX + fWidth + k, this.posY, 0.0F);
-        GL11.glEnd();
+            GL11.glTexCoord2f((fCharXPos + fWidth) / 128f, fCharYPos / 128f); // 0.5 0
+            GL11.glVertex3f(this.posX + fWidth + k, this.posY, 0f);
 
-        // SECOND PART
-        GL11.glBegin(GL11.GL_QUADS);
-        GlStateManager.color(middleRed, middleGreen, middleBlue, middleAlpha);
-        GL11.glTexCoord2f(sCharXPos / 128.0F, sCharYPos / 128.0F); // 0 0
-        GL11.glVertex3f(this.posX + fWidth + k, this.posY, 0.0F);
-        
-        if (horizontal) {
-            GlStateManager.color(startRed, startGreen, startBlue, startAlpha);
-        } else {
-            GlStateManager.color(middleRed, middleGreen, middleBlue, middleAlpha);
-        }
+            //- SECOND PART
+            GL11.glTexCoord2f(sCharXPos / 128f, sCharYPos / 128f); // 0.5 0
+            GL11.glVertex3f(this.posX + fWidth + k, this.posY, 0f);
 
-        GL11.glTexCoord2f(sCharXPos / 128.0F, (sCharYPos + 7.99F) / 128.0F); // 0 1
-        GL11.glVertex3f(this.posX + fWidth - k, this.posY + 7.99F, 0.0F);
+            GL11.glTexCoord2f(sCharXPos / 128f, (sCharYPos + 7.99f) / 128f); // 0.5 1
+            GL11.glVertex3f(this.posX + fWidth - k, this.posY + 7.99f, 0f);
 
-        GlStateManager.color(middleRed, middleGreen, middleBlue, middleAlpha);
-        GL11.glTexCoord2f((sCharXPos + sWidth - 1.0F) / 128.0F, (sCharYPos + 7.99F) / 128.0F); // 1 1
-        GL11.glVertex3f(this.posX + fWidth + sWidth - 1.0F - k, this.posY + 7.99F, 0.0F);
-
-        if (horizontal) {
             GlStateManager.color(endRed, endGreen, endBlue, endAlpha);
+
+            GL11.glTexCoord2f((sCharXPos + sWidth - 1f) / 128f, (sCharYPos + 7.99f) / 128f); // 1 1
+            GL11.glVertex3f(this.posX + width - 1f - k, this.posY + 7.99f, 0f);
+
+            GL11.glTexCoord2f((sCharXPos + sWidth - 1f) / 128f, sCharYPos / 128f); // 1 0
+            GL11.glVertex3f(this.posX + width - 1f + k, this.posY, 0f);
         } else {
-            GlStateManager.color(middleRed, middleGreen, middleBlue, middleAlpha);
+
         }
-        GL11.glTexCoord2f((sCharXPos + sWidth - 1.0F) / 128.0F, sCharYPos / 128.0F); // 1 0
-        GL11.glVertex3f(this.posX + fWidth + sWidth - 1.0F + k, this.posY, 0.0F);
 
         GL11.glEnd();
 
