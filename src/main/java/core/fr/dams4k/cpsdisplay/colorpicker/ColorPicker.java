@@ -33,10 +33,13 @@ import fr.dams4k.cpsdisplay.colorpicker.gui.textfield.LimitedDocument;
 import fr.dams4k.cpsdisplay.colorpicker.gui.textfield.TextField;
 import fr.dams4k.cpsdisplay.colorpicker.gui.textfield.TextFieldListener;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.util.ResourceLocation;
 
 public class ColorPicker extends JFrame implements HPointerListener, SVPointerListener, SliderListener, TextFieldListener {
     private List<ColorPickerListener> listeners = new ArrayList<>();
    
+    private final ResourceLocation BACKGROUND_RESOURCE = new ResourceLocation("cpsdisplay", "textures/gui/options_background.png");
+
     private final float TEXTURES_SCALE = 3f;
     private final int BORDER_SIZE = 8;
     private final String HEX_CODE = "0123456789abcdef";
@@ -76,7 +79,7 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
 
         this.setTitle("ColorPicker");
 
-        background = new ImagePanel("assets/minecraft/textures/gui/options_background.png", ImageType.TILING, this.TEXTURES_SCALE);
+        background = new ImagePanel(BACKGROUND_RESOURCE, ImageType.TILING, this.TEXTURES_SCALE);
         background.setDarkness(0.5f);
         background.setLayout(new BoxLayout(background, BoxLayout.PAGE_AXIS));
         this.setContentPane(background);

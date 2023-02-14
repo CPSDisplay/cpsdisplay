@@ -1,5 +1,6 @@
 package fr.dams4k.cpsdisplay.colorpicker.gui.border;
 
+import java.awt.AlphaComposite;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -12,12 +13,19 @@ import java.net.URL;
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.TextureUtil;
+import net.minecraft.util.ResourceLocation;
+
 
 public class Border {
+    private final Minecraft mc = Minecraft.getMinecraft();
+    
     private BufferedImage baseImage;
 
-    private float scale = 1;
-    private Insets insets = new Insets(0, 0, 0, 0);
+    public float imageScaleFactor = 1f;
+    public float scale = 1f;
+    public Insets insets = new Insets(0, 0, 0, 0);
 
     public Image topLeftImage;
     public Image bottomLeftImage;
@@ -34,13 +42,27 @@ public class Border {
         this(resourcePath, scale, null);
     }
 
+    public Border(ResourceLocation imageLocation, int[] originalSize, float scale, Insets insets) {
+        this.scale = scale;
+        if (insets != null) this.insets = insets;
+
+        try {
+            this.baseImage = TextureUtil.readBufferedImage(mc.getResourceManager().getResource(imageLocation).getInputStream());
+            float xScaleFactor = this.baseImage.getWidth() / (float) originalSize[0];
+            float yScaleFactor = this.baseImage.getHeight() / (float) originalSize[1];
+            this.imageScaleFactor = xScaleFactor < yScaleFactor ? xScaleFactor : yScaleFactor;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public Border(String resourcePath, float scale, Insets insets) {
         this.scale = scale;
         if (insets != null) this.insets = insets;
 
         try {
             URL iconURL = getClass().getClassLoader().getResource(resourcePath);
-            baseImage = ImageIO.read(iconURL);
+            this.baseImage = ImageIO.read(iconURL);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -54,10 +76,19 @@ public class Border {
     }
 
     public void setBorder(BorderType borderType, int x, int y, int w, int h) {
-        if (baseImage == null) {
+        if (this.baseImage == null) {
             System.err.println("baseImage shouldn't be null");
             return;
         }
+        
+        x = Math.round((x * this.imageScaleFactor));
+        y = Math.round((y * this.imageScaleFactor));
+        w = Math.max(Math.round((w * this.imageScaleFactor)), 1);
+        h = Math.max(Math.round((h * this.imageScaleFactor)), 1);
+        
+        w = this.clamp(w, 0, baseImage.getWidth()-x);
+        h = this.clamp(h, 0, baseImage.getHeight()-y);
+
         BufferedImage borderImage = resizeImage(baseImage.getSubimage(x, y, w, h), scale);
 
         switch (borderType) {
@@ -95,7 +126,7 @@ public class Border {
         int outWidth = Math.round(inImage.getWidth() * scale);
         int outHeight = Math.round(inImage.getHeight() * scale);
 
-        BufferedImage outImage = new BufferedImage(outWidth, outHeight, BufferedImage.TYPE_INT_RGB);
+        BufferedImage outImage = new BufferedImage(outWidth, outHeight, BufferedImage.TYPE_INT_ARGB);
         Graphics2D graphics2D = outImage.createGraphics();
         graphics2D.drawImage(inImage, 0, 0, outWidth, outHeight, null);
         graphics2D.dispose();

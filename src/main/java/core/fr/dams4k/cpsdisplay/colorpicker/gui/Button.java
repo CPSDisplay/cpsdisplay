@@ -26,6 +26,8 @@ public class Button extends Label implements MouseInputListener {
         this.borderTextureScale = textureScale;
         this.imageBorder = new ButtonBorder(this.borderTextureScale, ButtonMode.NORMAL);
 
+        this.setOpaque(false);
+
         this.addMouseListener(this);
     }
 

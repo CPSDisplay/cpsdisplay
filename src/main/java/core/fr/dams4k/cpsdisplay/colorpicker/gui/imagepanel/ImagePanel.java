@@ -10,8 +10,13 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 import fr.dams4k.cpsdisplay.colorpicker.gui.border.Border;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.TextureUtil;
+import net.minecraft.util.ResourceLocation;
 
 public class ImagePanel extends JPanel {
+    private final Minecraft mc = Minecraft.getMinecraft();
+
     private Image image;
 
     public ImageType imageType = ImageType.NORMAL;
@@ -26,11 +31,6 @@ public class ImagePanel extends JPanel {
 
     public ImagePanel() {}
 
-    public ImagePanel(ImageType imageType, float scale) {
-        this.imageType = imageType;
-        this.scale = scale;
-    }
-
     public ImagePanel(Image image, ImageType imageType, float scale) {
         this.image = image;
 
@@ -43,6 +43,16 @@ public class ImagePanel extends JPanel {
             URL url = getClass().getClassLoader().getResource(path);
             Image image = ImageIO.read(url);
             this.image = image;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        this.imageType = imageType;
+        this.scale = scale;
+    }
+
+    public ImagePanel(ResourceLocation imageLocation, ImageType imageType, float scale) {
+        try {
+            this.image = TextureUtil.readBufferedImage(mc.getResourceManager().getResource(imageLocation).getInputStream());
         } catch (IOException e) {
             e.printStackTrace();
         }
