@@ -1,5 +1,8 @@
 package fr.dams4k.cpsdisplay.renderer;
 
+import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import org.lwjgl.opengl.GL11;
@@ -261,51 +264,67 @@ public class ModFontRenderer extends FontRenderer {
         }
     }
 
-    public int drawGradientString(String text, float x, float y, int topColor, int bottomColor, boolean dropShadow, boolean horizontal) {
+    public int drawGradientString(String text, float x, float y, ArrayList<Color> colors, boolean dropShadow, boolean horizontal) {
         GlStateManager.enableAlpha();
 
         resetStyles();
         int i;
 
         if (dropShadow) {
-            i = this.renderGradientString(text, x + 1.0F, y + 1.0F, topColor, bottomColor, true, horizontal);
+            i = 0;
+            // i = this.renderGradientString(text, x + 1.0F, y + 1.0F, colors, true, horizontal);
             resetStyles();
-            i = Math.max(i, this.renderGradientString(text, x, y, topColor, bottomColor, false, horizontal));
+            i = Math.max(i, this.renderGradientString(text, x, y, colors, false, horizontal));
         } else {
-            i = this.renderGradientString(text, x, y, topColor, bottomColor, false, horizontal);
+            i = this.renderGradientString(text, x, y, colors, false, horizontal);
         }
 
         return i;
     }
 
-    private int renderGradientString(String text, float x, float y, int startColor, int endColor, boolean dropShadow, boolean horizontal) {
+    private int renderGradientString(String text, float x, float y, ArrayList<Color> colors, boolean dropShadow, boolean horizontal) {
         if (text == null) {
             return 0;
         } else {
-
-            if ((startColor & -67108864) == 0) {
-                startColor |= -16777216;
-            }
-
-            if ((endColor & -67108864) == 0) {
-                endColor |= -16777216;
+            List<Integer> iColors = new ArrayList<>();
+            for (Color color : colors) {
+                Integer rgb = color.getRGB();
+                if ((rgb & -67108864) == 0) {
+                    rgb |= -16777216;
+                }
+                iColors.add(rgb);
             }
 
             if (dropShadow) {
-                startColor = (startColor & 16579836) >> 2 | startColor & -16777216;
-                endColor = (endColor & 16579836) >> 2 | endColor & -16777216;
+                for (int i = 0; i < iColors.size(); i++) {
+                    Integer rgb = iColors.get(i);
+                    iColors.set(i, (rgb & 16579836) >> 2 | rgb & -16777216);
+                }
             }
-            
-            this.red = (float)(startColor >> 16 & 255) / 255.0F;
-            this.blue = (float)(startColor >> 8 & 255) / 255.0F;
-            this.green = (float)(startColor & 255) / 255.0F;
-            this.alpha = (float)(startColor >> 24 & 255) / 255.0F;
-            GlStateManager.color(this.red, this.blue, this.green, this.alpha);
+            // if ((startColor & -67108864) == 0) {
+            //     startColor |= -16777216;
+            // }
 
-            this.posX = x;
-            this.posY = y;
-            this.renderGradientStringAtPos(text, dropShadow, startColor, endColor, horizontal);
-            return (int) this.posX;
+            // if ((endColor & -67108864) == 0) {
+            //     endColor |= -16777216;
+            // }
+
+            // if (dropShadow) {
+            //     startColor = (startColor & 16579836) >> 2 | startColor & -16777216;
+            //     endColor = (endColor & 16579836) >> 2 | endColor & -16777216;
+            // }
+            
+            // this.red = (float)(startColor >> 16 & 255) / 255.0F;
+            // this.blue = (float)(startColor >> 8 & 255) / 255.0F;
+            // this.green = (float)(startColor & 255) / 255.0F;
+            // this.alpha = (float)(startColor >> 24 & 255) / 255.0F;
+            // GlStateManager.color(this.red, this.blue, this.green, this.alpha);
+
+            // this.posX = x;
+            // this.posY = y;
+            // this.renderGradientStringAtPos(text, dropShadow, startColor, endColor, horizontal);
+            // return (int) this.posX;
+            return 0;
         }
     }
     private void resetStyles() {
