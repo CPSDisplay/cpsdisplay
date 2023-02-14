@@ -264,7 +264,7 @@ public class ModFontRenderer extends FontRenderer {
         }
     }
 
-    public int drawGradientString(String text, float x, float y, ArrayList<Color> colors, boolean dropShadow, boolean horizontal) {
+    public int drawGradientString(String text, float x, float y, List<Color> colors, boolean dropShadow, boolean horizontal) {
         GlStateManager.enableAlpha();
 
         resetStyles();
@@ -282,7 +282,7 @@ public class ModFontRenderer extends FontRenderer {
         return i;
     }
 
-    private int renderGradientString(String text, float x, float y, ArrayList<Color> colors, boolean dropShadow, boolean horizontal) {
+    private int renderGradientString(String text, float x, float y, List<Color> colors, boolean dropShadow, boolean horizontal) {
         if (text == null) {
             return 0;
         } else {
@@ -301,6 +301,13 @@ public class ModFontRenderer extends FontRenderer {
                     iColors.set(i, (rgb & 16579836) >> 2 | rgb & -16777216);
                 }
             }
+
+            this.posX = x;
+            this.posY = y;
+
+            this.renderGradientStringAtPos(text, dropShadow, iColors, horizontal);
+
+            return (int) this.posX;
             // if ((startColor & -67108864) == 0) {
             //     startColor |= -16777216;
             // }
@@ -324,7 +331,6 @@ public class ModFontRenderer extends FontRenderer {
             // this.posY = y;
             // this.renderGradientStringAtPos(text, dropShadow, startColor, endColor, horizontal);
             // return (int) this.posX;
-            return 0;
         }
     }
     private void resetStyles() {
@@ -335,8 +341,9 @@ public class ModFontRenderer extends FontRenderer {
         this.strikethroughStyle = false;
     }
 
-    private void renderGradientStringAtPos(String text, boolean shadow, int startColor, int endColor, boolean horizontal) {
+    private void renderGradientStringAtPos(String text, boolean shadow, List<Integer> colors, boolean horizontal) {
         float totalWidth = this.getStringWidth(text);
+        float gradientWidth = totalWidth / (colors.size()-1);
         float currentCountWidth = 0;
         
         for (int i = 0; i < text.length(); i++) {
@@ -394,56 +401,75 @@ public class ModFontRenderer extends FontRenderer {
 
                 float f;
                 float nextCharWidth = this.getCharWidth(c0);
-                float firstMix = currentCountWidth / totalWidth;
-                float lastMix = (currentCountWidth + nextCharWidth) / totalWidth;
-                
+                // firstMix < lastMix, if false, we have 3 colors
+                float firstMix = (currentCountWidth % gradientWidth) / gradientWidth;
+                float lastMix = ((currentCountWidth + nextCharWidth) % gradientWidth) / gradientWidth;
+
+                if (lastMix < firstMix) lastMix = 1f;
+
                 if (horizontal) {
-                    int firstColor = colorMix(startColor, endColor, firstMix);
-                    int lastColor = colorMix(startColor, endColor, lastMix);
+                    int startColorPos = (int) (currentCountWidth / gradientWidth);
+                    int startGColor = colors.get(startColorPos);
+                    int endGColor = colors.get(startColorPos+1);
+                    
+                    int firstColor = colorMix(startGColor, endGColor, firstMix);
+                    int lastColor = colorMix(startGColor, endGColor, lastMix);
+
                     f = this.renderGradientChar(c0, firstColor, lastColor, true, this.italicStyle);
                     currentCountWidth += f;
                 } else {
-                    f = this.renderGradientChar(c0, startColor, endColor, false, this.italicStyle);
+                    f = 0;
                 }
+
+                // if (horizontal) {
+                //     int firstColor = colorMix(startColor, endColor, firstMix);
+                //     int lastColor = colorMix(startColor, endColor, lastMix);
+                //     f = this.renderGradientChar(c0, firstColor, lastColor, true, this.italicStyle);
+                //     currentCountWidth += f;
+                // } else {
+                //     f = this.renderGradientChar(c0, startColor, endColor, false, this.italicStyle);
+                // }
 
                 if (flag) {
                     this.posX += f1;
                     this.posY += f1;
                 }
 
-                if (this.boldStyle) {
-                    this.posX += f1;
+                // if (this.boldStyle) {
+                //     this.posX += f1;
 
-                    if (flag) {
-                        this.posX -= f1;
-                        this.posY -= f1;
-                    }
+                //     if (flag) {
+                //         this.posX -= f1;
+                //         this.posY -= f1;
+                //     }
 
-                    if (horizontal) {
-                        int firstColor = colorMix(startColor, endColor, firstMix);
-                        int lastColor = colorMix(startColor, endColor, lastMix);
-                        this.renderGradientChar(c0, firstColor, lastColor, horizontal, this.italicStyle);
-                    } else {
-                        this.renderGradientChar(c0, startColor, endColor, horizontal, this.italicStyle);
-                    }
+                //     if (horizontal) {
+                //         int firstColor = colorMix(startColor, endColor, firstMix);
+                //         int lastColor = colorMix(startColor, endColor, lastMix);
+                //         this.renderGradientChar(c0, firstColor, lastColor, horizontal, this.italicStyle);
+                //     } else {
+                //         this.renderGradientChar(c0, startColor, endColor, horizontal, this.italicStyle);
+                //     }
                     
-                    this.posX -= f1;
+                //     this.posX -= f1;
 
-                    if (flag) {
-                        this.posX += f1;
-                        this.posY += f1;
-                    }
+                //     if (flag) {
+                //         this.posX += f1;
+                //         this.posY += f1;
+                //     }
 
-                    ++f;
-                }
+                //     ++f;
+                // }
                 
-                if (horizontal) {
-                    int firstColor = colorMix(startColor, endColor, firstMix);
-                    int lastColor = colorMix(startColor, endColor, lastMix);
-                    doDraw(f, firstColor, lastColor, horizontal);
-                } else {
-                    doDraw(f, startColor, endColor, horizontal);
-                }
+                // if (horizontal) {
+                //     int firstColor = colorMix(startColor, endColor, firstMix);
+                //     int lastColor = colorMix(startColor, endColor, lastMix);
+                //     doDraw(f, firstColor, lastColor, horizontal);
+                // } else {
+                //     doDraw(f, startColor, endColor, horizontal);
+                // }
+                
+                this.posX += (float)((int)f);
             }
         }
     }

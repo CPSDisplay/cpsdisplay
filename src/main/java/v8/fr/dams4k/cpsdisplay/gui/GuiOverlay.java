@@ -2,6 +2,7 @@ package fr.dams4k.cpsdisplay.gui;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.lwjgl.opengl.GL11;
 
@@ -46,7 +47,15 @@ public class GuiOverlay extends Gui {
 				drawRect(x-margin, y-margin, positions.get(2)+margin, positions.get(3)+margin, color.getRGB());
 			}
 			
-			modFontRenderer.drawString(text, x, y, textColor.getRGB(), true);
+			// modFontRenderer.drawString(text, x, y, textColor.getRGB(), true);
+			List<Color> colors = new ArrayList<>();
+			colors.add(Color.RED);
+			colors.add(Color.BLUE);
+			colors.add(Color.GREEN);
+			colors.add(Color.GRAY);
+			colors.add(Color.MAGENTA);
+			colors.add(Color.ORANGE);
+			modFontRenderer.drawGradientString(text, x, y, colors, false, true);
 
 			GL11.glPopMatrix();
 		}
