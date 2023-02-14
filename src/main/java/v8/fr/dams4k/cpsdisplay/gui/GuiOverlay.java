@@ -50,12 +50,13 @@ public class GuiOverlay extends Gui {
 			// modFontRenderer.drawString(text, x, y, textColor.getRGB(), true);
 			List<Color> colors = new ArrayList<>();
 			colors.add(Color.RED);
-			colors.add(Color.BLUE);
-			colors.add(Color.GREEN);
-			colors.add(Color.GRAY);
 			colors.add(Color.MAGENTA);
-			colors.add(Color.ORANGE);
-			modFontRenderer.drawGradientString(text, x, y, colors, false, true);
+			colors.add(Color.BLUE);
+			colors.add(Color.CYAN);
+			colors.add(Color.GREEN);
+			colors.add(Color.YELLOW);
+			colors.add(Color.RED);
+			modFontRenderer.drawGradientString(text, x, y, colors, true, true);
 
 			GL11.glPopMatrix();
 		}
