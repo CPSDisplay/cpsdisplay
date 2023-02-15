@@ -27,6 +27,7 @@ public class ModConfig {
 	public static double scaleText = 1d;
 	public static String hexColorText = "ffffff";
 	public static String text = I18n.format("cpsdisplay.display_template.left_right", new Object[0]);
+    public static boolean showTextShadow = true;
 
 	// Background
 	public static String hexColorBackground = "2a2a2a80";
@@ -43,6 +44,7 @@ public class ModConfig {
 	private static Property hexColorTextProperty;
 	private static Property showTextProperty;
 	private static Property textProperty;
+    private static Property showTextShadowProperty;
 
 	private static Property hexColorBackgroundProperty;
 	private static Property marginBackgroundProperty;
@@ -66,6 +68,7 @@ public class ModConfig {
 			scaleTextProperty = config.get(CATEGORY_TEXT, "scale", scaleText);
 			hexColorTextProperty = config.get(CATEGORY_TEXT, "color", hexColorText);
 			textProperty = config.get(CATEGORY_TEXT, "text", text);
+            showTextShadowProperty = config.get(CATEGORY_TEXT, "shadow", showTextShadow);
 
 			hexColorBackgroundProperty = config.get(CATEGORY_BACKGROUND, "color", hexColorBackground);
 			marginBackgroundProperty = config.get(CATEGORY_BACKGROUND, "margin", marginBackground);
@@ -78,6 +81,7 @@ public class ModConfig {
 			hexColorText = hexColorTextProperty.getString();
 			showText = showTextProperty.getBoolean();
 			text = textProperty.getString();
+            showTextShadow = showTextShadowProperty.getBoolean();
 
 			hexColorBackground = hexColorBackgroundProperty.getString();
 			marginBackground = marginBackgroundProperty.getInt();
@@ -90,6 +94,7 @@ public class ModConfig {
 			hexColorTextProperty.set(hexColorText);
 			showTextProperty.set(showText);
 			textProperty.set(text);
+            showTextShadowProperty.set(showTextShadow);
 
 			hexColorBackgroundProperty.set(hexColorBackground);
 			marginBackgroundProperty.set(marginBackground);

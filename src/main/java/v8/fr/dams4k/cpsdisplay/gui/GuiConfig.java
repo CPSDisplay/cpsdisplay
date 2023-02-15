@@ -27,8 +27,9 @@ public class GuiConfig extends GuiScreen {
 		SHOW_TEXT(0),
 		SCALE_TEXT(1),
 		COLOR_TEXT(2),
-		MODE_TEXT(3),
-		TEXT(4),
+        SHADOW_TEXT(3),
+		MODE_TEXT(4),
+		TEXT(5),
 
 		COLOR_BACKGROUND(10),
 		MARGIN_BACKGROUND_LABEL(11),
@@ -54,6 +55,7 @@ public class GuiConfig extends GuiScreen {
 	private ModToggleButton showTextToggle;
 	private ModSlider scaleTextSlider;
 	private GuiButton modeTextButton;
+    private ModToggleButton showTextShadowToggle;
 	private GuiTextField textField;
 	private ModColorButton colorTextButton;
 
@@ -117,6 +119,11 @@ public class GuiConfig extends GuiScreen {
 			scaleTextSlider.addMainPoint(new ModSliderMainPoint(i, 4f));
 		}
 
+        showTextShadowToggle = new ModToggleButton(
+            GuiButtons.SHADOW_TEXT.id, x, GuiButtons.SHADOW_TEXT.getY(y), 150, 20,
+            "Shadow: ", "", ModConfig.showTextShadow
+        );
+
 		modeTextButton = new GuiButton(GuiButtons.MODE_TEXT.id, x, GuiButtons.MODE_TEXT.getY(y), 150, 20, "");
 		updateMouseModeButton();
 
@@ -126,6 +133,7 @@ public class GuiConfig extends GuiScreen {
 		
 		buttonList.add(showTextToggle);
 		buttonList.add(scaleTextSlider);
+        buttonList.add(showTextShadowToggle);
 		buttonList.add(modeTextButton);
 		buttonList.add(colorTextButton);
 
@@ -245,6 +253,7 @@ public class GuiConfig extends GuiScreen {
 		if (this.colorTextButton != null) ModConfig.setTextColor(colorTextButton.getColor());
 		if (this.showTextToggle != null) ModConfig.showText = showTextToggle.getValue();
 		if (this.scaleTextSlider != null) ModConfig.scaleText = scaleTextSlider.getValue() / 100d;
+        if (this.showTextShadowToggle != null) ModConfig.showTextShadow = showTextShadowToggle.getValue();
 
 		if (this.colorBackgroundButton != null) ModConfig.setBackgroundColor(this.colorBackgroundButton.getColor());
 		

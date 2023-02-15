@@ -56,9 +56,9 @@ public class GuiOverlay extends Gui {
 			colors.add(Color.YELLOW);
 			colors.add(Color.RED);
             if (ModConfig.showRainbow) {
-                modFontRenderer.drawGradientString(text, x, y, colors, true, true);
+                modFontRenderer.drawGradientString(text, x, y, colors, ModConfig.showTextShadow, true);
             } else {
-			    modFontRenderer.drawString(text, x, y, textColor.getRGB(), true);
+			    modFontRenderer.drawString(text, x, y, textColor.getRGB(), ModConfig.showTextShadow);
             }
 
 			GL11.glPopMatrix();
@@ -72,23 +72,29 @@ public class GuiOverlay extends Gui {
 	public static ArrayList<Integer> getBackgroundPositions(Integer l, Integer r, boolean scaled) {
 		Minecraft mc = Minecraft.getMinecraft();
 
-		ArrayList<Integer> list = new ArrayList<Integer>();
+		ArrayList<Float> list = new ArrayList<>();
 		String text = ModConfig.text.replace("{0}", l.toString()).replace("{1}", r.toString()).replace("&", "§");
 		
 		int[] textPosition = ModConfig.getTextPosition();
 
-		list.add((int) (textPosition[0] / ModConfig.scaleText));
-		list.add((int) (textPosition[1] / ModConfig.scaleText));
-		list.add(list.get(0)+mc.fontRendererObj.getStringWidth(text));
-		list.add(list.get(1)+mc.fontRendererObj.FONT_HEIGHT-1);
+        float k = ModConfig.showTextShadow ? 0f : mc.fontRendererObj.getUnicodeFlag() ? 0.5f : 1f;
+        int j = mc.fontRendererObj.getUnicodeFlag() ? 1 : 0;
 
-		if (scaled) {
-			for (int i = 0; i < list.size(); i++) {
-				list.set(i, (int) Math.round(list.get(i) * ModConfig.scaleText));
-			}
-		}
+		list.add((float) (textPosition[0] / ModConfig.scaleText));
+		list.add((float) (textPosition[1] / ModConfig.scaleText) + j);
+		list.add(list.get(0)+mc.fontRendererObj.getStringWidth(text) - k);
+		list.add(list.get(1)+mc.fontRendererObj.FONT_HEIGHT - 1 - k + j);
 
-		return list;
+        ArrayList<Integer> finalList = new ArrayList<>();
+
+        for (int i = 0; i < list.size(); i++) {
+            if (scaled) {
+                finalList.add((int) (Math.round(list.get(i) * ModConfig.scaleText)));
+            } else {
+                finalList.add(Math.round(list.get(i)));
+            }
+        }
+		return finalList;
 	}
 
 	public static boolean positionInOverlay(int x, int y) {
