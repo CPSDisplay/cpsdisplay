@@ -47,7 +47,6 @@ public class GuiOverlay extends Gui {
 				drawRect(x-margin, y-margin, positions.get(2)+margin, positions.get(3)+margin, color.getRGB());
 			}
 			
-			// modFontRenderer.drawString(text, x, y, textColor.getRGB(), true);
 			List<Color> colors = new ArrayList<>();
 			colors.add(Color.RED);
 			colors.add(Color.MAGENTA);
@@ -56,7 +55,11 @@ public class GuiOverlay extends Gui {
 			colors.add(Color.GREEN);
 			colors.add(Color.YELLOW);
 			colors.add(Color.RED);
-			modFontRenderer.drawGradientString(text, x, y, colors, true, true);
+            if (ModConfig.showRainbow) {
+                modFontRenderer.drawGradientString(text, x, y, colors, true, true);
+            } else {
+			    modFontRenderer.drawString(text, x, y, textColor.getRGB(), true);
+            }
 
 			GL11.glPopMatrix();
 		}
