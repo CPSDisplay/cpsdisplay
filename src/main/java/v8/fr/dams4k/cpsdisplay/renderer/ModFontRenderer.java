@@ -422,40 +422,6 @@ public class ModFontRenderer extends FontRenderer {
                     this.posX += f1;
                     this.posY += f1;
                 }
-
-                // if (this.boldStyle) {
-                //     this.posX += f1;
-
-                //     if (flag) {
-                //         this.posX -= f1;
-                //         this.posY -= f1;
-                //     }
-
-                //     if (horizontal) {
-                //         int firstColor = colorMix(startColor, endColor, firstMix);
-                //         int lastColor = colorMix(startColor, endColor, lastMix);
-                //         this.renderGradientChar(c0, firstColor, lastColor, horizontal, this.italicStyle);
-                //     } else {
-                //         this.renderGradientChar(c0, startColor, endColor, horizontal, this.italicStyle);
-                //     }
-                    
-                //     this.posX -= f1;
-
-                //     if (flag) {
-                //         this.posX += f1;
-                //         this.posY += f1;
-                //     }
-
-                //     ++f;
-                // }
-                
-                // if (horizontal) {
-                //     int firstColor = colorMix(startColor, endColor, firstMix);
-                //     int lastColor = colorMix(startColor, endColor, lastMix);
-                //     doDraw(f, firstColor, lastColor, horizontal);
-                // } else {
-                //     doDraw(f, startColor, endColor, horizontal);
-                // }
                 
                 this.posX += (float)((int)f);
             }
