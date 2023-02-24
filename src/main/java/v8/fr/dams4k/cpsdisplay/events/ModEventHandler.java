@@ -46,7 +46,7 @@ public class ModEventHandler {
     }
 
     @SubscribeEvent
-    public void onKeyboordEvent(KeyInputEvent e) {
+    public void onKeyboardEvent(KeyInputEvent e) {
         this.onKeyPress();
     }
 
