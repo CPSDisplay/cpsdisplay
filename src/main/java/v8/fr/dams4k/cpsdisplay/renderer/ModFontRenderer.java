@@ -429,7 +429,6 @@ public class ModFontRenderer extends FontRenderer {
                     }
                     charColors.add(colorMix(startGColor, endGColor, lastMix));
                     
-                    System.out.println(nextCharWidth);
                     if (charColors.size() == 2) {
                         f = this.renderGradientChar(c0, charColors, Arrays.asList(0f, nextCharWidth), true, this.italicStyle);
                     } else {
@@ -527,7 +526,6 @@ public class ModFontRenderer extends FontRenderer {
             if (currentPartWidth <= 0) continue;
 
             if (horizontal) {
-                System.out.println(positions.get(i));
                 GlStateManager.color(sr, sg, sb, sa);
 
                 GL11.glTexCoord2f(currentCharXPos / 256f, currentCharYPos / 256f); // 0 0
