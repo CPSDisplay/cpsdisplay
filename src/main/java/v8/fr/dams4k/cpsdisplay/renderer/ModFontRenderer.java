@@ -428,17 +428,73 @@ public class ModFontRenderer extends FontRenderer {
                         lastMix = 1d;
                     }
                     charColors.add(colorMix(startGColor, endGColor, lastMix));
-                    
+                    List<Float> charPositions = Arrays.asList(0f, nextCharWidth);
+
                     if (charColors.size() == 2) {
-                        f = this.renderGradientChar(c0, charColors, Arrays.asList(0f, nextCharWidth), true, this.italicStyle);
+                        f = this.renderGradientChar(c0, charColors, charPositions, true, this.italicStyle);
                     } else {
-                        List<Float> charPositions = new ArrayList<>();
-                        charPositions.add(0f);
-                        charPositions.add((float) (nextCharWidth - ((currentCountWidth + nextCharWidth) % gradientWidth)));
-                        charPositions.add(nextCharWidth);
+                        charPositions = Arrays.asList(0f, (float) (nextCharWidth - ((currentCountWidth + nextCharWidth) % gradientWidth)), nextCharWidth);
 
                         f = this.renderGradientChar(c0, charColors, charPositions, true, this.italicStyle);
                     }
+
+                    for (int h = 0; h < charColors.size()-1; h++) {
+                        int startColor = charColors.get(h);
+                        float sa = ((startColor >> 24) & 0xff) / 255f;
+                        float sr = ((startColor >> 16) & 0xff) / 255f;
+                        float sg = ((startColor >> 8) & 0xff) / 255f;
+                        float sb = (startColor & 0xff) / 255f;
+
+                        int endColor = charColors.get(h+1);
+                        float ea = ((endColor >> 24) & 0xff) / 255f;
+                        float er = ((endColor >> 16) & 0xff) / 255f;
+                        float eg = ((endColor >> 8) & 0xff) / 255f;
+                        float eb = (endColor & 0xff) / 255f;
+                    
+                        double charXPos = charPositions.get(h);
+                        double xPos = this.posX+charPositions.get(h);
+                        double width = charPositions.get(h+1)-charXPos;
+
+                        if (this.strikethroughStyle) {
+                            Tessellator tessellator = Tessellator.getInstance();
+                            WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+                            GlStateManager.disableTexture2D();
+                            GlStateManager.enableBlend();
+                            GlStateManager.disableAlpha();
+                            GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+                            GlStateManager.shadeModel(7425);
+                            worldrenderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
+                            worldrenderer.pos((double)xPos, (double)(this.posY + (float)(this.FONT_HEIGHT / 2)), 0d).color(sr, sg, sb, sa).endVertex();
+                            worldrenderer.pos((double)(xPos + width), (double)(this.posY + (float)(this.FONT_HEIGHT / 2)), 0d).color(er, eg, eb, ea).endVertex();
+                            worldrenderer.pos((double)(xPos + width), (double)(this.posY + (float)(this.FONT_HEIGHT / 2) - 1f), 0d).color(er, eg, eb, ea).endVertex();
+                            worldrenderer.pos((double)xPos, (double)(this.posY + (float)(this.FONT_HEIGHT / 2) - 1f), 0d).color(sr, sg, sb, sa).endVertex();
+                            tessellator.draw();
+                            GlStateManager.shadeModel(7424);
+                            GlStateManager.disableBlend();
+                            GlStateManager.enableAlpha();
+                            GlStateManager.enableTexture2D();
+                        }
+                        if (this.underlineStyle) {
+                            Tessellator tessellator = Tessellator.getInstance();
+                            WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+                            GlStateManager.disableTexture2D();
+                            GlStateManager.enableBlend();
+                            GlStateManager.disableAlpha();
+                            GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+                            GlStateManager.shadeModel(7425);
+                            worldrenderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
+                            worldrenderer.pos((double)xPos, (double)(this.posY + (float)this.FONT_HEIGHT), 0d).color(sr, sg, sb, sa).endVertex();
+                            worldrenderer.pos((double)(xPos + width), (double)(this.posY + (float)this.FONT_HEIGHT), 0d).color(er, eg, eb, ea).endVertex();
+                            worldrenderer.pos((double)(xPos + width), (double)(this.posY + (float)this.FONT_HEIGHT - 1f), 0d).color(er, eg, eb, ea).endVertex();
+                            worldrenderer.pos((double)xPos, (double)(this.posY + (float)this.FONT_HEIGHT - 1f), 0d).color(sr, sg, sb, sa).endVertex();
+                            tessellator.draw();
+                            GlStateManager.shadeModel(7424);
+                            GlStateManager.disableBlend();
+                            GlStateManager.enableAlpha();
+                            GlStateManager.enableTexture2D();
+                        }
+                    }
+
                     currentCountWidth += f;
                 } else {
                     f = 0;
@@ -603,44 +659,45 @@ public class ModFontRenderer extends FontRenderer {
                 
                 //TODO: move this to renderGradientStringAtPos
                 // results: less iterations, one big rectangle from color a to b instead of a -> a/2 -> b
-                if (this.strikethroughStyle) {
-                    Tessellator tessellator = Tessellator.getInstance();
-                    WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-                    GlStateManager.disableTexture2D();
-                    GlStateManager.enableBlend();
-                    GlStateManager.disableAlpha();
-                    GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
-                    GlStateManager.shadeModel(7425);
-                    worldrenderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
-                    worldrenderer.pos((double)this.posX + positions.get(i), (double)(this.posY + (float)(this.FONT_HEIGHT / 2)), 0d).color(sr, sg, sb, sa).endVertex();
-                    worldrenderer.pos((double)(this.posX + positions.get(i) + currentPartWidth), (double)(this.posY + (float)(this.FONT_HEIGHT / 2)), 0d).color(er, eg, eb, ea).endVertex();
-                    worldrenderer.pos((double)(this.posX + positions.get(i) + currentPartWidth), (double)(this.posY + (float)(this.FONT_HEIGHT / 2) - 1f), 0d).color(er, eg, eb, ea).endVertex();
-                    worldrenderer.pos((double)this.posX + positions.get(i), (double)(this.posY + (float)(this.FONT_HEIGHT / 2) - 1f), 0d).color(sr, sg, sb, sa).endVertex();
-                    tessellator.draw();
-                    GlStateManager.shadeModel(7424);
-                    GlStateManager.disableBlend();
-                    GlStateManager.enableAlpha();
-                    GlStateManager.enableTexture2D();
-                }
-                if (this.underlineStyle) {
-                    Tessellator tessellator = Tessellator.getInstance();
-                    WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-                    GlStateManager.disableTexture2D();
-                    GlStateManager.enableBlend();
-                    GlStateManager.disableAlpha();
-                    GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
-                    GlStateManager.shadeModel(7425);
-                    worldrenderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
-                    worldrenderer.pos((double)this.posX + positions.get(i), (double)(this.posY + (float)this.FONT_HEIGHT), 0d).color(sr, sg, sb, sa).endVertex();
-                    worldrenderer.pos((double)(this.posX + positions.get(i) + currentPartWidth), (double)(this.posY + (float)this.FONT_HEIGHT), 0d).color(er, eg, eb, ea).endVertex();
-                    worldrenderer.pos((double)(this.posX + positions.get(i) + currentPartWidth), (double)(this.posY + (float)this.FONT_HEIGHT - 1f), 0d).color(er, eg, eb, ea).endVertex();
-                    worldrenderer.pos((double)this.posX + positions.get(i), (double)(this.posY + (float)this.FONT_HEIGHT - 1f), 0d).color(sr, sg, sb, sa).endVertex();
-                    tessellator.draw();
-                    GlStateManager.shadeModel(7424);
-                    GlStateManager.disableBlend();
-                    GlStateManager.enableAlpha();
-                    GlStateManager.enableTexture2D();
-                }
+                // fix the space character with no underline or striktrough
+                // if (this.strikethroughStyle) {
+                //     Tessellator tessellator = Tessellator.getInstance();
+                //     WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+                //     GlStateManager.disableTexture2D();
+                //     GlStateManager.enableBlend();
+                //     GlStateManager.disableAlpha();
+                //     GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+                //     GlStateManager.shadeModel(7425);
+                //     worldrenderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
+                //     worldrenderer.pos((double)this.posX + positions.get(i), (double)(this.posY + (float)(this.FONT_HEIGHT / 2)), 0d).color(sr, sg, sb, sa).endVertex();
+                //     worldrenderer.pos((double)(this.posX + positions.get(i) + currentPartWidth), (double)(this.posY + (float)(this.FONT_HEIGHT / 2)), 0d).color(er, eg, eb, ea).endVertex();
+                //     worldrenderer.pos((double)(this.posX + positions.get(i) + currentPartWidth), (double)(this.posY + (float)(this.FONT_HEIGHT / 2) - 1f), 0d).color(er, eg, eb, ea).endVertex();
+                //     worldrenderer.pos((double)this.posX + positions.get(i), (double)(this.posY + (float)(this.FONT_HEIGHT / 2) - 1f), 0d).color(sr, sg, sb, sa).endVertex();
+                //     tessellator.draw();
+                //     GlStateManager.shadeModel(7424);
+                //     GlStateManager.disableBlend();
+                //     GlStateManager.enableAlpha();
+                //     GlStateManager.enableTexture2D();
+                // }
+                // if (this.underlineStyle) {
+                //     Tessellator tessellator = Tessellator.getInstance();
+                //     WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+                //     GlStateManager.disableTexture2D();
+                //     GlStateManager.enableBlend();
+                //     GlStateManager.disableAlpha();
+                //     GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+                //     GlStateManager.shadeModel(7425);
+                //     worldrenderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
+                //     worldrenderer.pos((double)this.posX + positions.get(i), (double)(this.posY + (float)this.FONT_HEIGHT), 0d).color(sr, sg, sb, sa).endVertex();
+                //     worldrenderer.pos((double)(this.posX + positions.get(i) + currentPartWidth), (double)(this.posY + (float)this.FONT_HEIGHT), 0d).color(er, eg, eb, ea).endVertex();
+                //     worldrenderer.pos((double)(this.posX + positions.get(i) + currentPartWidth), (double)(this.posY + (float)this.FONT_HEIGHT - 1f), 0d).color(er, eg, eb, ea).endVertex();
+                //     worldrenderer.pos((double)this.posX + positions.get(i), (double)(this.posY + (float)this.FONT_HEIGHT - 1f), 0d).color(sr, sg, sb, sa).endVertex();
+                //     tessellator.draw();
+                //     GlStateManager.shadeModel(7424);
+                //     GlStateManager.disableBlend();
+                //     GlStateManager.enableAlpha();
+                //     GlStateManager.enableTexture2D();
+                // }
 
                 currentCharXPos += currentPartWidth - f5;
             }
