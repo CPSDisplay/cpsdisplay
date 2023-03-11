@@ -17,7 +17,7 @@ import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
 
 
-public class ModEventHandler {
+public class ModEvents {
     private boolean attackIsPressed = false;
     private boolean useIsPressed = false;
 

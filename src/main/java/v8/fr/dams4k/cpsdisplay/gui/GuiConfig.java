@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.dams4k.cpsdisplay.References;
 import fr.dams4k.cpsdisplay.config.ModConfig;
 import fr.dams4k.cpsdisplay.enums.MouseModeEnum;
 import fr.dams4k.cpsdisplay.gui.buttons.ModColorButton;
@@ -16,13 +15,12 @@ import fr.dams4k.cpsdisplay.gui.buttons.ModToggleButton;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiLabel;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.resources.I18n;
 import net.minecraftforge.common.MinecraftForge;
 
 
-public class GuiConfig extends GuiScreen {
+public class GuiConfig extends ModScreen {
 	public enum GuiButtons {
 		SHOW_TEXT(0),
 		SCALE_TEXT(1),
@@ -49,8 +47,6 @@ public class GuiConfig extends GuiScreen {
 		}
 	}
 
-	private List<GuiTextField> textFieldList = new ArrayList<>();
-
 	// Text
 	private ModToggleButton showTextToggle;
 	private ModSlider scaleTextSlider;
@@ -69,8 +65,6 @@ public class GuiConfig extends GuiScreen {
 	// Rainbow
 	private ModToggleButton showRainbowToggle;
 	private ModSlider speedRainbowSlider;
-
-	private int top = 20;
 	
 	private int diffX = 0;
 	private int diffY = 0;
@@ -80,18 +74,15 @@ public class GuiConfig extends GuiScreen {
 		super.initGui();
 		MinecraftForge.EVENT_BUS.register(this);
 
-		textFieldList.clear();
-		buttonList.clear();
-		labelList.clear();
-
-        String title = String.format("%s - v%s", References.MOD_NAME, References.MOD_VERSION);
-        GuiLabel titleLabel = new GuiLabel(mc.fontRendererObj, -1, width/2-mc.fontRendererObj.getStringWidth(title)/2, top-10, 150, 20, 0xffffff);
-        titleLabel.func_175202_a(title);
-        labelList.add(titleLabel);
-
 		this.addTextButtons(width / 2 - 152, 10 + top);
 		this.addBackgroundButtons(width / 2 + 2, 10 + top);
 		this.addRainbowButtons(width / 2 + 2, GuiButtons.MARGIN_BACKGROUND_FIELD.getY(10 + top) + 25);
+
+        List<Integer> backgroundPositions = GuiOverlay.getBackgroundPositions(0, 0, true);
+        int x = backgroundPositions.get(2) > width-100 - 10 ? 0 : width-100;
+        int Y = backgroundPositions.get(3) > height-20 - 10 ? 0 : height-20;
+        this.buttonList.add(new GuiButton(-1, x, Y, 100, 20, "Updater Config"));
+
 		updateButtons();
 	}
 
@@ -279,7 +270,9 @@ public class GuiConfig extends GuiScreen {
 				ModConfig.text = I18n.format(mouseModeSelected.getText(), new Object[0]);
 			}
 			textField.setText(ModConfig.text);
-		}
+		} else if (button.id == -1) {
+            mc.displayGuiScreen(new VersionConfig(this));
+        }
 
 		updateConfig();
 		ModConfig.syncConfig(false);

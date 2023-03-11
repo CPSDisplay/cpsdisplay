@@ -3,6 +3,8 @@ package fr.dams4k.cpsdisplay.events;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import com.google.gson.JsonArray;
@@ -11,6 +13,7 @@ import com.google.gson.JsonParser;
 
 import fr.dams4k.cpsdisplay.References;
 import fr.dams4k.cpsdisplay.VersionChecker;
+import fr.dams4k.cpsdisplay.config.ModConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.resources.I18n;
@@ -38,9 +41,23 @@ public class VersionCheckerEvent {
                 JsonObject jsonObject = (JsonObject) parser.parse(response);
                 JsonArray assets = (JsonArray) jsonObject.getAsJsonArray("assets");
 
-				VersionChecker modVersion = new VersionChecker(References.MOD_VERSION);
-                String lastAssetVersion = jsonObject.get("tag_name").getAsString();
-                if (modVersion.compareTo(lastAssetVersion) == VersionChecker.LOWER) {
+                String[] splitedModVersion = References.MOD_VERSION.split("\\.");
+                String[] splitedLastestVersion = jsonObject.get("tag_name").getAsString().split("\\.");
+
+                List<String> clearedModVersion = new ArrayList<>();
+                clearedModVersion.add(ModConfig.majorUpdate ? splitedModVersion[0] : "0");
+                clearedModVersion.add(ModConfig.minorUpdate ? splitedModVersion[1] : "0");
+                clearedModVersion.add(ModConfig.patchUpdate ? splitedModVersion[2] : "0");
+
+                List<String> clearedLatestVersion = new ArrayList<>();
+                clearedLatestVersion.add(ModConfig.majorUpdate ? splitedLastestVersion[0] : "0");
+                clearedLatestVersion.add(ModConfig.minorUpdate ? splitedLastestVersion[1] : "0");
+                clearedLatestVersion.add(ModConfig.patchUpdate ? splitedLastestVersion[2] : "0");
+
+                String modVersion = String.join(".", clearedModVersion);
+                String latestVersion = String.join(".", clearedLatestVersion);
+				VersionChecker modVersionChecker = new VersionChecker(modVersion);
+                if (modVersionChecker.compareTo(latestVersion) == VersionChecker.LOWER) {
                     String mcVersion = "" + Minecraft.getMinecraft().getVersion();
                     
                     for (int i = 0; i < assets.size(); i++) {
