@@ -11,6 +11,7 @@ import com.google.gson.JsonParser;
 
 import fr.dams4k.cpsdisplay.References;
 import fr.dams4k.cpsdisplay.VersionChecker;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.event.ClickEvent;
@@ -29,46 +30,49 @@ public class VersionCheckerEvent {
 	public void onClientJoinWorld(EntityJoinWorldEvent event) {
 		if (event.entity instanceof EntityPlayerSP && !updateMessageSent) {
 			try {
-				URL githubTagsURL = new URL(References.MOD_GITHUB_TAG_URL);
+				URL githubTagsURL = new URL(References.MOD_GITHUB_LASTEST_RELEASE);
 				
 				Scanner scanner = new Scanner(githubTagsURL.openStream());
 				String response = scanner.useDelimiter("\\Z").next();
 				JsonParser parser = new JsonParser();
-				JsonArray json = (JsonArray) parser.parse(response);
+                JsonObject jsonObject = (JsonObject) parser.parse(response);
+                JsonArray assets = (JsonArray) jsonObject.getAsJsonArray("assets");
 
 				VersionChecker modVersion = new VersionChecker(References.MOD_VERSION);
+                String lastAssetVersion = jsonObject.get("tag_name").getAsString();
+                if (modVersion.compareTo(lastAssetVersion) == VersionChecker.LOWER) {
+                    String mcVersion = "" + Minecraft.getMinecraft().getVersion();
+                    
+                    for (int i = 0; i < assets.size(); i++) {
+                        JsonObject object = (JsonObject) assets.get(i);
+                        String assetName = object.get("name").getAsString();
+                        if (!assetName.contains(mcVersion) || assetName.contains("sources")) continue;
+                        
+                        EntityPlayerSP player = (EntityPlayerSP) event.entity;
 
-				for (int i = 0; i < json.size(); i++) {
-					JsonObject object = (JsonObject) json.get(i);
+                        // MOD NAME
+                        IChatComponent modNameMessage = new ChatComponentText(I18n.format("cpsdisplay.version.mod_name", new Object[0]));
 
-					String objectVersion = object.get("name").getAsString();
-					if (modVersion.compareTo(objectVersion) == VersionChecker.LOWER) {
-						EntityPlayerSP player = (EntityPlayerSP) event.entity;
+                        // DESCRIPTION
+                        IChatComponent description = new ChatComponentText(I18n.format("cpsdisplay.version.description", new Object[0]));
 
-						// MOD NAME
-						IChatComponent modNameMessage = new ChatComponentText(I18n.format("cpsdisplay.version.mod_name", new Object[0]));
+                        // LINK
+                        IChatComponent link = new ChatComponentText(I18n.format("cpsdisplay.version.url", new Object[0]));
+                        ChatStyle style = new ChatStyle().setChatClickEvent(new ClickEvent(Action.OPEN_URL, References.MOD_DOWNLOAD_URL));
+                        link.setChatStyle(style);
 
-						// DESCRIPTION
-						IChatComponent description = new ChatComponentText(I18n.format("cpsdisplay.version.description", new Object[0]));
+                        // WHOLE MESSAGE
+                        IChatComponent message = new ChatComponentText("");
 
-						// LINK
-						IChatComponent link = new ChatComponentText(I18n.format("cpsdisplay.version.url", new Object[0]));
-						ChatStyle style = new ChatStyle().setChatClickEvent(new ClickEvent(Action.OPEN_URL, References.MOD_DOWNLOAD_URL));
-						link.setChatStyle(style);
+                        message.appendSibling(modNameMessage);
+                        message.appendText(" ");
+                        message.appendSibling(description);
+                        message.appendText(" ");
+                        message.appendSibling(link);
 
-
-						// WHOLE MESSAGE
-						IChatComponent message = new ChatComponentText("");
-
-						message.appendSibling(modNameMessage);
-						message.appendText(" ");
-						message.appendSibling(description);
-						message.appendText(" ");
-						message.appendSibling(link);
-
-						player.addChatMessage(message);
-						break;
-					}
+                        player.addChatMessage(message);
+                        break;
+                    }
 				}
 			} catch (MalformedURLException e) {
 			} catch (IOException e) {
