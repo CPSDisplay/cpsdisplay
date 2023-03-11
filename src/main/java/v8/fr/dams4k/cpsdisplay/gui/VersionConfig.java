@@ -9,6 +9,7 @@ import fr.dams4k.cpsdisplay.config.ModConfig;
 import fr.dams4k.cpsdisplay.gui.buttons.ModToggleButton;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.resources.I18n;
 
 public class VersionConfig extends ModScreen {
     public enum GuiButtons {
@@ -47,21 +48,21 @@ public class VersionConfig extends ModScreen {
         int y = 10 + this.top;
         this.addToggleButtons(x, y);
 
-        buttonList.add(new GuiButton(GuiButtons.DONE.id, x, GuiButtons.DONE.getY(y), 150, 20, "Done"));
+        buttonList.add(new GuiButton(GuiButtons.DONE.id, x, GuiButtons.DONE.getY(y), 150, 20, I18n.format("gui.done", new Object[0])));
     }
 
     public void addToggleButtons(int x, int y) {
         majorToggle = new ModToggleButton(
             GuiButtons.MAJOR_CHECK.id, x, GuiButtons.MAJOR_CHECK.getY(y), 150, 20,
-            "Major Check: ", "", ModConfig.majorUpdate
+            I18n.format("cpsdisplay.version.checker.major_update", new Object[0]), "", ModConfig.majorUpdate
         );
         minorToggle = new ModToggleButton(
             GuiButtons.MINOR_CHECK.id, x, GuiButtons.MINOR_CHECK.getY(y), 150, 20,
-            "Minor Check: ", "", ModConfig.minorUpdate
+            I18n.format("cpsdisplay.version.checker.minor_update", new Object[0]), "", ModConfig.minorUpdate
         );
         patchToggle = new ModToggleButton(
             GuiButtons.PATCH_CHECK.id, x, GuiButtons.PATCH_CHECK.getY(y), 150, 20,
-            "Patch Check: ", "", ModConfig.patchUpdate
+            I18n.format("cpsdisplay.version.checker.patch_update", new Object[0]), "", ModConfig.patchUpdate
         );
 
         this.updateButtons();
@@ -82,12 +83,12 @@ public class VersionConfig extends ModScreen {
         int width = 150;
         if (nextVersion.equals(References.MOD_VERSION)) {
             fontRendererObj.drawSplitString(
-                "§eYou will not be informed of new releases",
+                I18n.format("cpsdisplay.version.checker.disabled", new Object[0]),
                 x, y, width, 0xffffff
             );
         } else {
             fontRendererObj.drawSplitString(
-                "§eThe next version that will be communicated to you will be v{next_version} (or higher)".replaceAll("\\{next_version\\}", nextVersion),
+                I18n.format("cpsdisplay.version.checker.enabled", new Object[0]).replaceAll("\\{next_version\\}", nextVersion),
                 x, y, width, 0xffffff
             );
         }
