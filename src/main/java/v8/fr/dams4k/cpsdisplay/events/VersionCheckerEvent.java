@@ -41,22 +41,15 @@ public class VersionCheckerEvent {
                 JsonObject jsonObject = (JsonObject) parser.parse(response);
                 JsonArray assets = (JsonArray) jsonObject.getAsJsonArray("assets");
 
-                String[] splitedModVersion = References.MOD_VERSION.split("\\.");
                 String[] splitedLastestVersion = jsonObject.get("tag_name").getAsString().split("\\.");
-
-                List<String> clearedModVersion = new ArrayList<>();
-                clearedModVersion.add(ModConfig.majorUpdate ? splitedModVersion[0] : "0");
-                clearedModVersion.add(ModConfig.minorUpdate ? splitedModVersion[1] : "0");
-                clearedModVersion.add(ModConfig.patchUpdate ? splitedModVersion[2] : "0");
 
                 List<String> clearedLatestVersion = new ArrayList<>();
                 clearedLatestVersion.add(ModConfig.majorUpdate ? splitedLastestVersion[0] : "0");
                 clearedLatestVersion.add(ModConfig.minorUpdate ? splitedLastestVersion[1] : "0");
                 clearedLatestVersion.add(ModConfig.patchUpdate ? splitedLastestVersion[2] : "0");
 
-                String modVersion = String.join(".", clearedModVersion);
                 String latestVersion = String.join(".", clearedLatestVersion);
-				VersionChecker modVersionChecker = new VersionChecker(modVersion);
+				VersionChecker modVersionChecker = new VersionChecker(References.MOD_VERSION);
                 if (modVersionChecker.compareTo(latestVersion) == VersionChecker.LOWER) {
                     String mcVersion = "" + Minecraft.getMinecraft().getVersion();
                     

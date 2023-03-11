@@ -1,6 +1,7 @@
 package fr.dams4k.cpsdisplay.gui.buttons;
 
 import fr.dams4k.cpsdisplay.enums.ToggleEnum;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 
 public class ModToggleButton extends GuiButton {
@@ -18,10 +19,14 @@ public class ModToggleButton extends GuiButton {
     }
 
     @Override
-    public void mouseReleased(int mouseX, int mouseY) {
-        super.mouseReleased(mouseX, mouseY);
-        this.value = this.value.toggle();
-        this.displayString = getDisplayString();
+    public boolean mousePressed(Minecraft mc, int mouseX, int mouseY) {
+        boolean pressed = super.mousePressed(mc, mouseX, mouseY);
+        if (pressed) {
+            this.value = this.value.toggle();
+            this.displayString = getDisplayString();
+        }
+
+        return pressed;
     }
 
     public String getDisplayString() {
@@ -30,6 +35,7 @@ public class ModToggleButton extends GuiButton {
 
     public void setValue(boolean newValue) {
         this.value = ToggleEnum.get(newValue);
+        this.displayString = getDisplayString();
     }
     public boolean getValue() {
         return this.value.isEnabled();

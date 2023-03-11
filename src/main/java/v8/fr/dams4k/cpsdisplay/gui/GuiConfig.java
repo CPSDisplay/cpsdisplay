@@ -155,7 +155,10 @@ public class GuiConfig extends ModScreen {
 	}
 
 	public void addRainbowButtons(int x, int y) {
-		showRainbowToggle = new ModToggleButton(GuiButtons.SHOW_RAINBOW.id, x, GuiButtons.SHOW_TEXT.getY(y), 150, 20, I18n.format("cpsdisplay.button.show_rainbow", new Object[0]), "", ModConfig.showRainbow);
+		showRainbowToggle = new ModToggleButton(
+            GuiButtons.SHOW_RAINBOW.id, x, GuiButtons.SHOW_TEXT.getY(y), 150, 20,
+            I18n.format("cpsdisplay.button.show_rainbow", new Object[0]), "", ModConfig.showRainbow
+        );
 
 		speedRainbowSlider = new ModSlider(
 			GuiButtons.SPEED_RAINBOW.id, x, GuiButtons.SPEED_RAINBOW.getY(y), 150, 20,
@@ -262,6 +265,9 @@ public class GuiConfig extends ModScreen {
 	
 	@Override
 	protected void actionPerformed(GuiButton button) throws IOException {
+		updateConfig();
+		ModConfig.syncConfig(false);
+
 		if (button.id == GuiButtons.MODE_TEXT.id) {
 			mouseModeSelected = MouseModeEnum.getById(mouseModeSelected.getId() + 1);
 			updateMouseModeButton();
@@ -273,9 +279,6 @@ public class GuiConfig extends ModScreen {
 		} else if (button.id == -1) {
             mc.displayGuiScreen(new VersionConfig(this));
         }
-
-		updateConfig();
-		ModConfig.syncConfig(false);
 	}
 	
 	public void updateMouseModeButton() {
