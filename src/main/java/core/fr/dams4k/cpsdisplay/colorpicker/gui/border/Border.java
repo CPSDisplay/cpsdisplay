@@ -1,6 +1,5 @@
 package fr.dams4k.cpsdisplay.colorpicker.gui.border;
 
-import java.awt.AlphaComposite;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;

@@ -657,48 +657,6 @@ public class ModFontRenderer extends FontRenderer {
                 GL11.glEnd();
                 GlStateManager.shadeModel(GL11.GL_FLAT);
                 
-                //TODO: move this to renderGradientStringAtPos
-                // results: less iterations, one big rectangle from color a to b instead of a -> a/2 -> b
-                // fix the space character with no underline or striktrough
-                // if (this.strikethroughStyle) {
-                //     Tessellator tessellator = Tessellator.getInstance();
-                //     WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-                //     GlStateManager.disableTexture2D();
-                //     GlStateManager.enableBlend();
-                //     GlStateManager.disableAlpha();
-                //     GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
-                //     GlStateManager.shadeModel(7425);
-                //     worldrenderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
-                //     worldrenderer.pos((double)this.posX + positions.get(i), (double)(this.posY + (float)(this.FONT_HEIGHT / 2)), 0d).color(sr, sg, sb, sa).endVertex();
-                //     worldrenderer.pos((double)(this.posX + positions.get(i) + currentPartWidth), (double)(this.posY + (float)(this.FONT_HEIGHT / 2)), 0d).color(er, eg, eb, ea).endVertex();
-                //     worldrenderer.pos((double)(this.posX + positions.get(i) + currentPartWidth), (double)(this.posY + (float)(this.FONT_HEIGHT / 2) - 1f), 0d).color(er, eg, eb, ea).endVertex();
-                //     worldrenderer.pos((double)this.posX + positions.get(i), (double)(this.posY + (float)(this.FONT_HEIGHT / 2) - 1f), 0d).color(sr, sg, sb, sa).endVertex();
-                //     tessellator.draw();
-                //     GlStateManager.shadeModel(7424);
-                //     GlStateManager.disableBlend();
-                //     GlStateManager.enableAlpha();
-                //     GlStateManager.enableTexture2D();
-                // }
-                // if (this.underlineStyle) {
-                //     Tessellator tessellator = Tessellator.getInstance();
-                //     WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-                //     GlStateManager.disableTexture2D();
-                //     GlStateManager.enableBlend();
-                //     GlStateManager.disableAlpha();
-                //     GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
-                //     GlStateManager.shadeModel(7425);
-                //     worldrenderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
-                //     worldrenderer.pos((double)this.posX + positions.get(i), (double)(this.posY + (float)this.FONT_HEIGHT), 0d).color(sr, sg, sb, sa).endVertex();
-                //     worldrenderer.pos((double)(this.posX + positions.get(i) + currentPartWidth), (double)(this.posY + (float)this.FONT_HEIGHT), 0d).color(er, eg, eb, ea).endVertex();
-                //     worldrenderer.pos((double)(this.posX + positions.get(i) + currentPartWidth), (double)(this.posY + (float)this.FONT_HEIGHT - 1f), 0d).color(er, eg, eb, ea).endVertex();
-                //     worldrenderer.pos((double)this.posX + positions.get(i), (double)(this.posY + (float)this.FONT_HEIGHT - 1f), 0d).color(sr, sg, sb, sa).endVertex();
-                //     tessellator.draw();
-                //     GlStateManager.shadeModel(7424);
-                //     GlStateManager.disableBlend();
-                //     GlStateManager.enableAlpha();
-                //     GlStateManager.enableTexture2D();
-                // }
-
                 currentCharXPos += currentPartWidth - f5;
             }
         }
