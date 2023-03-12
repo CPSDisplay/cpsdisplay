@@ -20,6 +20,7 @@ public class ModConfig {
 	public static final String CATEGORY_TEXT = "display";
 	public static final String CATEGORY_RAINBOW = "rainbow";
 	public static final String CATEGORY_BACKGROUND = "background";
+    public static final String CATEGORY_UPDATER = "updater";
 	
 	public static boolean showText = true;
 	// Text
@@ -27,6 +28,7 @@ public class ModConfig {
 	public static double scaleText = 1d;
 	public static String hexColorText = "ffffff";
 	public static String text = I18n.format("cpsdisplay.display_template.left_right", new Object[0]);
+    public static boolean showTextShadow = true;
 
 	// Background
 	public static String hexColorBackground = "2a2a2a80";
@@ -38,17 +40,27 @@ public class ModConfig {
 	public static float hueRainbow = 0f;
 	public static boolean playRainbow;
 	
+    // Updater
+    public static boolean majorUpdate = true;
+    public static boolean minorUpdate = true;
+    public static boolean patchUpdate = true;
+
 	private static Property positionTextProperty;
 	private static Property scaleTextProperty;
 	private static Property hexColorTextProperty;
 	private static Property showTextProperty;
 	private static Property textProperty;
+    private static Property showTextShadowProperty;
 
 	private static Property hexColorBackgroundProperty;
 	private static Property marginBackgroundProperty;
 	
 	private static Property showRainbowProperty;
 	private static Property speedRainbowProperty;
+
+    private static Property majorUpdateProperty;
+    private static Property minorUpdateProperty;
+    private static Property patchUpdateProperty;
 
 	
 	public static void preInit() {
@@ -66,6 +78,7 @@ public class ModConfig {
 			scaleTextProperty = config.get(CATEGORY_TEXT, "scale", scaleText);
 			hexColorTextProperty = config.get(CATEGORY_TEXT, "color", hexColorText);
 			textProperty = config.get(CATEGORY_TEXT, "text", text);
+            showTextShadowProperty = config.get(CATEGORY_TEXT, "shadow", showTextShadow);
 
 			hexColorBackgroundProperty = config.get(CATEGORY_BACKGROUND, "color", hexColorBackground);
 			marginBackgroundProperty = config.get(CATEGORY_BACKGROUND, "margin", marginBackground);
@@ -73,29 +86,43 @@ public class ModConfig {
 			showRainbowProperty = config.get(CATEGORY_RAINBOW, "rainbow", showRainbow);
 			speedRainbowProperty = config.get(CATEGORY_RAINBOW, "chroma_speed", speedRainbow);
 
+            majorUpdateProperty = config.get(CATEGORY_UPDATER, "major", majorUpdate);
+            minorUpdateProperty = config.get(CATEGORY_UPDATER, "minor", minorUpdate);
+            patchUpdateProperty = config.get(CATEGORY_UPDATER, "patch", patchUpdate);
+
 			positionText = positionTextProperty.getDoubleList();
 			scaleText = scaleTextProperty.getDouble();
 			hexColorText = hexColorTextProperty.getString();
 			showText = showTextProperty.getBoolean();
 			text = textProperty.getString();
+            showTextShadow = showTextShadowProperty.getBoolean();
 
 			hexColorBackground = hexColorBackgroundProperty.getString();
 			marginBackground = marginBackgroundProperty.getInt();
 
 			showRainbow = showRainbowProperty.getBoolean();
 			speedRainbow = speedRainbowProperty.getDouble();
+
+            majorUpdate = majorUpdateProperty.getBoolean();
+            minorUpdate = minorUpdateProperty.getBoolean();
+            patchUpdate = patchUpdateProperty.getBoolean();
 		} else {
 			positionTextProperty.set(positionText);
 			scaleTextProperty.set(scaleText);
 			hexColorTextProperty.set(hexColorText);
 			showTextProperty.set(showText);
 			textProperty.set(text);
+            showTextShadowProperty.set(showTextShadow);
 
 			hexColorBackgroundProperty.set(hexColorBackground);
 			marginBackgroundProperty.set(marginBackground);
 
 			showRainbowProperty.set(showRainbow);
 			speedRainbowProperty.set(speedRainbow);
+
+            majorUpdateProperty.set(majorUpdate);
+            minorUpdateProperty.set(minorUpdate);
+            patchUpdateProperty.set(patchUpdate);
 		}
 		
 		saveConfig();

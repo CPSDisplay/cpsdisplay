@@ -3,8 +3,6 @@ package fr.dams4k.cpsdisplay.events;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.lwjgl.input.Mouse;
-
 import fr.dams4k.cpsdisplay.gui.GuiConfig;
 import fr.dams4k.cpsdisplay.gui.GuiOverlay;
 import fr.dams4k.cpsdisplay.proxy.ClientProxy;
@@ -13,15 +11,13 @@ import net.minecraft.client.gui.GuiIngameMenu;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraftforge.client.event.MouseEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.event.GuiScreenEvent.KeyboardInputEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.InputEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
 
 
-public class ModEventHandler {
+public class ModEvents {
     private boolean attackIsPressed = false;
     private boolean useIsPressed = false;
 
