@@ -617,10 +617,9 @@ public class ModFontRenderer extends FontRenderer {
         float currentCharXPos = ch % 16 * 8f;
         float currentCharYPos = (ch / 16) * 8f;
 
+        GlStateManager.shadeModel(GL11.GL_SMOOTH);
+        GL11.glBegin(GL11.GL_QUADS);
         for (int i = 0; i < colors.size()-1 && i < positions.size()-1; i++) {
-            GlStateManager.shadeModel(GL11.GL_SMOOTH);
-            GL11.glBegin(GL11.GL_QUADS);
-
             int startColor = colors.get(i);
             float sa = ((startColor >> 24) & 0xff) / 255f;
             float sr = ((startColor >> 16) & 0xff) / 255f;
@@ -654,12 +653,11 @@ public class ModFontRenderer extends FontRenderer {
                 GL11.glTexCoord2f((currentCharXPos + currentPartWidth - f5) / 128f, currentCharYPos / 128f); // x 0
                 GL11.glVertex3f(this.posX + positions.get(i) + currentPartWidth - f5 + k, this.posY, 0f);
 
-                GL11.glEnd();
-                GlStateManager.shadeModel(GL11.GL_FLAT);
-                
                 currentCharXPos += currentPartWidth - f5;
             }
         }
+        GL11.glEnd();
+        GlStateManager.shadeModel(GL11.GL_FLAT);
         
         return (float) charWidth;
     }

@@ -55,12 +55,13 @@ public class GuiOverlay extends Gui {
 			colors.add(Color.GREEN);
 			colors.add(Color.YELLOW);
 			colors.add(Color.RED);
+            
             if (ModConfig.showRainbow) {
                 modFontRenderer.drawGradientString(text, x, y, colors, ModConfig.showTextShadow, true);
             } else {
 			    modFontRenderer.drawString(text, x, y, textColor.getRGB(), ModConfig.showTextShadow);
             }
-
+            
 			GL11.glPopMatrix();
 		}
 	}
