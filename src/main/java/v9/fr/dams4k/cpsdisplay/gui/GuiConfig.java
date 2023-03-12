@@ -1,9 +1,10 @@
 package fr.dams4k.cpsdisplay.gui;
 
-import java.awt.Color;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.lwjgl.opengl.GL11;
 
 import fr.dams4k.cpsdisplay.References;
 import fr.dams4k.cpsdisplay.config.ModConfig;
@@ -13,7 +14,6 @@ import fr.dams4k.cpsdisplay.gui.buttons.ModSlider;
 import fr.dams4k.cpsdisplay.gui.buttons.ModSliderMainPoint;
 import fr.dams4k.cpsdisplay.gui.buttons.ModTextField;
 import fr.dams4k.cpsdisplay.gui.buttons.ModToggleButton;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiLabel;
 import net.minecraft.client.gui.GuiScreen;
@@ -210,17 +210,26 @@ public class GuiConfig extends GuiScreen {
 		}
 		super.drawScreen(mouseX, mouseY, partialTicks);
 
+
+        new GuiOverlay(mc, 0, 0);
 		if (GuiOverlay.positionInOverlay(mouseX, mouseY)) {
-			ArrayList<Integer> positions = GuiOverlay.getBackgroundPositions(0, 0, true);
+			ArrayList<Integer> positions = GuiOverlay.getBackgroundPositions(0, 0, false);
+            int x1 = positions.get(0);
+			int y1 = positions.get(1);
+            int x2 = positions.get(2);
+			int y2 = positions.get(3);
+
+            int color = 0x99ff0000;
 			
-			new GuiOverlay(Minecraft.getMinecraft(), 0, 0, ModConfig.getBackgroundColor());
+            GL11.glPushMatrix();
+			GL11.glScaled(ModConfig.scaleText, ModConfig.scaleText, 1d);
 			
-			drawVerticalLine(positions.get(0), positions.get(1), positions.get(3), Color.RED.getRGB());
-			drawVerticalLine(positions.get(2), positions.get(1), positions.get(3), Color.RED.getRGB());
-			drawHorizontalLine(positions.get(0), positions.get(2), positions.get(1), Color.RED.getRGB());
-			drawHorizontalLine(positions.get(0), positions.get(2), positions.get(3), Color.RED.getRGB());
-		} else {
-			new GuiOverlay(Minecraft.getMinecraft(), 0, 0);
+            drawVerticalLine(x1-1, y1-1, y2, color);
+            drawVerticalLine(x2, y1-1, y2, color);
+            drawHorizontalLine(x1-1, x2, y1-1, color);
+            drawHorizontalLine(x1-1, x2, y2, color);
+
+            GL11.glPopMatrix();
 		}
 
 		updateConfig();

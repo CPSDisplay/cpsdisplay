@@ -216,9 +216,6 @@ public class GuiConfig extends ModScreen {
 
         new GuiOverlay(mc, 0, 0);
         if (GuiOverlay.positionInOverlay(mouseX, mouseY)) {
-            GL11.glPushMatrix();
-			GL11.glScaled(ModConfig.scaleText, ModConfig.scaleText, 1d);
-
             ArrayList<Integer> positions = GuiOverlay.getBackgroundPositions(0, 0, false);
             int x1 = positions.get(0);
 			int y1 = positions.get(1);
@@ -226,6 +223,9 @@ public class GuiConfig extends ModScreen {
 			int y2 = positions.get(3);
 
             int color = 0x99ff0000;
+
+            GL11.glPushMatrix();
+			GL11.glScaled(ModConfig.scaleText, ModConfig.scaleText, 1d);
 
             drawVerticalLine(x1-1, y1-1, y2, color);
             drawVerticalLine(x2, y1-1, y2, color);
