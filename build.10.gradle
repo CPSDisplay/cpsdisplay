@@ -1,10 +1,7 @@
 buildscript {
     repositories {
         jcenter()
-        maven {
-            name = "forge"
-            url = "http://files.minecraftforge.net/maven"
-        }
+        maven { url = "http://files.minecraftforge.net/maven" }
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
@@ -19,7 +16,7 @@ group = "fr.dams4k.cpsdisplay"
 version = "mc1.9.4-${mod_version}"
 
 minecraft {
-    version = "1.9.4-12.17.0.2317-1.9.4"
+    version = "1.10.2-12.18.3.2511"
     runDir = "run"
     
     replace "{mod_id}", mod_id
@@ -29,7 +26,7 @@ minecraft {
     replace "{mod_github_latest_release}", mod_github_latest_release
     replaceIn "References.java"
     
-    mappings = "snapshot_20160518"
+    mappings = "snapshot_20161111"
     makeObfSourceJar = true
 }
 
@@ -38,10 +35,10 @@ dependencies {}
 sourceSets {
     main {
         java {
-            srcDirs = ["src/main/java/v9", "src/main/java/core"]
+            srcDirs = ["src/main/java/v10", "src/main/java/core"]
         }
         resources {
-            srcDirs = ["src/main/resources/v9", "src/main/resources/core"]
+            srcDirs = ["src/main/resources/v10", "src/main/resources/core"]
         }
     }
 }
