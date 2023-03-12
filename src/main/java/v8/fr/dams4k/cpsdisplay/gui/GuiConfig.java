@@ -237,6 +237,7 @@ public class GuiConfig extends ModScreen {
 
 		updateConfig();
 	}
+    
 	public void drawBackground() {
 		ArrayList<Integer> positions = GuiOverlay.getBackgroundPositions(0, 0, true);
 

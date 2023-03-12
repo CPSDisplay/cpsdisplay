@@ -24,7 +24,6 @@ public class ClientProxy extends CommonProxy {
 		ClientRegistry.registerKeyBinding(CPS_OVERLAY_CONFIG);
 		MinecraftForge.EVENT_BUS.register(new ModEvents());
 		MinecraftForge.EVENT_BUS.register(new VersionCheckerEvent());
-		MinecraftForge.EVENT_BUS.register(new ModConfig());
 		ClientCommandHandler.instance.registerCommand(new ConfigCommand());
 	}
 }

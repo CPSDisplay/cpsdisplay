@@ -157,7 +157,10 @@ public class GuiConfig extends ModScreen {
 	}
 
 	public void addRainbowButtons(int x, int y) {
-		showRainbowToggle = new ModToggleButton(GuiButtons.SHOW_RAINBOW.id, x, GuiButtons.SHOW_TEXT.getY(y), 150, 20, I18n.format("cpsdisplay.button.show_rainbow", new Object[0]), "", ModConfig.showRainbow);
+		showRainbowToggle = new ModToggleButton(
+            GuiButtons.SHOW_RAINBOW.id, x, GuiButtons.SHOW_TEXT.getY(y), 150, 20,
+            I18n.format("cpsdisplay.button.show_rainbow", new Object[0]), "", ModConfig.showRainbow
+        );
 
 		speedRainbowSlider = new ModSlider(
 			GuiButtons.SPEED_RAINBOW.id, x, GuiButtons.SPEED_RAINBOW.getY(y), 150, 20,
@@ -211,7 +214,6 @@ public class GuiConfig extends ModScreen {
 		}
 		super.drawScreen(mouseX, mouseY, partialTicks);
 
-
         new GuiOverlay(mc, 0, 0);
 		if (GuiOverlay.positionInOverlay(mouseX, mouseY)) {
 			ArrayList<Integer> positions = GuiOverlay.getBackgroundPositions(0, 0, false);
@@ -235,6 +237,7 @@ public class GuiConfig extends ModScreen {
 
 		updateConfig();
 	}
+
 	public void drawBackground() {
 		ArrayList<Integer> positions = GuiOverlay.getBackgroundPositions(0, 0, true);
 

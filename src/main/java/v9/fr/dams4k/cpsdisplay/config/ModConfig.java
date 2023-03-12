@@ -38,7 +38,6 @@ public class ModConfig {
 	public static boolean showRainbow = false;
 	public static double speedRainbow = 1d;
 	public static float hueRainbow = 0f;
-	public static boolean playRainbow;
 	
     // Updater
     public static boolean majorUpdate = true;

@@ -50,7 +50,6 @@ public class VersionCheckerEvent {
 
                 String latestVersion = String.join(".", clearedLatestVersion);
 				VersionChecker modVersionChecker = new VersionChecker(References.MOD_VERSION);
-                
                 if (modVersionChecker.compareTo(latestVersion) == VersionChecker.LOWER) {
                     String mcVersion = "mc" + Minecraft.getMinecraft().getVersion();
 

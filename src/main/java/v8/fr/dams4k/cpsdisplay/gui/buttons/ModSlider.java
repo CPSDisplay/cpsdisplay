@@ -42,7 +42,6 @@ public class ModSlider extends GuiButton {
 
     public ModSlider(int idIn, int x, int y, int width, int height, String name, float min, float max, float step, float defaultValue, int decimals) {
         this(new GuiResponder() {
-
 			@Override
 			public void func_175321_a(int p_175321_1_, boolean p_175321_2_) {}
 
