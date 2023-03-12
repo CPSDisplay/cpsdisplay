@@ -13,6 +13,7 @@ cpsdisplay.button.display_custom=Custom
 cpsdisplay.button.color_text=Text color
 cpsdisplay.button.color_background=Background color
 cpsdisplay.button.margin_background=Background margin:
+cpsdisplay.button.show_shadow=Shadow: 
 
 cpsdisplay.slider.scale_text=Text scale
 cpsdisplay.slider.speed_rainbow=Speed
@@ -35,3 +36,4 @@ cpsdisplay.version.checker.minor_update=Minor update:
 cpsdisplay.version.checker.patch_update=Patch update: 
 cpsdisplay.version.checker.disabled=§eYou will not be informed of new releases
 cpsdisplay.version.checker.enabled=§eThe next version that will be communicated to you will be v{next_version} (or another higher)
+cpsdisplay.version.checker.button=Updater config

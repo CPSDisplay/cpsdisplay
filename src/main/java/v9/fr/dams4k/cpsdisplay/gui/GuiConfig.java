@@ -81,7 +81,7 @@ public class GuiConfig extends ModScreen {
         List<Integer> backgroundPositions = GuiOverlay.getBackgroundPositions(0, 0, true);
         int x = backgroundPositions.get(2) > width-100 - 10 ? 0 : width-100;
         int Y = backgroundPositions.get(3) > height-20 - 10 ? 0 : height-20;
-        this.buttonList.add(new GuiButton(-1, x, Y, 100, 20, "Updater Config"));
+        this.buttonList.add(new GuiButton(-1, x, Y, 100, 20, I18n.format("cpsdisplay.version.checker.button", new Object[0])));
 
 		updateButtons();
 	}
@@ -112,7 +112,7 @@ public class GuiConfig extends ModScreen {
 
         showTextShadowToggle = new ModToggleButton(
             GuiButtons.SHADOW_TEXT.id, x, GuiButtons.SHADOW_TEXT.getY(y), 150, 20,
-            "Shadow: ", "", ModConfig.showTextShadow
+            I18n.format("cpsdisplay.button.show_shadow", new Object[0]), "", ModConfig.showTextShadow
         );
 
 		modeTextButton = new GuiButton(GuiButtons.MODE_TEXT.id, x, GuiButtons.MODE_TEXT.getY(y), 150, 20, "");

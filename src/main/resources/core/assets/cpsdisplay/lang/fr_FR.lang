@@ -13,6 +13,7 @@ cpsdisplay.button.display_custom=Personnalisé
 cpsdisplay.button.color_text=Couleur du texte
 cpsdisplay.button.color_background=Couleur du fond
 cpsdisplay.button.margin_background=Marge du fond :
+cpsdisplay.button.show_shadow=Ombre : 
 
 cpsdisplay.slider.scale_text=Taille du texte
 cpsdisplay.slider.speed_rainbow=Vitesse 
@@ -35,3 +36,4 @@ cpsdisplay.version.checker.minor_update=MàJ mineur :
 cpsdisplay.version.checker.patch_update=MàJ de correction : 
 cpsdisplay.version.checker.disabled=§eVous ne serez pas informé des nouvelles versions
 cpsdisplay.version.checker.enabled=§eLa prochaine version qui vous sera communiquée sera v{next_version} (ou une autre supérieure)
+cpsdisplay.version.checker.button=MàJ config
