@@ -3,6 +3,7 @@ package fr.dams4k.cpsdisplay.colorpicker;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -96,6 +97,15 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
         this.addPreviews(oldColor);
         this.addCloseButtons();
         
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                for (ColorPickerListener listener : listeners) {
+                    listener.closed();
+                }
+            }
+        });
+
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
