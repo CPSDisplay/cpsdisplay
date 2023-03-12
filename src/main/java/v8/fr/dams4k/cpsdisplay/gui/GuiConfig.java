@@ -225,7 +225,7 @@ public class GuiConfig extends ModScreen {
             int x2 = positions.get(2);
 			int y2 = positions.get(3);
 
-            int color = 0x45ff0000;
+            int color = 0x99ff0000;
 
             drawVerticalLine(x1-1, y1-1, y2, color);
             drawVerticalLine(x2, y1-1, y2, color);
