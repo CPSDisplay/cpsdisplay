@@ -138,10 +138,12 @@ public class GuiConfig extends ModScreen {
 		);
 		colorBackgroundButton.setColor(ModConfig.getBackgroundColor());
 
-		marginBackgroundLabel = new GuiLabel(fontRendererObj, GuiButtons.MARGIN_BACKGROUND_LABEL.id, x+7, GuiButtons.MARGIN_BACKGROUND_LABEL.getY(y), 75, 20, 0xffffff);
-		marginBackgroundLabel.func_175202_a(I18n.format("cpsdisplay.button.margin_background", new Object[0]));
+        String labelString = I18n.format("cpsdisplay.button.margin_background", new Object[0]);
+        int stringWidth = fontRendererObj.getStringWidth(labelString);
+		marginBackgroundLabel = new GuiLabel(fontRendererObj, GuiButtons.MARGIN_BACKGROUND_LABEL.id, x+5, GuiButtons.MARGIN_BACKGROUND_LABEL.getY(y), stringWidth, 20, 0xffffff);
+		marginBackgroundLabel.func_175202_a(labelString);
 
-		marginBackgroundField = new ModTextField(GuiButtons.MARGIN_BACKGROUND_FIELD.id, fontRendererObj, x+110, GuiButtons.MARGIN_BACKGROUND_FIELD.getY(y), 40, 20);
+		marginBackgroundField = new ModTextField(GuiButtons.MARGIN_BACKGROUND_FIELD.id, fontRendererObj, x+5 + stringWidth + 10, GuiButtons.MARGIN_BACKGROUND_FIELD.getY(y), 150 - 5 - stringWidth - 10, 20);
 		marginBackgroundField.setMaxStringLength(2);
 		marginBackgroundField.setText(Integer.toString(ModConfig.marginBackground));
 		marginBackgroundField.letters = false;
