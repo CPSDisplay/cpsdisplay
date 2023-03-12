@@ -275,9 +275,6 @@ public class GuiConfig extends ModScreen {
 	
 	@Override
 	protected void actionPerformed(GuiButton button) throws IOException {
-		updateConfig();
-		ModConfig.syncConfig(false);
-
 		if (button.id == GuiButtons.MODE_TEXT.id) {
 			mouseModeSelected = MouseModeEnum.getById(mouseModeSelected.getId() + 1);
 			updateMouseModeButton();
@@ -286,7 +283,12 @@ public class GuiConfig extends ModScreen {
 				ModConfig.text = I18n.format(mouseModeSelected.getText(), new Object[0]);
 			}
 			textField.setText(ModConfig.text);
-		} else if (button.id == -1) {
+		}
+        
+		updateConfig();
+		ModConfig.syncConfig(false);
+        
+        if (button.id == -1) {
             mc.displayGuiScreen(new VersionConfig(this));
         }
 	}

@@ -51,7 +51,7 @@ public class VersionCheckerEvent {
                 String latestVersion = String.join(".", clearedLatestVersion);
 				VersionChecker modVersionChecker = new VersionChecker(References.MOD_VERSION);
                 if (modVersionChecker.compareTo(latestVersion) == VersionChecker.LOWER) {
-                    String mcVersion = "" + Minecraft.getMinecraft().getVersion();
+                    String mcVersion = "mc" + Minecraft.getMinecraft().getVersion();
                     
                     for (int i = 0; i < assets.size(); i++) {
                         JsonObject object = (JsonObject) assets.get(i);
