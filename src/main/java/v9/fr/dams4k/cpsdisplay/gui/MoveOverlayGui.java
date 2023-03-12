@@ -1,9 +1,5 @@
 package fr.dams4k.cpsdisplay.gui;
 
-import java.util.ArrayList;
-
-import org.lwjgl.opengl.GL11;
-
 import fr.dams4k.cpsdisplay.config.ModConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
