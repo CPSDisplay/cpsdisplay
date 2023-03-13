@@ -13,7 +13,7 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 group = "fr.dams4k.cpsdisplay"
-version = "mc1.9.4-${mod_version}"
+version = "mc1.10.2-${mod_version}"
 
 minecraft {
     version = "1.10.2-12.18.3.2511"
