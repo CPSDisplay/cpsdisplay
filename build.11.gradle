@@ -1,0 +1,65 @@
+buildscript {
+    repositories {
+        jcenter()
+        maven { url = "http://files.minecraftforge.net/maven" }
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
+    }
+}
+apply plugin: 'net.minecraftforge.gradle.forge'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+group = "fr.dams4k.cpsdisplay"
+version = "mc1.11.2-${mod_version}"
+
+minecraft {
+    version = "1.11.2-13.20.1.2588"
+    runDir = "run"
+    
+    replace "{mod_id}", mod_id
+    replace "{mod_name}", mod_name
+    replace "{mod_version}", mod_version
+    replace "{mod_download_url}", mod_download_url
+    replace "{mod_github_latest_release}", mod_github_latest_release
+    replaceIn "References.java"
+    
+    mappings = "snapshot_20161220"
+    makeObfSourceJar = true
+}
+
+dependencies {}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ["src/main/java/v11", "src/main/java/core"]
+        }
+        resources {
+            srcDirs = ["src/main/resources/v11", "src/main/resources/core"]
+        }
+    }
+}
+
+processResources {
+    // this will ensure that this task is redone when the versions change.
+    inputs.property "mod_id", mod_id
+    inputs.property "mod_name", mod_name
+    inputs.property "mod_version", mod_version
+    inputs.property "mc_version", project.minecraft.version
+
+    // replace stuff in mcmod.info, nothing else
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+                
+        // replace version and mcversion
+        expand "mod_version":mod_version, "mc_version":project.minecraft.version, "mod_id":mod_id, "mod_name":mod_name
+    }
+        
+    // copy everything else, thats not the mcmod.info
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
+}
