@@ -89,7 +89,6 @@ public class VersionCheckerEvent {
 			} finally {
                 MinecraftForge.EVENT_BUS.unregister(this);
             }
-            Minecraft.getMinecraft().player.sendMessage(new TextComponentString("Hola"));
             updateMessageSent = true;
         }
     }

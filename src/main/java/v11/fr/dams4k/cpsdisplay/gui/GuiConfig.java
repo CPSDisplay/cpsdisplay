@@ -164,7 +164,7 @@ public class GuiConfig extends ModScreen {
 
 		speedRainbowSlider = new ModSlider(
 			GuiButtons.SPEED_RAINBOW.id, x, GuiButtons.SPEED_RAINBOW.getY(y), 150, 20,
-			I18n.format("cpsdisplay.slider.speed_rainbow", new Object[0]), 0.1f, 3f, 0.1f, 0.5f, 10
+			I18n.format("cpsdisplay.slider.speed_rainbow", new Object[0]), 0.1f, 3f, 0.1f, (float) ModConfig.speedRainbow, 10
 		);
 
 		buttonList.add(showRainbowToggle);
