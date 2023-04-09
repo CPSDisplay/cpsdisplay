@@ -12,6 +12,7 @@ import net.minecraft.client.settings.GameSettings;
 import net.minecraftforge.client.event.MouseEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
@@ -26,8 +27,8 @@ public class ModEvents {
 
 	private GameSettings gs = Minecraft.getMinecraft().gameSettings;
 
-	@SubscribeEvent
-	public void onRenderGui(RenderGameOverlayEvent.Post gameOverlayEvent) {
+	@SubscribeEvent(priority = EventPriority.HIGHEST)
+	public void onRenderGui(RenderGameOverlayEvent.Post gameOverlayEvent) { // .Post is important, without, hotbar (for example) isn't drawn when overlay's transparent background is over
 		if (gameOverlayEvent.getType() == ElementType.HOTBAR && !(Minecraft.getMinecraft().currentScreen instanceof GuiIngameMenu)) {
 			new GuiOverlay(Minecraft.getMinecraft(), this.getAttackCPS(), this.getUseCPS());
 		}

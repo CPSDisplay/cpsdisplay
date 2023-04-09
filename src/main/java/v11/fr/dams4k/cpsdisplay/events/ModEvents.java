@@ -3,15 +3,17 @@ package fr.dams4k.cpsdisplay.events;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.dams4k.cpsdisplay.gui.CPSOverlay;
 import fr.dams4k.cpsdisplay.gui.GuiConfig;
-import fr.dams4k.cpsdisplay.gui.GuiOverlay;
 import fr.dams4k.cpsdisplay.proxy.ClientProxy;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiIngameMenu;
 import net.minecraft.client.settings.GameSettings;
+import net.minecraftforge.client.event.GuiScreenEvent.DrawScreenEvent;
 import net.minecraftforge.client.event.MouseEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
@@ -26,10 +28,20 @@ public class ModEvents {
 
 	private GameSettings gs = Minecraft.getMinecraft().gameSettings;
 
-	@SubscribeEvent
+    private final CPSOverlay cpsOverlay = new CPSOverlay();
+    
+    @SubscribeEvent
+    public void onDrawnScreen(DrawScreenEvent.Post event) {
+        if (event.getGui() instanceof GuiConfig) {
+            cpsOverlay.renderOverlay(this.getAttackCPS(), this.getUseCPS());
+        }
+    }
+
+	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public void onRenderGui(RenderGameOverlayEvent.Post gameOverlayEvent) {
-		if (gameOverlayEvent.getType() == ElementType.HOTBAR && !(Minecraft.getMinecraft().currentScreen instanceof GuiIngameMenu)) {
-			new GuiOverlay(Minecraft.getMinecraft(), this.getAttackCPS(), this.getUseCPS());
+        // .Post is important, without, hotbar (for example) isn't drawn when overlay's transparent background is over
+        if (gameOverlayEvent.getType() == ElementType.HOTBAR && !(Minecraft.getMinecraft().currentScreen instanceof GuiIngameMenu)) {
+            cpsOverlay.renderOverlay(this.getAttackCPS(), this.getUseCPS());
 		}
 	}
 	

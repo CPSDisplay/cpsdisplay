@@ -11,15 +11,20 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.util.ResourceLocation;
 
-public class GuiOverlay extends Gui {
+public class CPSOverlay extends Gui {
+    private final Minecraft mc = Minecraft.getMinecraft();
 	private ModFontRenderer modFontRenderer;
 
-	public GuiOverlay(Minecraft mc, Integer l, Integer r, Color color) {
-		modFontRenderer = new ModFontRenderer(mc.gameSettings, new ResourceLocation("textures/font/ascii.png"), mc.renderEngine, mc.isUnicode());
-		modFontRenderer.onResourceManagerReload(null);
+    public Integer attackClicks = 0;
+    public Integer useClicks = 0;
+
+    public void renderOverlay(Integer attackClicks, Integer useClicks) {
 
 		if (ModConfig.showText) {
-			String text = ModConfig.text.replace("{0}", l.toString()).replace("{1}", r.toString()).replace("&", "§");
+            modFontRenderer = new ModFontRenderer(mc.gameSettings, new ResourceLocation("textures/font/ascii.png"), mc.renderEngine, mc.isUnicode());
+            modFontRenderer.onResourceManagerReload(null);
+
+			String text = ModConfig.text.replace("{0}", attackClicks.toString()).replace("{1}", useClicks.toString()).replace("&", "§");
 			Color textColor;
 			if (!ModConfig.showRainbow) {
 				try {
@@ -32,29 +37,26 @@ public class GuiOverlay extends Gui {
 			} else {
 				textColor = ModConfig.getChroma();
 			}
+            Color backgroundColor = ModConfig.getBackgroundColor();
 			
 			GL11.glPushMatrix();
 			GL11.glScaled(ModConfig.scaleText, ModConfig.scaleText, 1d);
 
-			ArrayList<Integer> positions = GuiOverlay.getBackgroundPositions(l, r, false);
+			ArrayList<Integer> positions = CPSOverlay.getBackgroundPositions(attackClicks, useClicks, false);
 
 			int x = positions.get(0);
 			int y = positions.get(1);
 
-			if (color.getAlpha() > 0) {
+			if (backgroundColor.getAlpha() > 0) {
 				int margin = ModConfig.marginBackground;
-				drawRect(x-margin, y-margin, positions.get(2)+margin, positions.get(3)+margin, color.getRGB());
+				drawRect(x-margin, y-margin, positions.get(2)+margin, positions.get(3)+margin, backgroundColor.getRGB());
 			}
 			
 			modFontRenderer.drawString(text, x, y, textColor.getRGB(), ModConfig.showTextShadow);
 
 			GL11.glPopMatrix();
 		}
-	}
-
-	public GuiOverlay(Minecraft mc, Integer l, Integer r) {
-		this(mc, l, r, ModConfig.getBackgroundColor());
-	}
+    }
 
 	public static ArrayList<Integer> getBackgroundPositions(Integer l, Integer r, boolean scaled) {
 		Minecraft mc = Minecraft.getMinecraft();
@@ -85,7 +87,7 @@ public class GuiOverlay extends Gui {
 	}
 
 	public static boolean positionInOverlay(int x, int y) {
-		ArrayList<Integer> positions = GuiOverlay.getBackgroundPositions(0, 0, true);
+		ArrayList<Integer> positions = CPSOverlay.getBackgroundPositions(0, 0, true);
 		return positions.get(0) <= x && x <= positions.get(2) && positions.get(1) <= y && y <= positions.get(3);
 	}
 }

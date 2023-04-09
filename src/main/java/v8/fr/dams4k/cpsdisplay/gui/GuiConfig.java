@@ -270,7 +270,6 @@ public class GuiConfig extends ModScreen {
 
 		if (this.showRainbowToggle != null) ModConfig.showRainbow = showRainbowToggle.getValue();
 		if (this.speedRainbowSlider != null) {
-            System.out.println(speedRainbowSlider.getValue());
             ModConfig.speedRainbow = speedRainbowSlider.getValue();
         }
 
