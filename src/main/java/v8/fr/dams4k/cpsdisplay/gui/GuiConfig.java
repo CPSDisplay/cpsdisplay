@@ -78,7 +78,7 @@ public class GuiConfig extends ModScreen {
 		this.addBackgroundButtons(width / 2 + 2, 10 + top);
 		this.addRainbowButtons(width / 2 + 2, GuiButtons.MARGIN_BACKGROUND_FIELD.getY(10 + top) + 25);
 
-        List<Integer> backgroundPositions = GuiOverlay.getBackgroundPositions(0, 0, true);
+        List<Integer> backgroundPositions = CPSOverlay.getBackgroundPositions(0, 0, true);
         int x = backgroundPositions.get(2) > width-100 - 10 ? 0 : width-100;
         int Y = backgroundPositions.get(3) > height-20 - 10 ? 0 : height-20;
         this.buttonList.add(new GuiButton(-1, x, Y, 100, 20, I18n.format("cpsdisplay.version.checker.button", new Object[0])));
@@ -149,7 +149,7 @@ public class GuiConfig extends ModScreen {
 		marginBackgroundField.letters = false;
 		marginBackgroundField.punctuation = false;
 		marginBackgroundField.anythings = false;
-		marginBackgroundField.placeHolder = "§oxx";
+		marginBackgroundField.placeHolder = "§o2";
 
 		buttonList.add(colorBackgroundButton);
 		labelList.add(marginBackgroundLabel);
@@ -190,7 +190,7 @@ public class GuiConfig extends ModScreen {
 		diffX = textPosition[0] - mouseX;
 		diffY = textPosition[1] - mouseY;
 		
-		if (GuiOverlay.positionInOverlay(mouseX, mouseY)) {
+		if (CPSOverlay.positionInOverlay(mouseX, mouseY)) {
 			mc.displayGuiScreen(new MoveOverlayGui(diffX, diffY));
 		} else {
 			super.mouseClicked(mouseX, mouseY, mouseButton);
@@ -214,9 +214,8 @@ public class GuiConfig extends ModScreen {
 		}
 		super.drawScreen(mouseX, mouseY, partialTicks);
 
-        new GuiOverlay(mc, 0, 0);
-        if (GuiOverlay.positionInOverlay(mouseX, mouseY)) {
-            ArrayList<Integer> positions = GuiOverlay.getBackgroundPositions(0, 0, false);
+        if (CPSOverlay.positionInOverlay(mouseX, mouseY)) {
+            ArrayList<Integer> positions = CPSOverlay.getBackgroundPositions(0, 0, false);
             int x1 = positions.get(0);
 			int y1 = positions.get(1);
             int x2 = positions.get(2);
@@ -239,7 +238,7 @@ public class GuiConfig extends ModScreen {
 	}
     
 	public void drawBackground() {
-		ArrayList<Integer> positions = GuiOverlay.getBackgroundPositions(0, 0, true);
+		ArrayList<Integer> positions = CPSOverlay.getBackgroundPositions(0, 0, true);
 
 		int color = -1072689136;
 		int margin = (int) (this.height / 10 * ModConfig.scaleText);
@@ -269,9 +268,7 @@ public class GuiConfig extends ModScreen {
 		}
 
 		if (this.showRainbowToggle != null) ModConfig.showRainbow = showRainbowToggle.getValue();
-		if (this.speedRainbowSlider != null) {
-            ModConfig.speedRainbow = speedRainbowSlider.getValue();
-        }
+		if (this.speedRainbowSlider != null) ModConfig.speedRainbow = speedRainbowSlider.getValue();
 
 		updateButtons();
 	}

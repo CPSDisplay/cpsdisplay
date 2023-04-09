@@ -15,9 +15,6 @@ public class CPSOverlay extends Gui {
     private final Minecraft mc = Minecraft.getMinecraft();
 	private ModFontRenderer modFontRenderer;
 
-    public Integer attackClicks = 0;
-    public Integer useClicks = 0;
-
     public CPSOverlay() {
         this.modFontRenderer = new ModFontRenderer(mc.gameSettings, new ResourceLocation("textures/font/ascii.png"), mc.renderEngine, mc.isUnicode());
         this.modFontRenderer.onResourceManagerReload(null);
