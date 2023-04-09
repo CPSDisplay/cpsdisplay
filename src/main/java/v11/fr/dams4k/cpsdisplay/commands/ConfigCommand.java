@@ -27,7 +27,7 @@ public class ConfigCommand extends CommandBase {
 
     @Override
     public String getUsage(ICommandSender sender) {
-        return "Open gui config";
+        return "/cpsdisplay";
     }
 
     @Override
