@@ -149,7 +149,7 @@ public class GuiConfig extends ModScreen {
 		marginBackgroundField.letters = false;
 		marginBackgroundField.punctuation = false;
 		marginBackgroundField.anythings = false;
-		marginBackgroundField.placeHolder = "§oxx";
+		marginBackgroundField.placeHolder = "§o2";
 
 		buttonList.add(colorBackgroundButton);
 		labelList.add(marginBackgroundLabel);
