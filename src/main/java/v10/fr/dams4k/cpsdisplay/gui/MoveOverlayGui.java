@@ -1,7 +1,6 @@
 package fr.dams4k.cpsdisplay.gui;
 
 import fr.dams4k.cpsdisplay.config.ModConfig;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 
 public class MoveOverlayGui extends GuiScreen {
@@ -18,9 +17,6 @@ public class MoveOverlayGui extends GuiScreen {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         int[] newPosition = {diffX+mouseX, diffY+mouseY};
         ModConfig.setTextPosition(newPosition);
-
-        new GuiOverlay(Minecraft.getMinecraft(), 0, 0, ModConfig.getBackgroundColor());
-        
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
