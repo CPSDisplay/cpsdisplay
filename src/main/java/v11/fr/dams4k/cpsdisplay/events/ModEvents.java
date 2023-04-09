@@ -26,7 +26,8 @@ public class ModEvents {
 	private List<Long> attackClicks = new ArrayList<Long>();
 	private List<Long> useClicks = new ArrayList<Long>();
 
-	private GameSettings gs = Minecraft.getMinecraft().gameSettings;
+    private final Minecraft mc = Minecraft.getMinecraft();
+	private GameSettings gs = mc.gameSettings;
 
     private final CPSOverlay cpsOverlay = new CPSOverlay();
     
@@ -40,7 +41,7 @@ public class ModEvents {
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public void onRenderGui(RenderGameOverlayEvent.Post gameOverlayEvent) {
         // .Post is important, without, hotbar (for example) isn't drawn when overlay's transparent background is over
-        if (gameOverlayEvent.getType() == ElementType.HOTBAR && !(Minecraft.getMinecraft().currentScreen instanceof GuiIngameMenu)) {
+        if (gameOverlayEvent.getType() == ElementType.HOTBAR && !(mc.currentScreen instanceof GuiIngameMenu || mc.currentScreen instanceof GuiConfig)) {
             cpsOverlay.renderOverlay(this.getAttackCPS(), this.getUseCPS());
 		}
 	}
@@ -48,7 +49,7 @@ public class ModEvents {
 	@SubscribeEvent
 	public void onNewTick(ClientTickEvent event) {
 		if (ClientProxy.CPS_OVERLAY_CONFIG.isKeyDown()) {
-			Minecraft.getMinecraft().displayGuiScreen(new GuiConfig());
+			mc.displayGuiScreen(new GuiConfig());
 		}
 	}
 
