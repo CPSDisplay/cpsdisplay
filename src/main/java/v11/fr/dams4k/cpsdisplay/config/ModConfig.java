@@ -159,7 +159,7 @@ public class ModConfig {
 		return realPosition;
 	}
 
-	public static Color getTextColor() {
+	public static Color getSelectedTextColor() {
         Color textColor;
         if (!ModConfig.showRainbow) {
             try {
@@ -173,6 +173,10 @@ public class ModConfig {
             textColor = ModConfig.getChroma();
         }
         return textColor;
+	}
+
+    public static Color getTextColor() {
+		return ColorConverter.HexToColor(ModConfig.hexColorText, 6);
 	}
 	public static void setTextColor(Color color) {
 		ModConfig.hexColorText = Integer.toHexString(color.getRGB()).substring(2);

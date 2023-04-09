@@ -26,7 +26,7 @@ public class CPSOverlay extends Gui {
     public void renderOverlay(Integer attackClicks, Integer useClicks) {
 		if (ModConfig.showText) {
 			String text = ModConfig.getFormattedString(attackClicks, useClicks);
-			Color textColor = ModConfig.getTextColor();
+			Color textColor = ModConfig.getSelectedTextColor();
             Color backgroundColor = ModConfig.getBackgroundColor();
 			
 			GL11.glPushMatrix();
