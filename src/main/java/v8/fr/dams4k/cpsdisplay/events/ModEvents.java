@@ -31,7 +31,7 @@ public class ModEvents {
 
     private final CPSOverlay cpsOverlay = new CPSOverlay();
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void onDrawnScreen(DrawScreenEvent.Post event) {
         if (event.gui instanceof GuiConfig) {
             cpsOverlay.renderOverlay(this.getAttackCPS(), this.getUseCPS());
