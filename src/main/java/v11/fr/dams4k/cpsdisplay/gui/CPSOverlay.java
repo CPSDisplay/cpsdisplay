@@ -18,25 +18,15 @@ public class CPSOverlay extends Gui {
     public Integer attackClicks = 0;
     public Integer useClicks = 0;
 
+    public CPSOverlay() {
+        this.modFontRenderer = new ModFontRenderer(mc.gameSettings, new ResourceLocation("textures/font/ascii.png"), mc.renderEngine, mc.isUnicode());
+        this.modFontRenderer.onResourceManagerReload(null);
+    }
+
     public void renderOverlay(Integer attackClicks, Integer useClicks) {
-
 		if (ModConfig.showText) {
-            modFontRenderer = new ModFontRenderer(mc.gameSettings, new ResourceLocation("textures/font/ascii.png"), mc.renderEngine, mc.isUnicode());
-            modFontRenderer.onResourceManagerReload(null);
-
-			String text = ModConfig.text.replace("{0}", attackClicks.toString()).replace("{1}", useClicks.toString()).replace("&", "§");
-			Color textColor;
-			if (!ModConfig.showRainbow) {
-				try {
-					textColor = ModConfig.getTextColor();
-				} catch (Exception e) {
-					textColor = Color.WHITE;
-					ModConfig.hexColorText = "ffffff";
-					ModConfig.syncConfig(false);
-				}
-			} else {
-				textColor = ModConfig.getChroma();
-			}
+			String text = ModConfig.getFormattedString(attackClicks, useClicks);
+			Color textColor = ModConfig.getTextColor();
             Color backgroundColor = ModConfig.getBackgroundColor();
 			
 			GL11.glPushMatrix();
@@ -58,11 +48,11 @@ public class CPSOverlay extends Gui {
 		}
     }
 
-	public static ArrayList<Integer> getBackgroundPositions(Integer l, Integer r, boolean scaled) {
+	public static ArrayList<Integer> getBackgroundPositions(Integer attackClicks, Integer useClicks, boolean scaled) {
 		Minecraft mc = Minecraft.getMinecraft();
 
 		ArrayList<Float> list = new ArrayList<>();
-		String text = ModConfig.text.replace("{0}", l.toString()).replace("{1}", r.toString()).replace("&", "§");
+		String text = ModConfig.getFormattedString(attackClicks, useClicks);
 		
 		int[] textPosition = ModConfig.getTextPosition();
 

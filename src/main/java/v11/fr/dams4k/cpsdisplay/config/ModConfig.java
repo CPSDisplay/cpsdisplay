@@ -133,6 +133,10 @@ public class ModConfig {
 		}
 	}
 	
+    public static String getFormattedString(Integer attackClicks, Integer useClicks) {
+        return ModConfig.text.replace("{0}", attackClicks.toString()).replace("{1}", useClicks.toString()).replace("&", "§");
+    }
+
 	public static Color getChroma() {
 		int rgb = Color.HSBtoRGB((float) ((System.currentTimeMillis() * ModConfig.speedRainbow) % 2000l) / 2000f, 0.8f, 0.8f);
 		return new Color(rgb);
@@ -156,7 +160,19 @@ public class ModConfig {
 	}
 
 	public static Color getTextColor() {
-		return ColorConverter.HexToColor(ModConfig.hexColorText, 6);
+        Color textColor;
+        if (!ModConfig.showRainbow) {
+            try {
+                textColor = ColorConverter.HexToColor(ModConfig.hexColorText, 6);
+            } catch (Exception e) {
+                textColor = Color.WHITE;
+                ModConfig.hexColorText = "ffffff";
+                ModConfig.syncConfig(false);
+            }
+        } else {
+            textColor = ModConfig.getChroma();
+        }
+        return textColor;
 	}
 	public static void setTextColor(Color color) {
 		ModConfig.hexColorText = Integer.toHexString(color.getRGB()).substring(2);
