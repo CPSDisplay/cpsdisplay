@@ -27,31 +27,63 @@ body {
     animation-timing-function: ease-out;
 }
 
+
 h1 {
     color: var(--primary-color);
     font-weight: 900;
     text-align: center;
-    font-size: 17vw;
+    font-size: 10vw;
 }
 
-h3 {
-    color: var(--primary-color);
-    font-weight: 500;
-    font-size: 5vw;
-    text-align: center;
-
-    padding: 0.5vw;
-    margin: 0.5vw;
+@media (max-width: 800px) {
+    h1 {
+        color: var(--primary-color);
+        font-weight: 900;
+        text-align: center;
+        font-size: 17vw;
+    }
 }
 
 .button {
     user-select: none;
 
+    color: var(--primary-color);
+    
     border: solid;
     border-width: 1px;
     border-radius: 5px;
 
-    width: 35vw;
+    display: flex;
+    align-items: center;
+    text-align: center;
+
+    width: 20vw;
+}
+
+.button a {
+    text-decoration: none;
+    color: inherit;
+    width: 100%;
+
+    font-weight: 500;
+    font-size: 2vw;
+    text-align: center;
+}
+
+@media (max-width: 800px) {
+    .button {
+        user-select: none;
+
+        border: solid;
+        border-width: 1px;
+        border-radius: 5px;
+
+        width: 35vw;
+    }
+
+    .button a {
+        font-size: 5vw;
+    }
 }
 
 .reverse-button {
@@ -66,7 +98,31 @@ h3 {
     border-width: 1px;
     border-radius: 5px;
 
-    width: 35vw;
+    display: flex;
+    align-items: center;
+    text-align: center;
+
+    width: 20vw;
+}
+
+.reverse-button a {
+    text-decoration: none;
+    color: inherit;
+    width: 100%;
+
+    font-weight: 500;
+    font-size: 2vw;
+    text-align: center;
+}
+
+@media (max-width: 800px) {
+    .reverse-button {
+        width: 35vw;
+    }
+
+    .reverse-button a {
+        font-size: 5vw;
+    }
 }
 
 #mod-title {
@@ -75,6 +131,11 @@ h3 {
 }
 
 #download-buttons {
+    margin-top: 4vh;
+}
+
+#download-buttons * {
+    margin: 1vh;
 }
 
 #cards-container {
@@ -92,8 +153,12 @@ h3 {
 }
 
 .card {
+    display: flex;
+    flex-wrap: wrap-reverse;
+}
+
+.card img {
     border-radius: 5px;
-    /* width: 40vw; */
     width: 100%;
 }
 
@@ -104,6 +169,7 @@ h3 {
 .row {
     display: flex;
     flex-wrap: wrap;
+    margin-top: 8vh;
     padding: 0 4px;
 }
 
