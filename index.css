@@ -22,9 +22,6 @@ body {
     font-family: 'Roboto', sans-serif;
     background-color: #313131;
     background: linear-gradient(45deg, #111111 0%, #414141 100%);
-    /* background: linear-gradient(45deg, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%);
-    background: linear-gradient(to bottom right, blue, pink); */
-    height: 99vh;
     animation-name: animation-show;
     animation-duration: 1s;
     animation-timing-function: ease-out;
@@ -34,13 +31,13 @@ h1 {
     color: var(--primary-color);
     font-weight: 900;
     text-align: center;
-    font-size: 10vw;
+    font-size: 17vw;
 }
 
 h3 {
     color: var(--primary-color);
     font-weight: 500;
-    font-size: 2vw;
+    font-size: 5vw;
     text-align: center;
 
     padding: 0.5vw;
@@ -54,7 +51,7 @@ h3 {
     border-width: 1px;
     border-radius: 5px;
 
-    width: 15vw;
+    width: 35vw;
 }
 
 .reverse-button {
@@ -69,14 +66,22 @@ h3 {
     border-width: 1px;
     border-radius: 5px;
 
-    width: 15vw;
+    width: 35vw;
 }
 
 #mod-title {
-    margin-bottom: 1vw;
+    margin-top: 1vh;
+    margin-bottom: 1vh;
 }
 
 #download-buttons {
+}
+
+#cards-container {
+    margin-top: 5vw;
+}
+
+.horizontal-center {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -84,4 +89,39 @@ h3 {
 
 .link-button {
     text-decoration: none;
+}
+
+.card {
+    border-radius: 5px;
+    /* width: 40vw; */
+    width: 100%;
+}
+
+.row * {
+    box-sizing: border-box;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 4px;
+}
+
+.column {
+    flex: 50%;
+    max-width: 50%;
+    padding: 0 4px;
+    align-items: center;
+}
+
+.column img {
+    margin-top: 8px;
+    vertical-align: middle;
+}
+
+@media (max-width: 800px) {
+    .column {
+        flex: 100%;
+        max-width: 100%;
+    }
 }
