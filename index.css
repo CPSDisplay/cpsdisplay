@@ -1,0 +1,87 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;500;900&display=swap');
+
+:root {
+    --primary-color: #cc293c;
+    --secondary-gray: #272727;
+}
+
+@keyframes animation-show {
+    from {
+        opacity: 0;
+        transform: translateY(-5vh);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0%);
+    }
+}
+
+body {
+    color: white;
+    font-weight: 300;
+    font-family: 'Roboto', sans-serif;
+    background-color: #313131;
+    background: linear-gradient(45deg, #111111 0%, #414141 100%);
+    /* background: linear-gradient(45deg, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%);
+    background: linear-gradient(to bottom right, blue, pink); */
+    height: 99vh;
+    animation-name: animation-show;
+    animation-duration: 1s;
+    animation-timing-function: ease-out;
+}
+
+h1 {
+    color: var(--primary-color);
+    font-weight: 900;
+    text-align: center;
+    font-size: 10vw;
+}
+
+h3 {
+    color: var(--primary-color);
+    font-weight: 500;
+    font-size: 2vw;
+    text-align: center;
+
+    padding: 0.5vw;
+    margin: 0.5vw;
+}
+
+.button {
+    user-select: none;
+
+    border: solid;
+    border-width: 1px;
+    border-radius: 5px;
+
+    width: 15vw;
+}
+
+.reverse-button {
+    user-select: none;
+
+    color: var(--secondary-gray);
+
+    background-color: var(--primary-color);
+    
+    border: solid;
+    border-color: var(--primary-color);
+    border-width: 1px;
+    border-radius: 5px;
+
+    width: 15vw;
+}
+
+#mod-title {
+    margin-bottom: 1vw;
+}
+
+#download-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.link-button {
+    text-decoration: none;
+}
