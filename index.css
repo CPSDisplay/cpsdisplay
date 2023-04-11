@@ -35,7 +35,7 @@ h1 {
     font-size: 10vw;
 }
 
-@media (max-width: 800px) {
+@media (max-width: 1024px) {
     h1 {
         color: var(--primary-color);
         font-weight: 900;
@@ -70,7 +70,7 @@ h1 {
     text-align: center;
 }
 
-@media (max-width: 800px) {
+@media (max-width: 1024px) {
     .button {
         user-select: none;
 
@@ -115,7 +115,7 @@ h1 {
     text-align: center;
 }
 
-@media (max-width: 800px) {
+@media (max-width: 1024px) {
     .reverse-button {
         width: 35vw;
     }
@@ -185,7 +185,7 @@ h1 {
     vertical-align: middle;
 }
 
-@media (max-width: 800px) {
+@media (max-width: 1024px) {
     .column {
         flex: 100%;
         max-width: 100%;
