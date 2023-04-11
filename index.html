@@ -4,7 +4,12 @@
         <title>CPS Display</title>
         <link rel="stylesheet" href="index.css">
     </head>
-    <body>
+    <script type="text/javascript" src="index.js"></script>
+    <body onload="loadDiscordPresenceCount()">
+        <div id="top-bar">
+            <center><img class="discord-logo" src="assets/images/icon_clyde_white_RGB.svg"></center>
+            <span id="discord-presence-count">0 online</span>
+        </div>
         <h1 id="mod-title">CPS Display</h1>
         <div class="horizontal-center" id="download-buttons">
             <h3 class="reverse-button"><a href='https://www.curseforge.com/minecraft/mc-mods/cpsdisplay'>Download</a></h3>
@@ -40,18 +45,5 @@
                 </div>
             </div>
         </div>
-
-        <!-- <div class="container">
-            <div class="horizontal-center" id="cards-container">
-                <img class="card" src="assets/images/mod_settings.png">
-                <h4>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque sit amet lorem suscipit, suscipit nulla consequat, fringilla nulla. Ut tempor eu metus eu sollicitudin. Fusce id volutpat tortor, in laoreet nulla. Mauris ultricies egestas turpis, quis tempus diam ullamcorper id. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Morbi at massa quis felis varius maximus vel iaculis urna. Vivamus ut iaculis odio. Etiam interdum dignissim enim, non porttitor magna tincidunt at. Phasellus suscipit erat vitae feugiat efficitur. Aliquam nulla ipsum, dictum eget tortor in, aliquet facilisis nunc. Donec eu bibendum nulla. Suspendisse euismod mollis metus ut convallis. Donec tempor ipsum mauris, ut posuere tortor feugiat in. </h4>
-                <img class="card" src="assets/images/mod_settings.png">
-            </div>
-            <div class="card" id="cards-container">
-                <img class="card" src="assets/images/mod_settings.png">
-                <h4>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque sit amet lorem suscipit, suscipit nulla consequat, fringilla nulla. Ut tempor eu metus eu sollicitudin. Fusce id volutpat tortor, in laoreet nulla. Mauris ultricies egestas turpis, quis tempus diam ullamcorper id. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Morbi at massa quis felis varius maximus vel iaculis urna. Vivamus ut iaculis odio. Etiam interdum dignissim enim, non porttitor magna tincidunt at. Phasellus suscipit erat vitae feugiat efficitur. Aliquam nulla ipsum, dictum eget tortor in, aliquet facilisis nunc. Donec eu bibendum nulla. Suspendisse euismod mollis metus ut convallis. Donec tempor ipsum mauris, ut posuere tortor feugiat in. </h4>
-                <img class="card" src="assets/images/mod_settings.png">
-            </div>
-        </div> -->
     </body>
 </html>

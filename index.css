@@ -31,7 +31,9 @@ body {
 h1 {
     color: var(--primary-color);
     font-weight: 900;
-    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-size: 10vw;
 }
 
@@ -126,7 +128,7 @@ h1 {
 }
 
 #mod-title {
-    margin-top: 1vh;
+    margin-top: 0vh;
     margin-bottom: 1vh;
 }
 
@@ -190,4 +192,32 @@ h1 {
         flex: 100%;
         max-width: 100%;
     }
+}
+
+#top-bar {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+#top-bar * {
+    color: white;
+    font-size: 1.2vw;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin: 0;
+    padding-left: .2vw;
+    padding-right: .2vw;
+}
+
+#top-bar span {
+    background-color: #111111;
+    border-radius: 5px;
+    padding: .3vw;
+}
+
+.discord-logo {
+    height: 2vh;
 }
