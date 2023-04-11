@@ -105,10 +105,6 @@ h1 {
     margin: 1vh;
 }
 
-#cards-container {
-    margin-top: 5vw;
-}
-
 .horizontal-center {
     display: flex;
     align-items: center;
@@ -122,6 +118,8 @@ h1 {
 .card {
     display: flex;
     flex-wrap: wrap-reverse;
+    text-align: justify;
+    text-justify: auto;
 }
 
 .card img {
@@ -137,13 +135,13 @@ h1 {
     display: flex;
     flex-wrap: wrap;
     margin-top: 8vh;
-    padding: 0 4px;
+    padding: 0 4vh;
 }
 
 .column {
     flex: 50%;
     max-width: 50%;
-    padding: 0 4px;
+    padding: 0 2vh;
     align-items: center;
 }
 
