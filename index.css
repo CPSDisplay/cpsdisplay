@@ -16,6 +16,24 @@
     }
 }
 
+@keyframes animation-grayscale {
+    from {
+        filter: grayscale(1);
+    }
+    to {
+        filter: grayscale(0);
+    }
+}
+
+@keyframes animation-nograyscale {
+    from {
+        filter: grayscale(0);
+    }
+    to {
+        filter: grayscale(1);
+    }
+}
+
 body {
     color: white;
     font-weight: 300;
@@ -51,6 +69,20 @@ h1 {
     text-align: center;
 
     width: 20vw;
+
+    filter: grayscale(1);
+
+    animation-name: animation-nograyscale;
+    animation-duration: .2s;
+    animation-timing-function: ease-out;
+    animation-fill-mode: forwards;
+}
+
+.button:hover {
+    animation-name: animation-grayscale;
+    animation-duration: .2s;
+    animation-timing-function: ease-out;
+    animation-fill-mode: forwards;
 }
 
 .button a {
@@ -157,7 +189,7 @@ h1 {
 
 #top-bar * {
     color: white;
-    font-size: 1.2vw;
+    font-size: 1vw;
 
     display: flex;
     justify-content: center;
@@ -171,14 +203,14 @@ h1 {
 #top-bar span {
     background-color: var(--secondary-gray);
     border-radius: 5px;
-    padding-left: .3vw;
-    padding-right: .3vw;
-    padding-top: .3vh;
-    padding-bottom: .3vh;
+    padding-left: .2vw;
+    padding-right: .2vw;
+    padding-top: .2vh;
+    padding-bottom: .2vh;
 }
 
 .discord-logo {
-    height: 1.5vh;
+    height: 2vh;
 }
 
 @media (max-width: 1024px) {
