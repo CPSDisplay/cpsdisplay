@@ -37,15 +37,6 @@ h1 {
     font-size: 10vw;
 }
 
-@media (max-width: 1024px) {
-    h1 {
-        color: var(--primary-color);
-        font-weight: 900;
-        text-align: center;
-        font-size: 17vw;
-    }
-}
-
 .button {
     user-select: none;
 
@@ -70,22 +61,6 @@ h1 {
     font-weight: 500;
     font-size: 2vw;
     text-align: center;
-}
-
-@media (max-width: 1024px) {
-    .button {
-        user-select: none;
-
-        border: solid;
-        border-width: 1px;
-        border-radius: 5px;
-
-        width: 35vw;
-    }
-
-    .button a {
-        font-size: 5vw;
-    }
 }
 
 .reverse-button {
@@ -115,16 +90,6 @@ h1 {
     font-weight: 500;
     font-size: 2vw;
     text-align: center;
-}
-
-@media (max-width: 1024px) {
-    .reverse-button {
-        width: 35vw;
-    }
-
-    .reverse-button a {
-        font-size: 5vw;
-    }
 }
 
 #mod-title {
@@ -187,13 +152,6 @@ h1 {
     vertical-align: middle;
 }
 
-@media (max-width: 1024px) {
-    .column {
-        flex: 100%;
-        max-width: 100%;
-    }
-}
-
 #top-bar {
     display: flex;
     flex-direction: row-reverse;
@@ -213,11 +171,54 @@ h1 {
 }
 
 #top-bar span {
-    background-color: #111111;
+    background-color: var(--secondary-gray);
     border-radius: 5px;
-    padding: .3vw;
+    padding-left: .3vw;
+    padding-right: .3vw;
+    padding-top: .3vh;
+    padding-bottom: .3vh;
 }
 
 .discord-logo {
-    height: 2vh;
+    height: 1.5vh;
+}
+
+@media (max-width: 1024px) {
+    h1 {
+        color: var(--primary-color);
+        font-weight: 900;
+        text-align: center;
+        font-size: 17vw;
+    }
+
+    .column {
+        flex: 100%;
+        max-width: 100%;
+    }
+
+    .reverse-button {
+        width: 35vw;
+    }
+
+    .reverse-button a {
+        font-size: 5vw;
+    }
+
+    .button {
+        user-select: none;
+
+        border: solid;
+        border-width: 1px;
+        border-radius: 5px;
+
+        width: 35vw;
+    }
+
+    .button a {
+        font-size: 5vw;
+    }
+
+    #top-bar {
+        visibility: hidden;
+    }
 }
