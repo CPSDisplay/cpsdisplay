@@ -1,4 +1,4 @@
-const maxDeg = 15;
+const maxDeg = 5;
 
 elements = document.getElementsByClassName("card-img");
 for (const element of elements) {
