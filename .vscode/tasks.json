@@ -1,0 +1,24 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "kill-current-terminal",
+            "command": "${command:workbench.action.terminal.killAll}"
+        },
+        {
+            "label": "run-discord-bot",
+            "command": "${command:python.interpreterPath}",
+            "args": [
+                "run.py"
+            ]
+        },
+        {
+            "label": "clear-and-run-bot",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "kill-current-terminal",
+                "run-discord-bot"
+            ]
+        }
+    ]
+}
