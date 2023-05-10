@@ -21,3 +21,12 @@ build
 eclipse
 run
 build.gradle
+
+#website
+high**
+
+#bot
+venv/*
+datas/*
+*.pyc
+*/__pycache__/*
