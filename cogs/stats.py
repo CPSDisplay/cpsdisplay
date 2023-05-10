@@ -9,10 +9,10 @@ class StatsCog(Cog):
         self.bot = bot
 
     @slash_command(
-        name="statistics",
-        name_localizations={"fr": "statistiques"}
+        name="downloads",
+        name_localizations={"fr": "téléchargements"}
     )
-    async def stats_command(self, ctx):
+    async def downloads_command(self, ctx):
         await ctx.defer()
 
         github_downloads = await ModData.get_github_downloads()
@@ -21,7 +21,7 @@ class StatsCog(Cog):
 
         total_downloads = max(0, github_downloads) + max(0, modrinth_downloads) + max(0, curseforge_downloads)
 
-        embed = InformativeEmbed(title="Mod Statistics - All", description=f"Total: {total_downloads} downloads")
+        embed = InformativeEmbed(title="Mod Downloads", description=f"**Total: {total_downloads}**")
         embed.add_field(name="Curseforge", value=f"{curseforge_downloads} downloads")
         embed.add_field(name="Modrinth", value=f"{modrinth_downloads} downloads")
         embed.add_field(name="Github", value=f"{github_downloads} downloads")
