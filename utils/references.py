@@ -21,7 +21,9 @@ class _References:
             data = json.load(f)
 
             self.BOT_TOKEN = data["bot_token"]
-            self.CURSEFORGE_MOD_ID = data.get("curseforge_modid", 618222) # 618222 is cpsdisplay
+
+            self.CURSEFORGE_API_KEY = data.get("curseforge_api_key")
+            self.CURSEFORGE_MOD_ID = data.get("curseforge_modid")
 
             self.COGS_FOLDER = data.get("cogs_folder", "cogs")
             self.DEBUG_GUILDS = data.get("debug_guilds", [])

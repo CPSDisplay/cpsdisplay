@@ -1,18 +1,23 @@
 from discord import *
 
 from utils.bot_embeds import InformativeEmbed
-from utils.mod_data import ModData
+from utils.mod_data import ModData, CurseForgeData
 
 
 class StatsCog(Cog):
     def __init__(self, bot):
         self.bot = bot
 
+    @Cog.listener()
+    async def on_ready(self):
+        await CurseForgeData.get_files()
+
     @slash_command(
         name="downloads",
         name_localizations={"fr": "téléchargements"}
     )
-    async def downloads_command(self, ctx):
+    @option("mod_version", choices=ModData.get_mod_versions())
+    async def downloads_command(self, ctx, mod_version: str):
         await ctx.defer()
 
         github_downloads = await ModData.get_github_downloads()
