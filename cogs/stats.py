@@ -10,7 +10,9 @@ class StatsCog(Cog):
 
     @slash_command(
         name="downloads",
-        name_localizations={"fr": "téléchargements"}
+        name_localizations={"fr": "téléchargements"},
+        description="Statistics on mod's downloads",
+        description_localizations={"fr": "Statistiques sur les téléchargements du mod"}
     )
     # @option("mod_version", choices=ModData.get_mod_versions(), default=None)
     @option("game_version", choices=GithubData.get_game_versions(), default=None)
