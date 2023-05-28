@@ -14,6 +14,13 @@ class SafeDict(dict):
         return "{" + key + "}"
 
 class EndPoints:
+    def format_endpoints(clazz, params):
+        for attr in clazz.__dict__:
+            value = clazz.__dict__[attr]
+            if isinstance(value, str):
+                value = value.format_map(SafeDict(**params))
+                setattr(clazz, attr, value)
+
     def add_param(self, url, params):
         url = unquote(url)
         parsed_url = urlparse(url)
@@ -41,11 +48,12 @@ class GithubEndPoints(EndPoints):
     TAGS = "repos/{username}/{repo}/tags"
 
     def __init__(self):
-        for attr in GithubEndPoints.__dict__:
-            value = GithubEndPoints.__dict__[attr]
-            if isinstance(value, str):
-                value = value.format_map(SafeDict(username=References.GITHUB_USERNAME, repo=References.GITHUB_REPO))
-                setattr(GithubEndPoints, attr, value)
+        GithubEndPoints.format_endpoints(params)
+        # for attr in GithubEndPoints.__dict__:
+        #     value = GithubEndPoints.__dict__[attr]
+        #     if isinstance(value, str):
+        #         value = value.format_map(SafeDict(username=References.GITHUB_USERNAME, repo=References.GITHUB_REPO))
+        #         setattr(GithubEndPoints, attr, value)
 
 class _GithubData:
     BASE_URL: str = "https://api.github.com/"
@@ -108,7 +116,7 @@ class _GithubData:
 GithubData = _GithubData()
 
 class CurseForgeEndPoints(EndPoints):
-    GET_FILES = "/v1/mods/%s/files" % References.CURSEFORGE_MOD_ID
+    GET_FILES = "/v1/mods/%s/files"
 
     def game_version(self, url, version): 
         return self.add_param(url, {"gameVersion": version})
