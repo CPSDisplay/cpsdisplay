@@ -48,12 +48,12 @@ class GithubEndPoints(EndPoints):
     TAGS = "repos/{username}/{repo}/tags"
 
     def __init__(self):
-        GithubEndPoints.format_endpoints(params)
-        # for attr in GithubEndPoints.__dict__:
-        #     value = GithubEndPoints.__dict__[attr]
-        #     if isinstance(value, str):
-        #         value = value.format_map(SafeDict(username=References.GITHUB_USERNAME, repo=References.GITHUB_REPO))
-        #         setattr(GithubEndPoints, attr, value)
+        # GithubEndPoints.format_endpoints(params)
+        for attr in GithubEndPoints.__dict__:
+            value = GithubEndPoints.__dict__[attr]
+            if isinstance(value, str):
+                value = value.format_map(SafeDict(username=References.GITHUB_USERNAME, repo=References.GITHUB_REPO))
+                setattr(GithubEndPoints, attr, value)
 
 class _GithubData:
     BASE_URL: str = "https://api.github.com/"
@@ -116,11 +116,12 @@ class _GithubData:
 GithubData = _GithubData()
 
 class CurseForgeEndPoints(EndPoints):
-    GET_FILES = "/v1/mods/%s/files"
-
+    SEARCH = "https://www.curseforge.com/api/v1/mods/search?gameId=432&index=0&authorId=102154724&classId=6&filterText=cpsdisplay&gameVersion=1.8.9&pageSize=20&sortField=1&categoryIds%5B0%5D=424&categoryIds%5B1%5D=423&gameFlavors%5B0%5D=1"
+    GET_FILES = "/v1/mods/%s/files" % References.CURSEFORGE_MOD_ID
+    
     def game_version(self, url, version): 
         return self.add_param(url, {"gameVersion": version})
-
+    
 class _CurseForgeData:
     BASE_URL = "https://api.curseforge.com/"
     END_POINTS = CurseForgeEndPoints()
@@ -145,23 +146,34 @@ class _CurseForgeData:
                     return await response.json()
         return {}
     
+    async def get_mod(self):
+        url = self.get_url(self.END_POINTS.SEARCH)
+        data = (await self.get_data(url)).get("data", [])
+        for mod in data:
+            if mod["slug"] == References.MOD_SLUG:
+                return mod
+        return {}
+
     async def get_files(self, game_version: str = "*"):
         url = self.get_url(self.END_POINTS.GET_FILES)
         if game_version != "*":
             url = self.END_POINTS.game_version(url, game_version)
         
-        data = await self.get_data(url)
-        return data["data"]
+        return (await self.get_data(url)).get("data", {})
 
     async def get_downloads(self, game_version: str = "*") -> int:
-        files = await self.get_files(game_version)
-        return sum([file.get("downloadCount", 0) for file in files])
+        if game_version == "*":
+            mod_data = await self.get_mod()
+            return mod_data.get("downloads", 0)
+        else:
+            files = await self.get_files(game_version)
+            return sum([file.get("downloadCount", 0) for file in files])
 
 
 CurseForgeData = _CurseForgeData()
 
 class ModrinthEndPoints(EndPoints):
-    GET_VERSION = "v2/project/%s/version" % References.MODRINTH_MODSLUG
+    GET_VERSION = "v2/project/%s/version" % References.MOD_SLUG
 
     def game_version(self, url, *args):
         return self.add_param(url, {"game_versions": args})

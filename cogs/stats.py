@@ -26,7 +26,7 @@ class StatsCog(Cog):
         total_downloads = github_downloads + modrinth_downloads + curseforge_downloads
 
         embed = InformativeEmbed(title="Mod Downloads", description=f"**Total: {total_downloads}**")
-        embed.add_field(name="Curseforge", value=f"{curseforge_downloads} downloads")
+        embed.add_field(name="Curseforge", value=f"{curseforge_downloads} downloads" + (" (outdated because curseforge's api suck)" if game_version else ""))
         embed.add_field(name="Modrinth", value=f"{modrinth_downloads} downloads")
         embed.add_field(name="Github", value=f"{github_downloads} downloads")
         await ctx.respond(embed=embed)

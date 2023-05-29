@@ -25,7 +25,7 @@ class _References:
             self.GITHUB_USERNAME = data.get("github_username")
             self.GITHUB_REPO = data.get("github_repo")
 
-            self.MODRINTH_MODSLUG = data.get("modrinth_modslug")
+            self.MOD_SLUG = data.get("mod_slug")
 
             self.CURSEFORGE_API_KEY = data.get("curseforge_api_key")
             self.CURSEFORGE_MOD_ID = data.get("curseforge_modid")
