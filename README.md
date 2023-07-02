@@ -1,4 +1,4 @@
-# CPS Display
+# CPS Display [![Project](http://cf.way2muchnoise.eu/full_cpsdisplay_downloads.svg)](https://www.curseforge.com/minecraft/mc-mods/cpsdisplay)
 
 CPS Display is a forge mod for minecraft 1.8.9 which display your in-game Clicks Per Seconds.
 
