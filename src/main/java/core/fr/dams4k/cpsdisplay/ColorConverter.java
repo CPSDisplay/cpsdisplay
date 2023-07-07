@@ -30,7 +30,6 @@ public class ColorConverter {
 					Integer.valueOf(hex.substring(4, 6), 16)
 				);
 			case 8:
-				System.out.println(Integer.valueOf(hex.substring(6, 8), 16));
 				return new Color(
 					Integer.valueOf(hex.substring(0, 2), 16),
 					Integer.valueOf(hex.substring(2, 4), 16),
