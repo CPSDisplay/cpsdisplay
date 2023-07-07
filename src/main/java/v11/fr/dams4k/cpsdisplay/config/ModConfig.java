@@ -179,14 +179,13 @@ public class ModConfig {
 		return ColorConverter.HexToColor(ModConfig.hexColorText, 6);
 	}
 	public static void setTextColor(Color color) {
-		ModConfig.hexColorText = Integer.toHexString(color.getRGB()).substring(2);
+		ModConfig.hexColorText = ColorConverter.ColorToHex(color); // rrggbbaa
 	}
 
 	public static Color getBackgroundColor() {
 		return ColorConverter.HexToColor(ModConfig.hexColorBackground, 8);
 	}
 	public static void setBackgroundColor(Color color) {
-		String hexString = Integer.toHexString(color.getRGB()); // aarrggbbb
-		ModConfig.hexColorBackground = hexString.substring(2) + hexString.subSequence(0, 2); // rrggbbaa
+		ModConfig.hexColorBackground = ColorConverter.ColorToHex(color); // rrggbbaa
 	}
 }

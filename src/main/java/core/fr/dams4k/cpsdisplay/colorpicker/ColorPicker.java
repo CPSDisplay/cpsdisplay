@@ -382,15 +382,8 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
     }
 
     public void updateHexTextField() {
-        String ARGBHex = Integer.toHexString(this.getColor().getRGB());
-        String RGBAHex = ARGBHex;
-        // Make sure length is always 8
-        while (ARGBHex.length() < 8) {
-            ARGBHex += "0";
-        }
-
-        RGBAHex = ARGBHex.substring(2, 8) + ARGBHex.substring(0, 2);
-        hexColorField.setText(this.alphaChannel == true ? RGBAHex : RGBAHex.substring(0, 6));
+        String hexString = ColorConverter.ColorToHex(this.getColor()); // Is 8" long
+        hexColorField.setText(this.alphaChannel == true ? hexString : hexString.substring(0, 6));
     }
 
     public Color getColorNoAlpha() {
