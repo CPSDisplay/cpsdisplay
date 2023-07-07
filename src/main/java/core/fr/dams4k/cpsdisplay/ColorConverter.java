@@ -8,10 +8,11 @@ public class ColorConverter {
 
     public static Color HexToColor(String givenHex, int size) {
 		givenHex = givenHex.replace("#", "");
+		givenHex = givenHex.toLowerCase();
 		String hex = "";
 
 		// Make sure each characters are an hex value
-		for (char c : hex.toCharArray()) {
+		for (char c : givenHex.toCharArray()) {
 			String sC = String.valueOf(c);
 			if (HEX_CHARS.contains(sC)) {
 				hex += sC;
@@ -21,7 +22,6 @@ public class ColorConverter {
 		}
 		// Fill in the missing characters
 		hex += String.join("", Collections.nCopies(Math.max(0, size-hex.length()), "0"));
-		
 		switch ((hex.substring(0, size)).length()) { // Use the desired size
 			case 6:
 				return new Color(
@@ -30,6 +30,7 @@ public class ColorConverter {
 					Integer.valueOf(hex.substring(4, 6), 16)
 				);
 			case 8:
+				System.out.println(Integer.valueOf(hex.substring(6, 8), 16));
 				return new Color(
 					Integer.valueOf(hex.substring(0, 2), 16),
 					Integer.valueOf(hex.substring(2, 4), 16),
