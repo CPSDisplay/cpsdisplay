@@ -176,10 +176,6 @@ public class ModConfig {
 	}
 
 	public static Color getTextColor() {
-		String hexString = ModConfig.hexColorBackground;
-		while (hexString.length() < 6) { // Make sure length is always 6
-			hexString += "0";
-		}
 		return ColorConverter.HexToColor(ModConfig.hexColorText, 6);
 	}
 	public static void setTextColor(Color color) {
@@ -192,10 +188,6 @@ public class ModConfig {
 	}
 
 	public static Color getBackgroundColor() {
-		String hexString = ModConfig.hexColorBackground;
-		while (hexString.length() < 8) { // Make sure length is always 6
-			hexString += "0";
-		}
 		return ColorConverter.HexToColor(ModConfig.hexColorBackground, 8);
 	}
 	public static void setBackgroundColor(Color color) {
