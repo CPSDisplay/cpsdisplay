@@ -15,7 +15,7 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.util.ResourceLocation;
 
-// Original code from deerangle, https://forums.minecraftforge.net/topic/78188-1122-drawing-text-with-gradients/
+// Original code from deerangle & mojang, https://forums.minecraftforge.net/topic/78188-1122-drawing-text-with-gradients/
 // (i change a lot of things sooo, it's not really his code anymore, but the idea is the same)
 public class ModFontRenderer extends FontRenderer {
     private static final String styleCharsmap = "0123456789abcdefklmnor";

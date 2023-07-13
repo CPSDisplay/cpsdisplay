@@ -12,8 +12,8 @@ import javax.swing.JPanel;
 
 import org.apache.commons.io.IOUtils;
 
+import fr.dams4k.cpsdisplay.CPSDisplay;
 import fr.dams4k.cpsdisplay.ColorConverter;
-import net.minecraft.client.Minecraft;
 
 public class Label extends JPanel {
     private static final int DEFAULT_CHAR_HEIGHT = 8;
@@ -35,7 +35,7 @@ public class Label extends JPanel {
         this.setOpaque(false);
         this.text = text;
 
-        this.unicodeFlag = Minecraft.getMinecraft().fontRendererObj.getUnicodeFlag();
+        this.unicodeFlag = CPSDisplay.getUnicodeFlag();
         this.fontSize = this.unicodeFlag ? 1 : 2;
 
         try {

@@ -27,4 +27,9 @@ public class CPSDisplay {
     public void postInit(FMLPostInitializationEvent event) {
         proxy.postInit();
     }
+
+	public static boolean getUnicodeFlag() {
+		// Doing this for futur minecraft version, not all minecraft version have "fontRenderObj" called this way
+		return Minecraft.getMinecraft().fontRendererObj.getUnicodeFlag();
+	}
 }

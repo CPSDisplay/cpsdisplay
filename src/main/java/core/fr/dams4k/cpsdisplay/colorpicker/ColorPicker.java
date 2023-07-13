@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,7 +37,7 @@ import fr.dams4k.cpsdisplay.colorpicker.gui.textfield.TextFieldListener;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
 
-public class ColorPicker extends JFrame implements HPointerListener, SVPointerListener, SliderListener, TextFieldListener {
+public class ColorPicker extends JFrame implements HPointerListener, SVPointerListener, SliderListener, TextFieldListener, WindowFocusListener {
     private List<ColorPickerListener> listeners = new ArrayList<>();
    
     private final ResourceLocation BACKGROUND_RESOURCE = new ResourceLocation("cpsdisplay", "textures/gui/options_background.png");
@@ -105,6 +106,7 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
                 }
             }
         });
+        addWindowFocusListener(this);
 
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
@@ -431,5 +433,13 @@ public class ColorPicker extends JFrame implements HPointerListener, SVPointerLi
             this.updateAllPointers();
             this.updateColorPreview();
         }
+    }
+
+    @Override
+    public void windowGainedFocus(WindowEvent event) { /* Nothing to do */ }
+
+    @Override
+    public void windowLostFocus(WindowEvent event) {
+        this.close();
     }
 }
