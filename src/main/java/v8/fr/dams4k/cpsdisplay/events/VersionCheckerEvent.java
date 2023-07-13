@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -27,11 +28,9 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class VersionCheckerEvent {
-	private boolean updateMessageSent = false;
-    
     @SubscribeEvent
 	public void onClientJoinWorld(EntityJoinWorldEvent event) {
-		if (event.entity instanceof EntityPlayerSP && !updateMessageSent) {
+		if (event.entity instanceof EntityPlayerSP) {
 			try {
 				URL githubTagsURL = new URL(References.MOD_GITHUB_LASTEST_RELEASE);
 				
@@ -89,8 +88,6 @@ public class VersionCheckerEvent {
 			} finally {
                 MinecraftForge.EVENT_BUS.unregister(this);
             }
-
-			updateMessageSent = true;
 		}
 	}
 }

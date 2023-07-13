@@ -27,8 +27,6 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class VersionCheckerEvent {
-    private boolean updateMessageSent = false;
-
     @SubscribeEvent
     public void onClientJoinWorld(EntityJoinWorldEvent event) {
         if (event.getEntity() instanceof EntityPlayerSP && !updateMessageSent) {
@@ -89,8 +87,6 @@ public class VersionCheckerEvent {
 			} finally {
                 MinecraftForge.EVENT_BUS.unregister(this);
             }
-
-            updateMessageSent = true;
         }
     }
 }

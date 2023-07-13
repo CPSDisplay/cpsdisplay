@@ -52,13 +52,14 @@ processResources {
     inputs.property "mod_name", mod_name
     inputs.property "mod_version", mod_version
     inputs.property "mc_version", project.minecraft.version
+    inputs.property "mod_website", mod_website
 
     // replace stuff in mcmod.info, nothing else
     from(sourceSets.main.resources.srcDirs) {
         include 'mcmod.info'
                 
         // replace version and mcversion
-        expand "mod_version":mod_version, "mc_version":project.minecraft.version, "mod_id":mod_id, "mod_name":mod_name
+        expand "mod_version":mod_version, "mc_version":project.minecraft.version, "mod_id":mod_id, "mod_name":mod_name, "mod_website":mod_website
     }
         
     // copy everything else, thats not the mcmod.info

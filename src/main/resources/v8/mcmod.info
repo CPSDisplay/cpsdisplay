@@ -5,7 +5,7 @@
     "description": "You can see your clicks per second and customize the text appearance",
     "version": "${mod_version}",
     "mcversion": "${mc_version}",
-    "url": "https://dams4k.github.io/minecraft-cpsdisplay/",
+    "url": "${mod_website}",
     "updateUrl": "",
     "authorList": ["Dams4K"],
     "credits": "You. Because it is thanks to you that I want to code this mod",
