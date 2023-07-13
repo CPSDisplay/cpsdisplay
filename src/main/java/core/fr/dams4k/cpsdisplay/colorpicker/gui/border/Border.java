@@ -76,8 +76,7 @@ public class Border {
 
     public void setBorder(BorderType borderType, int x, int y, int w, int h) {
         if (this.baseImage == null) {
-            System.err.println("baseImage shouldn't be null");
-            return;
+            return; // Base image shouldn't be null
         }
         
         x = Math.round((x * this.imageScaleFactor));

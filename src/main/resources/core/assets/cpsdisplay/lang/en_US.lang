@@ -29,8 +29,8 @@ cpsdisplay.external.button.ok=OK
 cpsdisplay.external.label.hex_code=Hex code:
 
 cpsdisplay.version.mod_name=§7[CPS Display]
-cpsdisplay.version.description=§eA newer version of the mod is
-cpsdisplay.version.url=§b§navailable
+cpsdisplay.version.description=§7A new version is
+cpsdisplay.version.url=§3&navailable
 cpsdisplay.version.checker.major_update=Major update: 
 cpsdisplay.version.checker.minor_update=Minor update: 
 cpsdisplay.version.checker.patch_update=Patch update: 
