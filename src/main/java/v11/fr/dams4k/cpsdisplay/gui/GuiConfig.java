@@ -2,7 +2,6 @@ package fr.dams4k.cpsdisplay.gui;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 import org.lwjgl.opengl.GL11;
 
@@ -13,7 +12,7 @@ import fr.dams4k.cpsdisplay.gui.buttons.ModSlider;
 import fr.dams4k.cpsdisplay.gui.buttons.ModSliderMainPoint;
 import fr.dams4k.cpsdisplay.gui.buttons.ModTextField;
 import fr.dams4k.cpsdisplay.gui.buttons.ModToggleButton;
-import net.minecraft.client.Minecraft;
+import fr.dams4k.cpsdisplay.gui.buttons.UpdateManagerButton;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiLabel;
 import net.minecraft.client.gui.GuiTextField;
@@ -111,7 +110,7 @@ public class GuiConfig extends ModScreen {
 		// Enable/Disable the mod
 		showTextToggle.width = showTextWidth;
 		
-		updateManager = new GuiButton(
+		updateManager = new UpdateManagerButton(
 			GuiButtons.B_UPDATE_MANAGER.id, x + showTextWidth + 2, GuiButtons.B_UPDATE_MANAGER.getY(y), updateManagerWidth, 20,
 			updateManagerString
 		);
