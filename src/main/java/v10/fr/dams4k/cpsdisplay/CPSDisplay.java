@@ -1,9 +1,10 @@
 package fr.dams4k.cpsdisplay;
 
 import fr.dams4k.cpsdisplay.proxy.ClientProxy;
+import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;

@@ -1,6 +1,8 @@
 package fr.dams4k.cpsdisplay;
 
 import fr.dams4k.cpsdisplay.proxy.ClientProxy;
+import net.minecraft.client.Minecraft;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -31,5 +33,9 @@ public class CPSDisplay {
 	public static boolean getUnicodeFlag() {
 		// Doing this for futur minecraft version, not all minecraft version have "fontRenderObj" called this way
 		return Minecraft.getMinecraft().fontRendererObj.getUnicodeFlag();
+	}
+
+	public static void playSound(ResourceLocation resource) {
+
 	}
 }

@@ -9,6 +9,7 @@ import java.util.List;
 import javax.swing.event.MouseInputListener;
 
 import fr.dams4k.cpsdisplay.ColorConverter;
+import fr.dams4k.cpsdisplay.SoundManager;
 import fr.dams4k.cpsdisplay.colorpicker.gui.border.Border;
 import fr.dams4k.cpsdisplay.colorpicker.gui.border.ButtonBorder;
 import fr.dams4k.cpsdisplay.colorpicker.gui.border.ButtonMode;
@@ -44,6 +45,7 @@ public class Button extends Label implements MouseInputListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        SoundManager.playButtonPressed();
         for (ButtonListener listener : this.buttonListeners) {
             listener.buttonClicked();
         }

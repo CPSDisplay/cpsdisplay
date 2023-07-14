@@ -29,7 +29,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class VersionCheckerEvent {
     @SubscribeEvent
     public void onClientJoinWorld(EntityJoinWorldEvent event) {
-        if (event.getEntity() instanceof EntityPlayerSP && !updateMessageSent) {
+        if (event.getEntity() instanceof EntityPlayerSP) {
             try {
 				URL githubTagsURL = new URL(References.MOD_GITHUB_LASTEST_RELEASE);
 				
