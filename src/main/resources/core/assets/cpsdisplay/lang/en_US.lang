@@ -2,6 +2,7 @@ cpsdisplay.key.opengui=Open Config Gui
 cpsdisplay.category.cpsdisplay=CPS Display
 
 cpsdisplay.button.show_text=
+cpsdisplay.button.update_manager=Update Manager
 cpsdisplay.button.show_rainbow=Rainbow: 
 cpsdisplay.button.enable=§aEnable
 cpsdisplay.button.disable=§cDisable

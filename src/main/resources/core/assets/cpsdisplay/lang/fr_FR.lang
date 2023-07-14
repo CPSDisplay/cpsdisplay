@@ -2,6 +2,7 @@ cpsdisplay.key.opengui=Ouvrir l'interface de configuration
 cpsdisplay.category.cpsdisplay=CPS Display
 
 cpsdisplay.button.show_text=
+cpsdisplay.button.update_manager=U
 cpsdisplay.button.show_rainbow=Arc en ciel : 
 cpsdisplay.button.enable=§aActivé
 cpsdisplay.button.disable=§cDésactivé

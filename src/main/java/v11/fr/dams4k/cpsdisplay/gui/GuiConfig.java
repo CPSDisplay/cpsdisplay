@@ -13,6 +13,7 @@ import fr.dams4k.cpsdisplay.gui.buttons.ModSlider;
 import fr.dams4k.cpsdisplay.gui.buttons.ModSliderMainPoint;
 import fr.dams4k.cpsdisplay.gui.buttons.ModTextField;
 import fr.dams4k.cpsdisplay.gui.buttons.ModToggleButton;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiLabel;
 import net.minecraft.client.gui.GuiTextField;
@@ -23,6 +24,7 @@ import net.minecraftforge.common.MinecraftForge;
 public class GuiConfig extends ModScreen {
 	public enum GuiButtons {
 		B_SHOW_TEXT(0),
+		B_UPDATE_MANAGER(10, 0),
 		B_SCALE_TEXT(1),
         B_SHADOW_TEXT(2),
 		B_MODE_TEXT(3),
@@ -53,8 +55,10 @@ public class GuiConfig extends ModScreen {
 		}
 	}
 
-	// Text
+	// TopContainer
 	private ModToggleButton showTextToggle;
+	private GuiButton updateManager;
+
 	private ModSlider scaleTextSlider;
 	private GuiButton modeTextButton;
     private ModToggleButton showTextShadowToggle;
@@ -80,22 +84,40 @@ public class GuiConfig extends ModScreen {
 		super.initGui();
 		MinecraftForge.EVENT_BUS.register(this);
 
-		// Enable/Disable the mod
-		showTextToggle = new ModToggleButton(
-			GuiButtons.B_SHOW_TEXT.id, width / 2 - 152, GuiButtons.B_SHOW_TEXT.getY(10 + top), 304, 20,
-			I18n.format("cpsdisplay.button.show_text", new Object[0]), "", ModConfig.showText
-		);
-		buttonList.add(showTextToggle);
-
+		this.addTopContainer(width / 2 - 152, 10 + top);
 		this.addVisibilityButtons(width / 2 - 152, 16 + top);
 		this.addColorButtons(width / 2 + 4, 16 + top);
 
-        List<Integer> backgroundPositions = CPSOverlay.getBackgroundPositions(0, 0, true);
-        int x = backgroundPositions.get(2) > width-100 - 10 ? 0 : width-100;
-        int Y = backgroundPositions.get(3) > height-20 - 10 ? 0 : height-20;
-        this.buttonList.add(new GuiButton(-1, x, Y, 100, 20, I18n.format("cpsdisplay.version.checker.button", new Object[0])));
-
 		updateButtons();
+	}
+
+	public void addTopContainer(int x, int y) {
+		showTextToggle = new ModToggleButton(
+			GuiButtons.B_SHOW_TEXT.id, x, GuiButtons.B_SHOW_TEXT.getY(y), 0, 20,
+			I18n.format("cpsdisplay.button.show_text", new Object[0]), "", ModConfig.showText
+		);
+
+		String showTextString = showTextToggle.getDisplayString();
+		String updateManagerString = I18n.format("cpsdisplay.button.update_manager", new Object[0]);
+
+		int containerWidth = 302;
+
+		int showTextStringWidth = mc.fontRendererObj.getStringWidth(showTextString);
+		int updateManagerStringWidth = Math.max(20, mc.fontRendererObj.getStringWidth(updateManagerString) + 8);
+
+		int showTextWidth = Math.max(showTextStringWidth + 8, containerWidth - updateManagerStringWidth - 2);
+		int updateManagerWidth = containerWidth - showTextWidth;
+
+		// Enable/Disable the mod
+		showTextToggle.width = showTextWidth;
+		
+		updateManager = new GuiButton(
+			GuiButtons.B_UPDATE_MANAGER.id, x + showTextWidth + 2, GuiButtons.B_UPDATE_MANAGER.getY(y), updateManagerWidth, 20,
+			updateManagerString
+		);
+
+		buttonList.add(showTextToggle);
+		buttonList.add(updateManager);
 	}
 
 	public void addVisibilityButtons(int x, int y) {
@@ -165,7 +187,7 @@ public class GuiConfig extends ModScreen {
 
 		speedRainbowSlider = new ModSlider(
 			GuiButtons.B_SPEED_RAINBOW.id, x, GuiButtons.B_SPEED_RAINBOW.getY(y), 148, 20,
-			I18n.format("cpsdisplay.slider.speed_rainbow", new Object[0]), 0.1f, 3f, 0.1f, (float) ModConfig.speedRainbow, 10
+			I18n.format("cpsdisplay.slider.speed_rainbow", new Object[0]), 0.05f, 3f, 0.05f, (float) ModConfig.speedRainbow, 100
 		);
 
 
@@ -300,7 +322,7 @@ public class GuiConfig extends ModScreen {
 		updateConfig();
 		ModConfig.syncConfig(false);
         
-        if (button.id == -1) {
+        if (button.id == GuiButtons.B_UPDATE_MANAGER.id) {
             mc.displayGuiScreen(new VersionConfig(this));
         }
 	}
