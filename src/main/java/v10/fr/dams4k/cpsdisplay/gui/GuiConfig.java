@@ -306,7 +306,9 @@ public class GuiConfig extends ModScreen {
 			} else {
 				textField.setVisible(false);
 			}
-		}	
+		}
+
+		// Show rainbow slider only if rainbow is enabled
 	}
 
 	@Override
