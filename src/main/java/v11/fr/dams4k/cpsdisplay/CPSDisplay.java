@@ -3,6 +3,7 @@ package fr.dams4k.cpsdisplay;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -61,7 +62,6 @@ public class CPSDisplay {
         proxy.preInit();
         try {
             loadLatestVersion();
-            System.out.println(CPSDisplay.latestVersion);
         } catch (IOException e) {
             // Nothing lol
         }

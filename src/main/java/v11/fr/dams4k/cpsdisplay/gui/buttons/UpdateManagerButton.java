@@ -37,9 +37,7 @@ public class UpdateManagerButton extends GuiButton {
         int orbX = xPosition + width - (orbWidth / 2 + 2);
         int orbY = yPosition - (orbWidth / 2 - 2);
 
-        mc.getTextureManager().bindTexture(EXPERIENCE_ORB_TEXTURES);;
-        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-
+        mc.getTextureManager().bindTexture(EXPERIENCE_ORB_TEXTURES);
         // Calculate the texture coords in uv space
         float f = (float)(i % 4 * 16 + 0) / 64.0F;
         float f1 = (float)(i % 4 * 16 + 16) / 64.0F;
