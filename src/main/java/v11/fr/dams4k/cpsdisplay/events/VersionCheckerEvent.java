@@ -1,6 +1,6 @@
 package fr.dams4k.cpsdisplay.events;
 
-import fr.dams4k.cpsdisplay.CPSDisplay;
+import fr.dams4k.cpsdisplay.CPSVersionManager;
 import fr.dams4k.cpsdisplay.References;
 import fr.dams4k.cpsdisplay.VersionChecker;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -18,8 +18,9 @@ public class VersionCheckerEvent {
     @SubscribeEvent
     public void onClientJoinWorld(EntityJoinWorldEvent event) {
         if (event.getEntity() instanceof EntityPlayerSP) {
+            CPSVersionManager versionManager = CPSVersionManager.instance;
             VersionChecker versionChecker = new VersionChecker(References.MOD_VERSION);
-            if (versionChecker.compareTo(CPSDisplay.latestVersion) == VersionChecker.LOWER) {
+            if (versionChecker.compareTo(versionManager.latestVersion) == VersionChecker.LOWER) {
                 EntityPlayerSP player = (EntityPlayerSP) event.getEntity();
                 
                 // MOD NAME
@@ -30,7 +31,7 @@ public class VersionCheckerEvent {
 
                 // LINK
                 ITextComponent link = new TextComponentString(I18n.format("cpsdisplay.version.url", new Object[0]));
-                Style style = new Style().setClickEvent(new ClickEvent(Action.OPEN_URL, CPSDisplay.latestReleaseURL));
+                Style style = new Style().setClickEvent(new ClickEvent(Action.OPEN_URL, versionManager.latestReleaseURL));
                 link.setStyle(style);
 
                 // WHOLE MESSAGE

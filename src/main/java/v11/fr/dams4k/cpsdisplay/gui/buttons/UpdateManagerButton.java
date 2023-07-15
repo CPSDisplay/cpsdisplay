@@ -1,12 +1,11 @@
 package fr.dams4k.cpsdisplay.gui.buttons;
 
-import fr.dams4k.cpsdisplay.CPSDisplay;
+import fr.dams4k.cpsdisplay.CPSVersionManager;
 import fr.dams4k.cpsdisplay.References;
 import fr.dams4k.cpsdisplay.VersionChecker;
 import fr.dams4k.cpsdisplay.VersionChecker.VersionDiff;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -27,9 +26,10 @@ public class UpdateManagerButton extends GuiButton {
         
 
         VersionChecker versionChecker = new VersionChecker(References.MOD_VERSION);
-        if (versionChecker.compareTo(CPSDisplay.latestVersion) != VersionChecker.LOWER) return;
+        CPSVersionManager versionManager = CPSVersionManager.instance;
+        if (versionChecker.compareTo(versionManager.latestVersion) != VersionChecker.LOWER) return;
         
-        VersionDiff versionDiff = versionChecker.getVersionDifference(CPSDisplay.latestVersion);
+        VersionDiff versionDiff = versionChecker.getVersionDifference(versionManager.latestVersion);
         int xpValue = (int) Math.pow(10, versionDiff.ordinal());
         int i = getTextureByXP(xpValue);
         
