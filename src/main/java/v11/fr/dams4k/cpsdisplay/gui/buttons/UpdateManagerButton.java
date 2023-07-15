@@ -1,11 +1,17 @@
 package fr.dams4k.cpsdisplay.gui.buttons;
 
+import fr.dams4k.cpsdisplay.CPSDisplay;
+import fr.dams4k.cpsdisplay.VersionChecker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
 
 public class UpdateManagerButton extends GuiButton {
-    private static final Minecraft mc = Minecraft.getMinecraft();
     private static final ResourceLocation EXPERIENCE_ORB_TEXTURES = new ResourceLocation("textures/entity/experience_orb.png");
 
     public UpdateManagerButton(int buttonId, int x, int y, int widthIn, int heightIn, String buttonText) {
@@ -16,10 +22,39 @@ public class UpdateManagerButton extends GuiButton {
     @Override
     public void drawButton(Minecraft mc, int mouseX, int mouseY) {
         super.drawButton(mc, mouseX, mouseY);
-        // TODO: draw xp orb on the top right corner when an update is available (the more the update is important, the more the xp orb is big)
+        
+        int orbWidth = 17;
+        int orbX = xPosition + width - (orbWidth / 2 + 2);
+        int orbY = yPosition - (orbWidth / 2 - 2);
+
+        mc.getTextureManager().bindTexture(EXPERIENCE_ORB_TEXTURES);;
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        int i = getTextureByXP(1);
+
+        // Calculate the texture coords in uv space
+        float f = (float)(i % 4 * 16 + 0) / 64.0F;
+        float f1 = (float)(i % 4 * 16 + 16) / 64.0F;
+        float f2 = (float)(i / 4 * 16 + 0) / 64.0F;
+        float f3 = (float)(i / 4 * 16 + 16) / 64.0F;
+
+        // Calculate the color
+        float partialTicks = mc.getRenderPartialTicks();
+        float f9 = (1f + partialTicks) / 2.0F;
+        int l = (int)((MathHelper.sin(f9 + 0.0F) + 1.0F) * 0.5F * 255.0F);
+        int j1 = (int)((MathHelper.sin(f9 + 4.1887903F) + 1.0F) * 0.1F * 255.0F);
+
+        // Draw the orb
+        Tessellator tessellator = Tessellator.getInstance();
+        VertexBuffer vertexbuffer = tessellator.getBuffer();
+        vertexbuffer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
+        vertexbuffer.pos(orbX,              orbY + orbWidth,    this.zLevel).tex(f,    f3).color(l, 255, j1, 255).endVertex();
+        vertexbuffer.pos(orbX + orbWidth,   orbY + orbWidth,    this.zLevel).tex(f1,   f3).color(l, 255, j1, 255).endVertex();
+        vertexbuffer.pos(orbX + orbWidth,   orbY,               this.zLevel).tex(f1,   f2).color(l, 255, j1, 255).endVertex();
+        vertexbuffer.pos(orbX,              orbY,               this.zLevel).tex(f,    f2).color(l, 255, j1, 255).endVertex();
+        tessellator.draw();
     }
 
     public int getTextureByXP(int xpValue) {
         return xpValue >= 2477?10:(xpValue >= 1237?9:(xpValue >= 617?8:(xpValue >= 307?7:(xpValue >= 149?6:(xpValue >= 73?5:(xpValue >= 37?4:(xpValue >= 17?3:(xpValue >= 7?2:(xpValue >= 3?1:0)))))))));
-     }
+    }
 }
