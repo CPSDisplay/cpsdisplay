@@ -2,8 +2,6 @@ package fr.dams4k.cpsdisplay;
 
 import java.util.regex.Pattern;
 
-import scala.actors.threadpool.Arrays;
-
 public class VersionChecker {
     public static int SAME = 0;
     public static int LOWER = 1;

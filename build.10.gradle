@@ -22,7 +22,6 @@ minecraft {
     replace "{mod_id}", mod_id
     replace "{mod_name}", mod_name
     replace "{mod_version}", mod_version
-    replace "{mod_download_url}", mod_download_url
     replace "{mod_github_latest_release}", mod_github_latest_release
     replaceIn "References.java"
     

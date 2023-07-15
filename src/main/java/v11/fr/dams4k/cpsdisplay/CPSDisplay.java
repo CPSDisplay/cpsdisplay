@@ -1,7 +1,6 @@
 package fr.dams4k.cpsdisplay;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,13 +13,6 @@ import com.google.gson.JsonParser;
 import fr.dams4k.cpsdisplay.config.ModConfig;
 import fr.dams4k.cpsdisplay.proxy.ClientProxy;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.Style;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.event.ClickEvent;
-import net.minecraft.util.text.event.ClickEvent.Action;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -34,22 +26,45 @@ public class CPSDisplay {
     public static ClientProxy proxy;
 
     public static String latestVersion = "0.0.0";
+    public static String latestReleaseURL = "";
+
+    public static void loadLatestVersion() throws IOException {
+        String mcVersion = "mc" + Minecraft.getMinecraft().getVersion();
+
+        URL githubTagsURL = new URL(References.MOD_GITHUB_LASTEST_RELEASE);
+        
+        Scanner scanner = new Scanner(githubTagsURL.openStream());
+        String response = scanner.useDelimiter("\\Z").next();
+        JsonParser parser = new JsonParser();
+        JsonObject jsonObject = (JsonObject) parser.parse(response);
+
+        JsonArray assets = (JsonArray) jsonObject.getAsJsonArray("assets");
+        for (int i = 0; i < assets.size(); i++) {
+            JsonObject object = (JsonObject) assets.get(i);
+            String assetName = object.get("name").getAsString();
+            if (!assetName.contains(mcVersion) || assetName.contains("sources")) continue; // Check if the current minecraft version has the update
+            
+            String[] splitedLastestVersion = jsonObject.get("tag_name").getAsString().split("\\.");
+
+            List<String> clearedLatestVersion = new ArrayList<>();
+            clearedLatestVersion.add(ModConfig.majorUpdate ? splitedLastestVersion[0] : "0");
+            clearedLatestVersion.add(ModConfig.minorUpdate ? splitedLastestVersion[1] : "0");
+            clearedLatestVersion.add(ModConfig.patchUpdate ? splitedLastestVersion[2] : "0");
+
+            CPSDisplay.latestVersion = String.join(".", clearedLatestVersion);
+            CPSDisplay.latestReleaseURL = object.get("browser_download_url").getAsString();   
+        }
+    }
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        try {
-            URL githubTagsURL = new URL(References.MOD_GITHUB_LASTEST_RELEASE);
-            
-            Scanner scanner = new Scanner(githubTagsURL.openStream());
-            String response = scanner.useDelimiter("\\Z").next();
-            JsonParser parser = new JsonParser();
-            JsonObject jsonObject = (JsonObject) parser.parse(response);
-
-            CPSDisplay.latestVersion = String.join(".", jsonObject.get("tag_name").getAsString());
-        } catch (MalformedURLException e) {
-        } catch (IOException e) {
-        }
         proxy.preInit();
+        try {
+            loadLatestVersion();
+            System.out.println(CPSDisplay.latestVersion);
+        } catch (IOException e) {
+            // Nothing lol
+        }
     }
 
     @EventHandler

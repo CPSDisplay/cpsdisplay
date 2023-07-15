@@ -4,7 +4,6 @@ import fr.dams4k.cpsdisplay.CPSDisplay;
 import fr.dams4k.cpsdisplay.References;
 import fr.dams4k.cpsdisplay.VersionChecker;
 import fr.dams4k.cpsdisplay.VersionChecker.VersionDiff;
-import fr.dams4k.cpsdisplay.proxy.ClientProxy;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
@@ -32,7 +31,6 @@ public class UpdateManagerButton extends GuiButton {
         
         VersionDiff versionDiff = versionChecker.getVersionDifference(CPSDisplay.latestVersion);
         int xpValue = (int) Math.pow(10, versionDiff.ordinal());
-        System.out.println(xpValue);
         int i = getTextureByXP(xpValue);
         
         int orbWidth = 17;

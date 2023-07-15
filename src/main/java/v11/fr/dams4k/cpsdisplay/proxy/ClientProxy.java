@@ -1,19 +1,7 @@
 package fr.dams4k.cpsdisplay.proxy;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-
 import org.lwjgl.input.Keyboard;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-
-import fr.dams4k.cpsdisplay.References;
-import fr.dams4k.cpsdisplay.VersionChecker;
 import fr.dams4k.cpsdisplay.commands.ConfigCommand;
 import fr.dams4k.cpsdisplay.config.ModConfig;
 import fr.dams4k.cpsdisplay.events.ModEvents;
