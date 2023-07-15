@@ -2,10 +2,18 @@ package fr.dams4k.cpsdisplay;
 
 import java.util.regex.Pattern;
 
+import scala.actors.threadpool.Arrays;
+
 public class VersionChecker {
     public static int SAME = 0;
     public static int LOWER = 1;
     public static int UPPER = 2;
+
+    public enum VersionDiff {
+        PATCH,
+        MINOR,
+        MAJOR
+    }
 
     private String[] XYZ;
     private String separator = "";
@@ -35,5 +43,15 @@ public class VersionChecker {
         }
 
         return VersionChecker.SAME;
+    }
+
+    public VersionDiff getVersionDifference(String otherVersion) {
+        String[] otherXYZ = split(otherVersion);
+
+        if (!otherXYZ[0].equals(XYZ[0])) return VersionDiff.MAJOR;
+        if (!otherXYZ[1].equals(XYZ[1])) return VersionDiff.MINOR;
+        if (!otherXYZ[2].equals(XYZ[2])) return VersionDiff.PATCH;
+
+        return null;
     }
 }

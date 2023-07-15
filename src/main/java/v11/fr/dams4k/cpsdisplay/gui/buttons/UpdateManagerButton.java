@@ -1,7 +1,10 @@
 package fr.dams4k.cpsdisplay.gui.buttons;
 
 import fr.dams4k.cpsdisplay.CPSDisplay;
+import fr.dams4k.cpsdisplay.References;
 import fr.dams4k.cpsdisplay.VersionChecker;
+import fr.dams4k.cpsdisplay.VersionChecker.VersionDiff;
+import fr.dams4k.cpsdisplay.proxy.ClientProxy;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
@@ -23,13 +26,21 @@ public class UpdateManagerButton extends GuiButton {
     public void drawButton(Minecraft mc, int mouseX, int mouseY) {
         super.drawButton(mc, mouseX, mouseY);
         
+
+        VersionChecker versionChecker = new VersionChecker(References.MOD_VERSION);
+        if (versionChecker.compareTo(CPSDisplay.latestVersion) != VersionChecker.LOWER) return;
+        
+        VersionDiff versionDiff = versionChecker.getVersionDifference(CPSDisplay.latestVersion);
+        int xpValue = (int) Math.pow(10, versionDiff.ordinal());
+        System.out.println(xpValue);
+        int i = getTextureByXP(xpValue);
+        
         int orbWidth = 17;
         int orbX = xPosition + width - (orbWidth / 2 + 2);
         int orbY = yPosition - (orbWidth / 2 - 2);
 
         mc.getTextureManager().bindTexture(EXPERIENCE_ORB_TEXTURES);;
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        int i = getTextureByXP(1);
 
         // Calculate the texture coords in uv space
         float f = (float)(i % 4 * 16 + 0) / 64.0F;

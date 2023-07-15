@@ -54,7 +54,7 @@ public class VersionCheckerEvent {
                     for (int i = 0; i < assets.size(); i++) {
                         JsonObject object = (JsonObject) assets.get(i);
                         String assetName = object.get("name").getAsString();
-                        if (!assetName.contains(mcVersion) || assetName.contains("sources")) continue;
+                        if (!assetName.contains(mcVersion) || assetName.contains("sources")) continue; // Check if the current minecraft version has the update
                         
                         EntityPlayerSP player = (EntityPlayerSP) event.getEntity();
                         

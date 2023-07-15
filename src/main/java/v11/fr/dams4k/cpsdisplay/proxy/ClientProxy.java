@@ -1,11 +1,24 @@
 package fr.dams4k.cpsdisplay.proxy;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
 import org.lwjgl.input.Keyboard;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
+import fr.dams4k.cpsdisplay.References;
+import fr.dams4k.cpsdisplay.VersionChecker;
 import fr.dams4k.cpsdisplay.commands.ConfigCommand;
 import fr.dams4k.cpsdisplay.config.ModConfig;
 import fr.dams4k.cpsdisplay.events.ModEvents;
 import fr.dams4k.cpsdisplay.events.VersionCheckerEvent;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.MinecraftForge;
@@ -26,4 +39,9 @@ public class ClientProxy extends CommonProxy {
         MinecraftForge.EVENT_BUS.register(new ModEvents());
 		ClientCommandHandler.instance.registerCommand(new ConfigCommand());
     }
+
+	public static boolean getUnicodeFlag() {
+		// Doing this for futur minecraft version, not all minecraft version have "fontRenderObj" called this way
+		return Minecraft.getMinecraft().fontRendererObj.getUnicodeFlag();
+	}
 }
