@@ -1,6 +1,7 @@
 package fr.dams4k.cpsdisplay.events;
 
 import fr.dams4k.cpsdisplay.VersionManager;
+import fr.dams4k.cpsdisplay.CPSDisplay;
 import fr.dams4k.cpsdisplay.References;
 import fr.dams4k.cpsdisplay.VersionChecker;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -18,7 +19,7 @@ public class VersionCheckerEvent {
     @SubscribeEvent
     public void onClientJoinWorld(EntityJoinWorldEvent event) {
         if (event.getEntity() instanceof EntityPlayerSP) {
-            VersionManager versionManager = VersionManager.instance;
+            VersionManager versionManager = CPSDisplay.versionManager;
             VersionChecker versionChecker = new VersionChecker(References.MOD_VERSION);
             if (versionChecker.compareTo(versionManager.latestVersion) == VersionChecker.LOWER) {
                 EntityPlayerSP player = (EntityPlayerSP) event.getEntity();

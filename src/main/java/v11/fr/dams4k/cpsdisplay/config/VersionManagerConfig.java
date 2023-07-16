@@ -10,7 +10,7 @@ import net.minecraftforge.fml.common.Loader;
 public class VersionManagerConfig {
     private static Configuration config;
 
-    public static final String CATEGORY_VERSION_MANAGER = "VersionManager";
+    public static final String CATEGORY_VERSION_MANAGER = "version_manager";
     
     public static boolean majorUpdate = true;
     public static boolean minorUpdate = true;
@@ -24,6 +24,7 @@ public class VersionManagerConfig {
 		File configFile = new File(Loader.instance().getConfigDir(), References.MOD_ID + "_vm.cfg");
 		config = new Configuration(configFile);
 		config.load();
+        loadConfig();
 	}
 
     public static void loadConfig() {

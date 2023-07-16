@@ -4,6 +4,7 @@ import org.lwjgl.input.Keyboard;
 
 import fr.dams4k.cpsdisplay.commands.ConfigCommand;
 import fr.dams4k.cpsdisplay.config.ModConfig;
+import fr.dams4k.cpsdisplay.config.VersionManagerConfig;
 import fr.dams4k.cpsdisplay.events.ModEvents;
 import fr.dams4k.cpsdisplay.events.VersionCheckerEvent;
 import net.minecraft.client.Minecraft;
@@ -18,6 +19,7 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void preInit() {
         ModConfig.preInit();
+        VersionManagerConfig.preInit();
     }
 
     @Override

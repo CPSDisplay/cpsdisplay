@@ -1,6 +1,7 @@
 package fr.dams4k.cpsdisplay.gui.buttons;
 
 import fr.dams4k.cpsdisplay.VersionManager;
+import fr.dams4k.cpsdisplay.CPSDisplay;
 import fr.dams4k.cpsdisplay.References;
 import fr.dams4k.cpsdisplay.VersionChecker;
 import fr.dams4k.cpsdisplay.VersionChecker.VersionDiff;
@@ -26,7 +27,7 @@ public class UpdateManagerButton extends GuiButton {
         
 
         VersionChecker versionChecker = new VersionChecker(References.MOD_VERSION);
-        VersionManager versionManager = VersionManager.instance;
+        VersionManager versionManager = CPSDisplay.versionManager;
         if (versionChecker.compareTo(versionManager.latestVersion) != VersionChecker.LOWER) return;
         
         VersionDiff versionDiff = versionChecker.getVersionDifference(versionManager.latestVersion);

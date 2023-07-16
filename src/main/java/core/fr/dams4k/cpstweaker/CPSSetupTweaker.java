@@ -190,7 +190,7 @@ public class CPSSetupTweaker implements ITweaker {
                             }
                         }
                         
-                        if (tweakerClassName.equals(tweakClass) || file.getName().contains("cpsdisplay")) { // TODO: remove contains
+                        if (tweakerClassName.equals(tweakClass)) {
                             sourceFiles.add(new SourceFile(file, coreMod, mixin));   
                         }
                     } catch (Exception e) {

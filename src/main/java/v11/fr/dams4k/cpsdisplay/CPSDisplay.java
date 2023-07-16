@@ -13,6 +13,8 @@ public class CPSDisplay {
     @SidedProxy(clientSide = "fr.dams4k.cpsdisplay.proxy.ClientProxy")
     public static ClientProxy proxy;
 
+	public static VersionManager versionManager = new VersionManager();
+
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         proxy.preInit();

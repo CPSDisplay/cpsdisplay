@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.dams4k.cpsdisplay.CPSDisplay;
 import fr.dams4k.cpsdisplay.References;
-import fr.dams4k.cpsdisplay.VersionManager;
 import fr.dams4k.cpsdisplay.config.VersionManagerConfig;
 import fr.dams4k.cpsdisplay.gui.buttons.ModToggleButton;
 import net.minecraft.client.gui.GuiButton;
@@ -123,8 +123,7 @@ public class VersionConfig extends ModScreen {
         VersionManagerConfig.saveConfig();
 
         if (button.id == GuiButtons.DONE.id) {
-            VersionManager versionManager = VersionManager.instance;
-            versionManager.loadLatestVersion();
+            CPSDisplay.versionManager.loadLatestVersion();
             mc.displayGuiScreen(this.parent);
         }
     }

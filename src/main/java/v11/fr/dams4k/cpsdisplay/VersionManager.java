@@ -3,7 +3,6 @@ package fr.dams4k.cpsdisplay;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -15,8 +14,6 @@ import fr.dams4k.cpsdisplay.config.VersionManagerConfig;
 import net.minecraftforge.common.MinecraftForge;
 
 public class VersionManager {
-    public static VersionManager instance = new VersionManager();
-
     public String latestVersion = "0.0.0";
     public String latestReleaseURL = "";
 
