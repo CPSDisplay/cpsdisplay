@@ -12,6 +12,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import fr.dams4k.cpsdisplay.config.VersionManagerConfig;
+import net.minecraftforge.common.MinecraftForge;
 
 public class VersionManager {
     public static VersionManager instance = new VersionManager();
@@ -24,7 +25,8 @@ public class VersionManager {
     }
     
     public void loadLatestVersion() {
-        String mcVersion = "mc1.11.2";
+        String mcVersion = "mc" + MinecraftForge.MC_VERSION;
+        
         try {
             URL githubTagsURL = new URL(References.MOD_GITHUB_LASTEST_RELEASE);
         
@@ -49,7 +51,6 @@ public class VersionManager {
 
                 latestVersion = String.join(".", clearedLatestVersion);
                 latestReleaseURL = object.get("browser_download_url").getAsString();
-                System.out.println(Arrays.asList(new String[]{latestVersion, latestReleaseURL}));
             }
         } catch (IOException e) {
             // Nothing lol

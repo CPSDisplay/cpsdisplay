@@ -68,7 +68,7 @@ jar {
     manifest {
         attributes(
             "TweakOrder": 0,
-            "TweakClass": "fr.dams4k.cpstweaker.CPSTweaker"
+            "TweakClass": "fr.dams4k.cpstweaker.CPSSetupTweaker"
         )
     }
 }
