@@ -2,7 +2,6 @@ package fr.dams4k.cpsdisplay.gui;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 import org.lwjgl.opengl.GL11;
 
@@ -13,6 +12,7 @@ import fr.dams4k.cpsdisplay.gui.buttons.ModSlider;
 import fr.dams4k.cpsdisplay.gui.buttons.ModSliderMainPoint;
 import fr.dams4k.cpsdisplay.gui.buttons.ModTextField;
 import fr.dams4k.cpsdisplay.gui.buttons.ModToggleButton;
+import fr.dams4k.cpsdisplay.gui.buttons.UpdateManagerButton;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiLabel;
 import net.minecraft.client.gui.GuiTextField;
@@ -22,33 +22,42 @@ import net.minecraftforge.common.MinecraftForge;
 
 public class GuiConfig extends ModScreen {
 	public enum GuiButtons {
-		SHOW_TEXT(0),
-		SCALE_TEXT(1),
-		COLOR_TEXT(2),
-        SHADOW_TEXT(3),
-		MODE_TEXT(4),
-		TEXT(5),
+		B_SHOW_TEXT(0),
+		B_UPDATE_MANAGER(10, 0),
+		B_SCALE_TEXT(1),
+        B_SHADOW_TEXT(2),
+		B_MODE_TEXT(3),
+		F_TEXT(4),
 
-		COLOR_BACKGROUND(10),
-		MARGIN_BACKGROUND_LABEL(11),
-		MARGIN_BACKGROUND_FIELD(11),
 
-		SHOW_RAINBOW(20),
-		SPEED_RAINBOW(21);
+		B_SHOW_RAINBOW(21),
+		B_SPEED_RAINBOW(22), COLOR_TEXT(32, 22),
+		B_COLOR_BACKGROUND(23),
+		L_MARGIN_BACKGROUND(24),
+		F_MARGIN_BACKGROUND(24);
 
 		public final int id;
+		public final int posId;
 
 		GuiButtons(int id) {
 			this.id = id;
+			this.posId = id;
+		}
+
+		GuiButtons(int id, int posId) {
+			this.id = id;
+			this.posId = posId;
 		}
 
 		public int getY(int y) {
-			return y + (this.id % 10) * 25;
+			return y + (this.posId % 10) * 25;
 		}
 	}
 
-	// Text
+	// TopContainer
 	private ModToggleButton showTextToggle;
+	private GuiButton updateManager;
+
 	private ModSlider scaleTextSlider;
 	private GuiButton modeTextButton;
     private ModToggleButton showTextShadowToggle;
@@ -74,34 +83,47 @@ public class GuiConfig extends ModScreen {
 		super.initGui();
 		MinecraftForge.EVENT_BUS.register(this);
 
-		this.addTextButtons(width / 2 - 152, 10 + top);
-		this.addBackgroundButtons(width / 2 + 2, 10 + top);
-		this.addRainbowButtons(width / 2 + 2, GuiButtons.MARGIN_BACKGROUND_FIELD.getY(10 + top) + 25);
-
-        List<Integer> backgroundPositions = CPSOverlay.getBackgroundPositions(0, 0, true);
-        int x = backgroundPositions.get(2) > width-100 - 10 ? 0 : width-100;
-        int Y = backgroundPositions.get(3) > height-20 - 10 ? 0 : height-20;
-        this.buttonList.add(new GuiButton(-1, x, Y, 100, 20, I18n.format("cpsdisplay.version.checker.button", new Object[0])));
+		this.addTopContainer(width / 2 - 152, 10 + top);
+		this.addVisibilityButtons(width / 2 - 152, 16 + top);
+		this.addColorButtons(width / 2 + 4, 16 + top);
 
 		updateButtons();
 	}
 
-	public void addTextButtons(int x, int y) {
-		mouseModeSelected = MouseModeEnum.getByText(ModConfig.text);
-
+	public void addTopContainer(int x, int y) {
 		showTextToggle = new ModToggleButton(
-			GuiButtons.SHOW_TEXT.id, x, GuiButtons.SHOW_TEXT.getY(y), 150, 20,
+			GuiButtons.B_SHOW_TEXT.id, x, GuiButtons.B_SHOW_TEXT.getY(y), 0, 20,
 			I18n.format("cpsdisplay.button.show_text", new Object[0]), "", ModConfig.showText
 		);
 
-		colorTextButton = new ModColorButton(
-			GuiButtons.COLOR_TEXT.id, x, GuiButtons.COLOR_TEXT.getY(y), 150, 20,
-			I18n.format("cpsdisplay.button.color_text", new Object[0]), false
+		String showTextString = showTextToggle.getDisplayString();
+		String updateManagerString = I18n.format("cpsdisplay.button.update_manager", new Object[0]);
+
+		int containerWidth = 302;
+
+		int showTextStringWidth = mc.fontRendererObj.getStringWidth(showTextString);
+		int updateManagerStringWidth = Math.max(20, mc.fontRendererObj.getStringWidth(updateManagerString) + 8);
+
+		int showTextWidth = Math.max(showTextStringWidth + 8, containerWidth - updateManagerStringWidth - 2);
+		int updateManagerWidth = containerWidth - showTextWidth;
+
+		// Enable/Disable the mod
+		showTextToggle.width = showTextWidth;
+		
+		updateManager = new UpdateManagerButton(
+			GuiButtons.B_UPDATE_MANAGER.id, x + showTextWidth + 2, GuiButtons.B_UPDATE_MANAGER.getY(y), updateManagerWidth, 20,
+			updateManagerString
 		);
-		colorTextButton.setColor(ModConfig.getTextColor());
+
+		buttonList.add(showTextToggle);
+		buttonList.add(updateManager);
+	}
+
+	public void addVisibilityButtons(int x, int y) {
+		mouseModeSelected = MouseModeEnum.getByText(ModConfig.text);
 		
 		scaleTextSlider = new ModSlider(
-			GuiButtons.SCALE_TEXT.id, x, GuiButtons.SCALE_TEXT.getY(y), 150, 20,
+			GuiButtons.B_SCALE_TEXT.id, x, GuiButtons.B_SCALE_TEXT.getY(y), 148, 20,
 			I18n.format("cpsdisplay.slider.scale_text", new Object[0]),
 			0.1f * 100, 4 * 100, 0.01f, (float) (ModConfig.scaleText * 100), 10
 		);
@@ -111,39 +133,44 @@ public class GuiConfig extends ModScreen {
 		}
 
         showTextShadowToggle = new ModToggleButton(
-            GuiButtons.SHADOW_TEXT.id, x, GuiButtons.SHADOW_TEXT.getY(y), 150, 20,
+            GuiButtons.B_SHADOW_TEXT.id, x, GuiButtons.B_SHADOW_TEXT.getY(y), 148, 20,
             I18n.format("cpsdisplay.button.show_shadow", new Object[0]), "", ModConfig.showTextShadow
         );
 
-		modeTextButton = new GuiButton(GuiButtons.MODE_TEXT.id, x, GuiButtons.MODE_TEXT.getY(y), 150, 20, "");
+		modeTextButton = new GuiButton(GuiButtons.B_MODE_TEXT.id, x, GuiButtons.B_MODE_TEXT.getY(y), 148, 20, "");
 		updateMouseModeButton();
 
-		textField = new GuiTextField(GuiButtons.TEXT.id, fontRendererObj, x, GuiButtons.TEXT.getY(y), 150, 20);
+		textField = new GuiTextField(GuiButtons.F_TEXT.id, fontRendererObj, x, GuiButtons.F_TEXT.getY(y), 148, 20);
 		textField.setMaxStringLength(999);
 		textField.setText(ModConfig.text);
 		
-		buttonList.add(showTextToggle);
 		buttonList.add(scaleTextSlider);
         buttonList.add(showTextShadowToggle);
 		buttonList.add(modeTextButton);
-		buttonList.add(colorTextButton);
 
 		textFieldList.add(textField);
 	}
 
-	public void addBackgroundButtons(int x, int y) {
+	public void addColorButtons(int x, int y) {
+		colorTextButton = new ModColorButton(
+			GuiButtons.COLOR_TEXT.id, x, GuiButtons.COLOR_TEXT.getY(y), 148, 20,
+			I18n.format("cpsdisplay.button.color_text", new Object[0]), false
+		);
+		colorTextButton.setColor(ModConfig.getTextColor());
+
+		// Background
 		colorBackgroundButton = new ModColorButton(
-			GuiButtons.COLOR_BACKGROUND.id, x, GuiButtons.COLOR_BACKGROUND.getY(y), 150, 20,
+			GuiButtons.B_COLOR_BACKGROUND.id, x, GuiButtons.B_COLOR_BACKGROUND.getY(y), 148, 20,
 			I18n.format("cpsdisplay.button.color_background", new Object[0]), true
 		);
 		colorBackgroundButton.setColor(ModConfig.getBackgroundColor());
 
         String labelString = I18n.format("cpsdisplay.button.margin_background", new Object[0]);
         int stringWidth = fontRendererObj.getStringWidth(labelString);
-		marginBackgroundLabel = new GuiLabel(fontRendererObj, GuiButtons.MARGIN_BACKGROUND_LABEL.id, x+5, GuiButtons.MARGIN_BACKGROUND_LABEL.getY(y), stringWidth, 20, 0xffffff);
+		marginBackgroundLabel = new GuiLabel(fontRendererObj, GuiButtons.L_MARGIN_BACKGROUND.id, x+5, GuiButtons.L_MARGIN_BACKGROUND.getY(y), stringWidth, 20, 0xffffff);
         marginBackgroundLabel.addLine(labelString);
 
-		marginBackgroundField = new ModTextField(GuiButtons.MARGIN_BACKGROUND_FIELD.id, fontRendererObj, x+5 + stringWidth + 10, GuiButtons.MARGIN_BACKGROUND_FIELD.getY(y), 150 - 5 - stringWidth - 10, 20);
+		marginBackgroundField = new ModTextField(GuiButtons.L_MARGIN_BACKGROUND.id, fontRendererObj, x+5 + stringWidth + 10, GuiButtons.L_MARGIN_BACKGROUND.getY(y), 148 - 5 - stringWidth - 10, 20);
 		marginBackgroundField.setMaxStringLength(2);
 		marginBackgroundField.setText(Integer.toString(ModConfig.marginBackground));
 		marginBackgroundField.letters = false;
@@ -151,24 +178,30 @@ public class GuiConfig extends ModScreen {
 		marginBackgroundField.anythings = false;
 		marginBackgroundField.placeHolder = "§o2";
 
-		buttonList.add(colorBackgroundButton);
-		labelList.add(marginBackgroundLabel);
-		textFieldList.add(marginBackgroundField);
-	}
-
-	public void addRainbowButtons(int x, int y) {
+		// Rainbow
 		showRainbowToggle = new ModToggleButton(
-            GuiButtons.SHOW_RAINBOW.id, x, GuiButtons.SHOW_TEXT.getY(y), 150, 20,
+            GuiButtons.B_SHOW_RAINBOW.id, x, GuiButtons.B_SHOW_RAINBOW.getY(y), 148, 20,
             I18n.format("cpsdisplay.button.show_rainbow", new Object[0]), "", ModConfig.showRainbow
         );
 
 		speedRainbowSlider = new ModSlider(
-			GuiButtons.SPEED_RAINBOW.id, x, GuiButtons.SPEED_RAINBOW.getY(y), 150, 20,
-			I18n.format("cpsdisplay.slider.speed_rainbow", new Object[0]), 0.1f, 3f, 0.1f, (float) ModConfig.speedRainbow, 10
+			GuiButtons.B_SPEED_RAINBOW.id, x, GuiButtons.B_SPEED_RAINBOW.getY(y), 148, 20,
+			I18n.format("cpsdisplay.slider.speed_rainbow", new Object[0]), 0.05f, 3f, 0.05f, (float) ModConfig.speedRainbow, 100
 		);
+
+
+		// Add everythings to render
+		buttonList.add(colorTextButton);
+
+		buttonList.add(colorBackgroundButton);
+		labelList.add(marginBackgroundLabel);
+		textFieldList.add(marginBackgroundField);
 
 		buttonList.add(showRainbowToggle);
 		buttonList.add(speedRainbowSlider);
+	}
+
+	public void addTextButtons(int x, int y) {
 	}
 	
 	@Override
@@ -275,7 +308,7 @@ public class GuiConfig extends ModScreen {
 	
 	@Override
 	protected void actionPerformed(GuiButton button) throws IOException {
-		if (button.id == GuiButtons.MODE_TEXT.id) {
+		if (button.id == GuiButtons.B_MODE_TEXT.id) {
 			mouseModeSelected = MouseModeEnum.getById(mouseModeSelected.getId() + 1);
 			updateMouseModeButton();
 
@@ -288,7 +321,7 @@ public class GuiConfig extends ModScreen {
 		updateConfig();
 		ModConfig.syncConfig(false);
         
-        if (button.id == -1) {
+        if (button.id == GuiButtons.B_UPDATE_MANAGER.id) {
             mc.displayGuiScreen(new VersionConfig(this));
         }
 	}
@@ -306,7 +339,17 @@ public class GuiConfig extends ModScreen {
 			} else {
 				textField.setVisible(false);
 			}
-		}	
+		}
+		
+		// Show speedRainbowSlider only if rainbow is enabled
+		// Show colorTextButton only if rainbow is disabled
+		if (showRainbowToggle.getValue()) {
+			speedRainbowSlider.visible = true;
+			colorTextButton.visible = false;
+		} else {
+			speedRainbowSlider.visible = false;
+			colorTextButton.visible = true;
+		}
 	}
 
 	@Override

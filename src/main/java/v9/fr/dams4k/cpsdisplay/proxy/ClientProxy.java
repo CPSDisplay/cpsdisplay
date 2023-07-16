@@ -4,13 +4,14 @@ import org.lwjgl.input.Keyboard;
 
 import fr.dams4k.cpsdisplay.commands.ConfigCommand;
 import fr.dams4k.cpsdisplay.config.ModConfig;
+import fr.dams4k.cpsdisplay.config.VersionManagerConfig;
 import fr.dams4k.cpsdisplay.events.ModEvents;
 import fr.dams4k.cpsdisplay.events.VersionCheckerEvent;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
-import fr.dams4k.cpsdisplay.config.VersionManagerConfig;
 
 public class ClientProxy extends CommonProxy {
 	public static final KeyBinding CPS_OVERLAY_CONFIG = new KeyBinding("cpsdisplay.key.opengui", Keyboard.KEY_P, "cpsdisplay.category.cpsdisplay");
