@@ -10,6 +10,7 @@ import net.minecraft.client.settings.KeyBinding;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
+import fr.dams4k.cpsdisplay.config.VersionManagerConfig;
 
 public class ClientProxy extends CommonProxy {
 	public static final KeyBinding CPS_OVERLAY_CONFIG = new KeyBinding("cpsdisplay.key.opengui", Keyboard.KEY_P, "cpsdisplay.category.cpsdisplay");
@@ -17,6 +18,7 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void preInit() {
         ModConfig.preInit();
+        VersionManagerConfig.preInit();
     }
 
     @Override
@@ -26,4 +28,9 @@ public class ClientProxy extends CommonProxy {
         MinecraftForge.EVENT_BUS.register(new ModEvents());
 		ClientCommandHandler.instance.registerCommand(new ConfigCommand());
     }
+
+	public static boolean getUnicodeFlag() {
+		// Doing this for futur minecraft version, not all minecraft version have "fontRenderObj" called this way
+		return Minecraft.getMinecraft().fontRendererObj.getUnicodeFlag();
+	}
 }
