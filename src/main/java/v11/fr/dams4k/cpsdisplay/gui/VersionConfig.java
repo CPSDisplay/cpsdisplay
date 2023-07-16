@@ -70,7 +70,7 @@ public class VersionConfig extends ModScreen {
 
         autoUpdateToggle = new ModToggleButton(
             GuiButtons.AUTO_UPDATE.id, x, GuiButtons.AUTO_UPDATE.getY(y) + 10, 150, 20,
-            "Auto update: ", "", VersionManagerConfig.autoUpdate
+            I18n.format("cpsdisplay.version.auto_update", new Object[0]), "", VersionManagerConfig.autoUpdate
         );
 
         this.updateButtons();
