@@ -1,11 +1,12 @@
 package fr.dams4k.cpsdisplay.config;
 
 import java.io.File;
+import java.nio.file.Path;
 
 import fr.dams4k.cpsdisplay.References;
+import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
-import net.minecraftforge.fml.common.Loader;
 
 public class VersionManagerConfig {
     private static Configuration config;
@@ -23,7 +24,13 @@ public class VersionManagerConfig {
     private static Property autoUpdateProperty;
 
     public static void preInit() {
-		File configFile = new File(Loader.instance().getConfigDir(), References.MOD_ID + "_vm.cfg");
+		if (Launch.minecraftHome == null) {
+			Launch.minecraftHome = new File(".");
+		}
+
+        Path configFolder = Launch.minecraftHome.toPath().resolve("config").resolve(References.MOD_ID);
+		File configFile = new File(configFolder.toString(), "version_manager.cfg");
+
 		config = new Configuration(configFile);
 		config.load();
         loadConfig();

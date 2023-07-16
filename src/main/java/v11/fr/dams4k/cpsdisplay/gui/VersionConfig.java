@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.dams4k.cpsdisplay.CPSDisplay;
 import fr.dams4k.cpsdisplay.References;
 import fr.dams4k.cpsdisplay.config.VersionManagerConfig;
 import fr.dams4k.cpsdisplay.gui.buttons.ModToggleButton;
@@ -135,10 +136,11 @@ public class VersionConfig extends ModScreen {
     @Override
     protected void actionPerformed(GuiButton button) throws IOException {
         this.updateButtons();
-        VersionManagerConfig.saveConfig();
 
         if (button.id == GuiButtons.DONE.id) {
             mc.displayGuiScreen(this.parent);
+            VersionManagerConfig.saveConfig();
+            CPSDisplay.versionManager.loadLatestVersion();
         }
     }
 

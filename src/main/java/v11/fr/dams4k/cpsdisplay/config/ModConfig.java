@@ -2,12 +2,17 @@ package fr.dams4k.cpsdisplay.config;
 
 import java.awt.Color;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import fr.dams4k.cpsdisplay.ColorConverter;
 import fr.dams4k.cpsdisplay.References;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 import net.minecraftforge.fml.common.Loader;
@@ -38,11 +43,6 @@ public class ModConfig {
 	public static boolean showRainbow = false;
 	public static double speedRainbow = 1d;
 	public static float hueRainbow = 0f;
-	
-    // Updater
-    public static boolean majorUpdate = true;
-    public static boolean minorUpdate = true;
-    public static boolean patchUpdate = true;
 
 	private static Property positionTextProperty;
 	private static Property scaleTextProperty;
@@ -58,7 +58,24 @@ public class ModConfig {
 	private static Property speedRainbowProperty;
 	
 	public static void preInit() {
-		File configFile = new File(Loader.instance().getConfigDir(), References.MOD_ID + ".cfg");
+		Path pre2_2_0Path = Paths.get(Loader.instance().getConfigDir().toString(), References.MOD_ID + ".cfg");
+		
+		if (Launch.minecraftHome == null) {
+			Launch.minecraftHome = new File(".");
+		}
+
+        Path configFolder = Launch.minecraftHome.toPath().resolve("config").resolve(References.MOD_ID);
+		Path post2_2_0Path = Paths.get(configFolder.toString(), "global.cfg");
+		if (Files.exists(pre2_2_0Path)) {
+			try {
+				Files.move(pre2_2_0Path, post2_2_0Path);
+			} catch (IOException e) {
+				pre2_2_0Path.toFile().delete();
+			}	
+		}
+
+		File configFile = post2_2_0Path.toFile();
+
 		config = new Configuration(configFile);
 		config.load();
 		syncConfig(true);

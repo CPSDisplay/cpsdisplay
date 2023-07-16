@@ -18,6 +18,7 @@ import java.util.jar.JarFile;
 import fr.dams4k.cpsdisplay.References;
 import fr.dams4k.cpsdisplay.VersionChecker;
 import fr.dams4k.cpsdisplay.VersionManager;
+import fr.dams4k.cpsdisplay.config.VersionManagerConfig;
 import net.minecraft.launchwrapper.ITweaker;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraft.launchwrapper.LaunchClassLoader;
@@ -28,10 +29,11 @@ public class CPSSetupTweaker implements ITweaker {
     private static ArrayList<URL> newSourceURL = new ArrayList<>();
 
     public CPSSetupTweaker() throws Exception {
+        VersionManagerConfig.preInit();
         VersionManager versionManager = new VersionManager();
         VersionChecker versionChecker = new VersionChecker(References.MOD_VERSION);
 
-        if (versionChecker.compareTo(versionManager.latestVersion) == VersionChecker.LOWER && versionManager.latestReleaseURL != "") {
+        if (versionChecker.compareTo(versionManager.latestVersion) == VersionChecker.LOWER && versionManager.latestReleaseURL != "" && VersionManagerConfig.autoUpdate) {
             Path currentJarPath = Paths.get(getClass().getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
             Path modsFolder = currentJarPath.getParent();
             Path newJarPath = Paths.get(modsFolder.toString(), Paths.get(versionManager.latestReleaseURL).getFileName().toString());
@@ -122,7 +124,7 @@ public class CPSSetupTweaker implements ITweaker {
             private void setupSourceFile(SourceFile sourceFile) throws Exception {
                 Field ignoredModFile = CoreModManager.class.getDeclaredField("ignoredModFiles");
                 ignoredModFile.setAccessible(true);
-                ((List) ignoredModFile.get((Object) null)).remove(sourceFile.file.getName());
+                ((List<?>) ignoredModFile.get((Object) null)).remove(sourceFile.file.getName());
                 CoreModManager.getReparseableCoremods().add(sourceFile.file.getName());
                 String coreMod = sourceFile.coreMod;
                 if (coreMod != null && !sourceFile.mixin) {
