@@ -1,0 +1,80 @@
+package fr.dams4k.cpsdisplay.gui;
+
+import java.awt.Color;
+import java.util.ArrayList;
+
+import org.lwjgl.opengl.GL11;
+
+import fr.dams4k.cpsdisplay.config.ModConfig;
+import fr.dams4k.cpsdisplay.renderer.ModFontRenderer;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
+import net.minecraft.util.ResourceLocation;
+
+public class CPSOverlay extends Gui {
+    private final Minecraft mc = Minecraft.getMinecraft();
+	private ModFontRenderer modFontRenderer;
+
+    public CPSOverlay() {
+        this.modFontRenderer = new ModFontRenderer(mc.gameSettings, new ResourceLocation("textures/font/ascii.png"), mc.renderEngine, mc.isUnicode());
+        this.modFontRenderer.onResourceManagerReload(null);
+    }
+
+    public void renderOverlay(Integer attackClicks, Integer useClicks) {
+		if (ModConfig.showText) {
+			String text = ModConfig.getFormattedString(attackClicks, useClicks);
+			Color textColor = ModConfig.getSelectedTextColor();
+            Color backgroundColor = ModConfig.getBackgroundColor();
+			
+			GL11.glPushMatrix();
+			GL11.glScaled(ModConfig.scaleText, ModConfig.scaleText, 1d);
+
+			ArrayList<Integer> positions = CPSOverlay.getBackgroundPositions(attackClicks, useClicks, false);
+
+			int x = positions.get(0);
+			int y = positions.get(1);
+
+			if (backgroundColor.getAlpha() > 0) {
+				int margin = ModConfig.marginBackground;
+				drawRect(x-margin, y-margin, positions.get(2)+margin, positions.get(3)+margin, backgroundColor.getRGB());
+			}
+			
+			modFontRenderer.drawString(text, x, y, textColor.getRGB(), ModConfig.showTextShadow);
+
+			GL11.glPopMatrix();
+		}
+    }
+
+	public static ArrayList<Integer> getBackgroundPositions(Integer attackClicks, Integer useClicks, boolean scaled) {
+		Minecraft mc = Minecraft.getMinecraft();
+
+		ArrayList<Float> list = new ArrayList<>();
+		String text = ModConfig.getFormattedString(attackClicks, useClicks);
+		
+		int[] textPosition = ModConfig.getTextPosition();
+
+        float k = ModConfig.showTextShadow ? 0f : mc.fontRenderer.getUnicodeFlag() ? 0.5f : 1f;
+        int j = mc.fontRenderer.getUnicodeFlag() ? 1 : 0;
+
+		list.add((float) (textPosition[0] / ModConfig.scaleText));
+		list.add((float) (textPosition[1] / ModConfig.scaleText) + j);
+		list.add(list.get(0)+mc.fontRenderer.getStringWidth(text) - k);
+		list.add(list.get(1)+mc.fontRenderer.FONT_HEIGHT - 1 - k + j);
+
+		ArrayList<Integer> finalList = new ArrayList<>();
+
+        for (int i = 0; i < list.size(); i++) {
+            if (scaled) {
+                finalList.add((int) (Math.round(list.get(i) * ModConfig.scaleText)));
+            } else {
+                finalList.add(Math.round(list.get(i)));
+            }
+        }
+		return finalList;
+	}
+
+	public static boolean positionInOverlay(int x, int y) {
+		ArrayList<Integer> positions = CPSOverlay.getBackgroundPositions(0, 0, true);
+		return positions.get(0) <= x && x <= positions.get(2) && positions.get(1) <= y && y <= positions.get(3);
+	}
+}

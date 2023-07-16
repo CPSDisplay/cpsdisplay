@@ -1,0 +1,16 @@
+[
+  {
+    "modid": "${mod_id}",
+    "name": "${mod_name}",
+    "description": "You can see your clicks per second and customize the text appearance",
+    "version": "${mod_version}",
+    "mcversion": "${mc_version}",
+    "url": "${mod_website}",
+    "updateUrl": "",
+    "authorList": ["Dams4K"],
+    "credits": "You. Because it is thanks to you that I want to code this mod",
+    "logoFile": "assets/cpsdisplay/textures/logo.png",
+    "screenshots": [],
+    "dependencies": []
+  }
+]

@@ -1,0 +1,40 @@
+cpsdisplay.key.opengui=Open Config Gui
+cpsdisplay.category.cpsdisplay=CPS Display
+
+cpsdisplay.button.show_text=
+cpsdisplay.button.update_manager=Update Manager
+cpsdisplay.button.show_rainbow=Rainbow: 
+cpsdisplay.button.enable=§aEnable
+cpsdisplay.button.disable=§cDisable
+cpsdisplay.button.display_mode=Mode: 
+cpsdisplay.button.display_left=Left
+cpsdisplay.button.display_right=Right
+cpsdisplay.button.display_left_right=Left & Right
+cpsdisplay.button.display_custom=Custom
+cpsdisplay.button.color_text=Text color
+cpsdisplay.button.color_background=Background color
+cpsdisplay.button.margin_background=Background margin:
+cpsdisplay.button.show_shadow=Shadow: 
+
+cpsdisplay.slider.scale_text=Text scale
+cpsdisplay.slider.speed_rainbow=Speed
+
+cpsdisplay.display_template.left={0} CPS
+cpsdisplay.display_template.right={1} CPS
+cpsdisplay.display_template.left_right=[{0} | {1}] CPS
+cpsdisplay.display_template.custom=
+
+cpsdisplay.external.color_picker=Color Picker
+cpsdisplay.external.button.cancel=Cancel
+cpsdisplay.external.button.ok=OK
+cpsdisplay.external.label.hex_code=Hex code:
+
+cpsdisplay.version.mod_name=§7[CPS Display]
+cpsdisplay.version.description=§7A new version is
+cpsdisplay.version.url=§3§navailable
+cpsdisplay.version.checker.major_update=Major update: 
+cpsdisplay.version.checker.minor_update=Minor update: 
+cpsdisplay.version.checker.patch_update=Patch update: 
+cpsdisplay.version.checker.disabled=§eYou will not be informed of new releases
+cpsdisplay.version.checker.enabled=§eThe next version that will be communicated to you will be v{next_version} (or another higher)
+cpsdisplay.version.checker.button=Updater config

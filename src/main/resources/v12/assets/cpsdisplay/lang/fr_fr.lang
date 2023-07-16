@@ -1,0 +1,40 @@
+cpsdisplay.key.opengui=Ouvrir l'interface de configuration
+cpsdisplay.category.cpsdisplay=CPS Display
+
+cpsdisplay.button.show_text=
+cpsdisplay.button.update_manager=U
+cpsdisplay.button.show_rainbow=Arc en ciel : 
+cpsdisplay.button.enable=§aActivé
+cpsdisplay.button.disable=§cDésactivé
+cpsdisplay.button.display_mode=Mode : 
+cpsdisplay.button.display_left=Gauche
+cpsdisplay.button.display_right=Droite
+cpsdisplay.button.display_left_right=Gauche & Droite
+cpsdisplay.button.display_custom=Personnalisé
+cpsdisplay.button.color_text=Couleur du texte
+cpsdisplay.button.color_background=Couleur du fond
+cpsdisplay.button.margin_background=Marge du fond :
+cpsdisplay.button.show_shadow=Ombre : 
+
+cpsdisplay.slider.scale_text=Taille du texte
+cpsdisplay.slider.speed_rainbow=Vitesse 
+
+cpsdisplay.display_template.left={0} CPS
+cpsdisplay.display_template.right={1} CPS
+cpsdisplay.display_template.left_right=[{0} | {1}] CPS
+cpsdisplay.display_template.custom=
+
+cpsdisplay.external.color_picker=Selecteur de couleur
+cpsdisplay.external.button.cancel=Annuler
+cpsdisplay.external.button.ok=Valider
+cpsdisplay.external.label.hex_code=Code hex :
+
+cpsdisplay.version.mod_name=§7[CPS Display]
+cpsdisplay.version.description=§7Une nouvelle version est
+cpsdisplay.version.url=§3§ndisponible
+cpsdisplay.version.checker.major_update=MàJ importante : 
+cpsdisplay.version.checker.minor_update=MàJ mineur : 
+cpsdisplay.version.checker.patch_update=MàJ de correction : 
+cpsdisplay.version.checker.disabled=§eVous ne serez pas informé des nouvelles versions
+cpsdisplay.version.checker.enabled=§eLa prochaine version qui vous sera communiquée sera v{next_version} (ou une autre supérieure)
+cpsdisplay.version.checker.button=MàJ config
