@@ -3,6 +3,7 @@ package fr.dams4k.cpsdisplay;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -10,20 +11,20 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import fr.dams4k.cpsdisplay.config.ModConfig;
+import fr.dams4k.cpsdisplay.config.VersionManagerConfig;
 
-public class CPSVersionManager {
-    public static CPSVersionManager instance = new CPSVersionManager();
+public class VersionManager {
+    public static VersionManager instance = new VersionManager();
 
     public String latestVersion = "0.0.0";
     public String latestReleaseURL = "";
 
-    public CPSVersionManager() {
+    public VersionManager() {
         this.loadLatestVersion();
     }
     
     public void loadLatestVersion() {
-        String mcVersion = "mc11.2";
+        String mcVersion = "mc1.11.2";
         try {
             URL githubTagsURL = new URL(References.MOD_GITHUB_LASTEST_RELEASE);
         
@@ -42,13 +43,13 @@ public class CPSVersionManager {
                 String[] splitedLastestVersion = jsonObject.get("tag_name").getAsString().split("\\.");
 
                 List<String> clearedLatestVersion = new ArrayList<>();
-                clearedLatestVersion.add(ModConfig.majorUpdate ? splitedLastestVersion[0] : "0");
-                clearedLatestVersion.add(ModConfig.minorUpdate ? splitedLastestVersion[1] : "0");
-                clearedLatestVersion.add(ModConfig.patchUpdate ? splitedLastestVersion[2] : "0");
+                clearedLatestVersion.add(VersionManagerConfig.majorUpdate ? splitedLastestVersion[0] : "0");
+                clearedLatestVersion.add(VersionManagerConfig.minorUpdate ? splitedLastestVersion[1] : "0");
+                clearedLatestVersion.add(VersionManagerConfig.patchUpdate ? splitedLastestVersion[2] : "0");
 
                 latestVersion = String.join(".", clearedLatestVersion);
-                System.out.println(latestVersion);
-                latestReleaseURL = object.get("browser_download_url").getAsString();   
+                latestReleaseURL = object.get("browser_download_url").getAsString();
+                System.out.println(Arrays.asList(new String[]{latestVersion, latestReleaseURL}));
             }
         } catch (IOException e) {
             // Nothing lol

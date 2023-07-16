@@ -56,11 +56,6 @@ public class ModConfig {
 	
 	private static Property showRainbowProperty;
 	private static Property speedRainbowProperty;
-
-    private static Property majorUpdateProperty;
-    private static Property minorUpdateProperty;
-    private static Property patchUpdateProperty;
-
 	
 	public static void preInit() {
 		File configFile = new File(Loader.instance().getConfigDir(), References.MOD_ID + ".cfg");
@@ -85,10 +80,6 @@ public class ModConfig {
 			showRainbowProperty = config.get(CATEGORY_RAINBOW, "rainbow", showRainbow);
 			speedRainbowProperty = config.get(CATEGORY_RAINBOW, "chroma_speed", speedRainbow);
 
-            majorUpdateProperty = config.get(CATEGORY_UPDATER, "major", majorUpdate);
-            minorUpdateProperty = config.get(CATEGORY_UPDATER, "minor", minorUpdate);
-            patchUpdateProperty = config.get(CATEGORY_UPDATER, "patch", patchUpdate);
-
 			positionText = positionTextProperty.getDoubleList();
 			scaleText = scaleTextProperty.getDouble();
 			hexColorText = hexColorTextProperty.getString();
@@ -101,10 +92,6 @@ public class ModConfig {
 
 			showRainbow = showRainbowProperty.getBoolean();
 			speedRainbow = speedRainbowProperty.getDouble();
-
-            majorUpdate = majorUpdateProperty.getBoolean();
-            minorUpdate = minorUpdateProperty.getBoolean();
-            patchUpdate = patchUpdateProperty.getBoolean();
 		} else {
 			positionTextProperty.set(positionText);
 			scaleTextProperty.set(scaleText);
@@ -118,10 +105,6 @@ public class ModConfig {
 
 			showRainbowProperty.set(showRainbow);
 			speedRainbowProperty.set(speedRainbow);
-
-            majorUpdateProperty.set(majorUpdate);
-            minorUpdateProperty.set(minorUpdate);
-            patchUpdateProperty.set(patchUpdate);
 		}
 		
 		saveConfig();

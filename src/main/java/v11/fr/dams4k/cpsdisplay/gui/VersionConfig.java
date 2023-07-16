@@ -4,9 +4,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.dams4k.cpsdisplay.CPSVersionManager;
 import fr.dams4k.cpsdisplay.References;
-import fr.dams4k.cpsdisplay.config.ModConfig;
+import fr.dams4k.cpsdisplay.VersionManager;
+import fr.dams4k.cpsdisplay.config.VersionManagerConfig;
 import fr.dams4k.cpsdisplay.gui.buttons.ModToggleButton;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -55,15 +55,15 @@ public class VersionConfig extends ModScreen {
     public void addToggleButtons(int x, int y) {
         majorToggle = new ModToggleButton(
             GuiButtons.MAJOR_CHECK.id, x, GuiButtons.MAJOR_CHECK.getY(y), 150, 20,
-            I18n.format("cpsdisplay.version.checker.major_update", new Object[0]), "", ModConfig.majorUpdate
+            I18n.format("cpsdisplay.version.checker.major_update", new Object[0]), "", VersionManagerConfig.majorUpdate
         );
         minorToggle = new ModToggleButton(
             GuiButtons.MINOR_CHECK.id, x, GuiButtons.MINOR_CHECK.getY(y), 150, 20,
-            I18n.format("cpsdisplay.version.checker.minor_update", new Object[0]), "", ModConfig.minorUpdate
+            I18n.format("cpsdisplay.version.checker.minor_update", new Object[0]), "", VersionManagerConfig.minorUpdate
         );
         patchToggle = new ModToggleButton(
             GuiButtons.PATCH_CHECK.id, x, GuiButtons.PATCH_CHECK.getY(y), 150, 20,
-            I18n.format("cpsdisplay.version.checker.patch_update", new Object[0]), "", ModConfig.patchUpdate
+            I18n.format("cpsdisplay.version.checker.patch_update", new Object[0]), "", VersionManagerConfig.patchUpdate
         );
 
         this.updateButtons();
@@ -98,32 +98,32 @@ public class VersionConfig extends ModScreen {
     }
 
     public void updateButtons() {
-        ModConfig.patchUpdate = patchToggle.getValue();
-        if (ModConfig.patchUpdate) {
+        VersionManagerConfig.patchUpdate = patchToggle.getValue();
+        if (VersionManagerConfig.patchUpdate) {
             minorToggle.setValue(true);
             minorToggle.enabled = false;
         } else {
             minorToggle.enabled = true;
         }
 
-        ModConfig.minorUpdate = minorToggle.getValue();
-        if (ModConfig.minorUpdate) {
+        VersionManagerConfig.minorUpdate = minorToggle.getValue();
+        if (VersionManagerConfig.minorUpdate) {
             majorToggle.setValue(true);
             majorToggle.enabled = false;
         } else {
             majorToggle.enabled = true;
         }
 
-        ModConfig.majorUpdate = majorToggle.getValue();
+        VersionManagerConfig.majorUpdate = majorToggle.getValue();
     }
 
     @Override
     protected void actionPerformed(GuiButton button) throws IOException {
         this.updateButtons();
-        ModConfig.syncConfig(false);
+        VersionManagerConfig.saveConfig();
 
         if (button.id == GuiButtons.DONE.id) {
-            CPSVersionManager versionManager = CPSVersionManager.instance;
+            VersionManager versionManager = VersionManager.instance;
             versionManager.loadLatestVersion();
             mc.displayGuiScreen(this.parent);
         }
@@ -136,12 +136,12 @@ public class VersionConfig extends ModScreen {
         int minor = Integer.parseInt(currentVersionSplited[1]);
         int patch = Integer.parseInt(currentVersionSplited[2]);
 
-        if (ModConfig.patchUpdate) {
+        if (VersionManagerConfig.patchUpdate) {
             patch += 1;
-        } else if (ModConfig.minorUpdate) {
+        } else if (VersionManagerConfig.minorUpdate) {
             patch = 0;
             minor += 1;
-        } else if (ModConfig.majorUpdate) {
+        } else if (VersionManagerConfig.majorUpdate) {
             patch = 0;
             minor = 0;
             major += 1;
