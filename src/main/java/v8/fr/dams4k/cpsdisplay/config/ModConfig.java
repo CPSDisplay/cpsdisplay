@@ -2,12 +2,17 @@ package fr.dams4k.cpsdisplay.config;
 
 import java.awt.Color;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import fr.dams4k.cpsdisplay.ColorConverter;
 import fr.dams4k.cpsdisplay.References;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 import net.minecraftforge.fml.common.Loader;
@@ -38,11 +43,6 @@ public class ModConfig {
 	public static boolean showRainbow = false;
 	public static double speedRainbow = 1d;
 	public static float hueRainbow = 0f;
-	
-    // Updater
-    public static boolean majorUpdate = true;
-    public static boolean minorUpdate = true;
-    public static boolean patchUpdate = true;
 
 	private static Property positionTextProperty;
 	private static Property scaleTextProperty;
@@ -56,14 +56,26 @@ public class ModConfig {
 	
 	private static Property showRainbowProperty;
 	private static Property speedRainbowProperty;
-
-    private static Property majorUpdateProperty;
-    private static Property minorUpdateProperty;
-    private static Property patchUpdateProperty;
-
 	
 	public static void preInit() {
-		File configFile = new File(Loader.instance().getConfigDir(), References.MOD_ID + ".cfg");
+		Path pre2_2_0Path = Paths.get(Loader.instance().getConfigDir().toString(), References.MOD_ID + ".cfg");
+		
+		if (Launch.minecraftHome == null) {
+			Launch.minecraftHome = new File(".");
+		}
+
+        Path configFolder = Launch.minecraftHome.toPath().resolve("config").resolve(References.MOD_ID);
+		Path post2_2_0Path = Paths.get(configFolder.toString(), "global.cfg");
+		if (Files.exists(pre2_2_0Path)) {
+			try {
+				Files.move(pre2_2_0Path, post2_2_0Path);
+			} catch (IOException e) {
+				pre2_2_0Path.toFile().delete();
+			}	
+		}
+
+		File configFile = post2_2_0Path.toFile();
+
 		config = new Configuration(configFile);
 		config.load();
 		syncConfig(true);
@@ -85,10 +97,6 @@ public class ModConfig {
 			showRainbowProperty = config.get(CATEGORY_RAINBOW, "rainbow", showRainbow);
 			speedRainbowProperty = config.get(CATEGORY_RAINBOW, "chroma_speed", speedRainbow);
 
-            majorUpdateProperty = config.get(CATEGORY_UPDATER, "major", majorUpdate);
-            minorUpdateProperty = config.get(CATEGORY_UPDATER, "minor", minorUpdate);
-            patchUpdateProperty = config.get(CATEGORY_UPDATER, "patch", patchUpdate);
-
 			positionText = positionTextProperty.getDoubleList();
 			scaleText = scaleTextProperty.getDouble();
 			hexColorText = hexColorTextProperty.getString();
@@ -101,10 +109,6 @@ public class ModConfig {
 
 			showRainbow = showRainbowProperty.getBoolean();
 			speedRainbow = speedRainbowProperty.getDouble();
-
-            majorUpdate = majorUpdateProperty.getBoolean();
-            minorUpdate = minorUpdateProperty.getBoolean();
-            patchUpdate = patchUpdateProperty.getBoolean();
 		} else {
 			positionTextProperty.set(positionText);
 			scaleTextProperty.set(scaleText);
@@ -118,10 +122,6 @@ public class ModConfig {
 
 			showRainbowProperty.set(showRainbow);
 			speedRainbowProperty.set(speedRainbow);
-
-            majorUpdateProperty.set(majorUpdate);
-            minorUpdateProperty.set(minorUpdate);
-            patchUpdateProperty.set(patchUpdate);
 		}
 		
 		saveConfig();
@@ -159,7 +159,7 @@ public class ModConfig {
 		return realPosition;
 	}
 
-    public static Color getSelectedTextColor() {
+	public static Color getSelectedTextColor() {
         Color textColor;
         if (!ModConfig.showRainbow) {
             try {
@@ -175,7 +175,7 @@ public class ModConfig {
         return textColor;
 	}
 
-	public static Color getTextColor() {
+    public static Color getTextColor() {
 		return ColorConverter.HexToColor(ModConfig.hexColorText, 6);
 	}
 	public static void setTextColor(Color color) {
