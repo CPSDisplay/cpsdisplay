@@ -16,7 +16,8 @@ public class VersionConfig extends ModScreen {
 		MAJOR_CHECK(0),
 		MINOR_CHECK(1),
 		PATCH_CHECK(2),
-        NEXT_UPDATE_LABEL(3),
+        AUTO_UPDATE(3),
+        NEXT_UPDATE_LABEL(4),
         DONE(5);
 
 		public final int id;
@@ -35,6 +36,7 @@ public class VersionConfig extends ModScreen {
     private ModToggleButton majorToggle;
     private ModToggleButton minorToggle;
     private ModToggleButton patchToggle;
+    private ModToggleButton autoUpdateToggle;
 
     public VersionConfig(GuiScreen parent) {
         this.parent = parent;
@@ -65,11 +67,17 @@ public class VersionConfig extends ModScreen {
             I18n.format("cpsdisplay.version.checker.patch_update", new Object[0]), "", ModConfig.patchUpdate
         );
 
+        autoUpdateToggle = new ModToggleButton(
+            GuiButtons.AUTO_UPDATE.id, x, GuiButtons.AUTO_UPDATE.getY(y), 150, 20,
+            "Auto update: ", "", VersionManagerConfig.autoUpdate
+        );
+
         this.updateButtons();
 
         buttonList.add(majorToggle);
         buttonList.add(minorToggle);
         buttonList.add(patchToggle);
+        buttonList.add(autoUpdateToggle);
     }
 
     @Override

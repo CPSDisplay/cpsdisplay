@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.dams4k.cpsdisplay.CPSDisplay;
 import fr.dams4k.cpsdisplay.References;
 import fr.dams4k.cpsdisplay.config.VersionManagerConfig;
 import fr.dams4k.cpsdisplay.gui.buttons.ModToggleButton;
@@ -18,7 +17,8 @@ public class VersionConfig extends ModScreen {
 		MINOR_CHECK(1),
 		PATCH_CHECK(2),
         NEXT_UPDATE_LABEL(3),
-        DONE(5);
+        AUTO_UPDATE(4),
+        DONE(6);
 
 		public final int id;
 
@@ -36,6 +36,7 @@ public class VersionConfig extends ModScreen {
     private ModToggleButton majorToggle;
     private ModToggleButton minorToggle;
     private ModToggleButton patchToggle;
+    private ModToggleButton autoUpdateToggle;
 
     public VersionConfig(GuiScreen parent) {
         this.parent = parent;
@@ -66,11 +67,17 @@ public class VersionConfig extends ModScreen {
             I18n.format("cpsdisplay.version.checker.patch_update", new Object[0]), "", VersionManagerConfig.patchUpdate
         );
 
+        autoUpdateToggle = new ModToggleButton(
+            GuiButtons.AUTO_UPDATE.id, x, GuiButtons.AUTO_UPDATE.getY(y) + 10, 150, 20,
+            "Auto update: ", "", VersionManagerConfig.autoUpdate
+        );
+
         this.updateButtons();
 
         buttonList.add(majorToggle);
         buttonList.add(minorToggle);
         buttonList.add(patchToggle);
+        buttonList.add(autoUpdateToggle);
     }
 
     @Override
@@ -115,6 +122,14 @@ public class VersionConfig extends ModScreen {
         }
 
         VersionManagerConfig.majorUpdate = majorToggle.getValue();
+        if (!VersionManagerConfig.majorUpdate) {
+            autoUpdateToggle.setValue(false);
+            autoUpdateToggle.enabled = false;
+        } else {
+            autoUpdateToggle.enabled = true;
+        }
+
+        VersionManagerConfig.autoUpdate = autoUpdateToggle.getValue();
     }
 
     @Override
@@ -123,7 +138,6 @@ public class VersionConfig extends ModScreen {
         VersionManagerConfig.saveConfig();
 
         if (button.id == GuiButtons.DONE.id) {
-            CPSDisplay.versionManager.loadLatestVersion();
             mc.displayGuiScreen(this.parent);
         }
     }
