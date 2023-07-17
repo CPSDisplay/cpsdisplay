@@ -110,36 +110,6 @@ sourceSets {
     }
 }
 
-// task prepareAssets(type: Copy) {
-//     group = 'build'
-//     from(sourceSets.main.resources.srcDirs) {
-//         include 'mcmod.info'
-
-//         // replace version and mcversion
-//         expand "mod_version":mod_version, "mc_version":"1.12.2", "mod_id":mod_id, "mod_name":mod_name, "mod_website":mod_website
-//     }
-//     from project.file('src/main/resources')
-//     into project.file('build/classes/java/main')
-// }
-
-// classes.dependsOn(prepareAssets)
-
-// // replace values in mcmod.info before packing in jar
-// processResources {
-//     // replace stuff in mcmod.info, nothing else
-//     from(sourceSets.main.resources.srcDirs) {
-//         include 'mcmod.info'
-
-//         // replace version and mcversion
-//         expand "mod_version":mod_version, "mc_version":"1.12.2", "mod_id":mod_id, "mod_name":mod_name, "mod_website":mod_website
-//     }
-
-//     // copy everything else, thats not the mcmod.info
-//     from(sourceSets.main.resources.srcDirs) {
-//         exclude 'mcmod.info'
-//     }
-// }
-
 processResources {
     project.logger.info('PROCESS RESOURCES')
 
