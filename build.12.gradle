@@ -15,7 +15,7 @@ apply plugin: 'maven-publish'
 
 group = "fr.dams4k.cpsdisplay"
 version = "mc1.12.2-${mod_version}"
-archivesBaseName = "cpsdisplay-mc1.12.2"
+archivesBaseName = "cpsdisplay"
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 
