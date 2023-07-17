@@ -11,7 +11,7 @@ I am making this mod in my **free time**, so if you want to help me, [**pay me a
 
 ## What you NEED to know
 
-To **configurate** the mod hit `P` key (can be change) or execute `/cpsdisplay`
+To **configurate** the mod hit `P` key (can be changed) or execute `/cpsdisplay`
 
 ![Settings image](https://cpsdisplay.github.io/assets/images/mod/settings.png)
 
