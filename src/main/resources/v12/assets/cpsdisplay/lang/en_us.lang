@@ -38,3 +38,5 @@ cpsdisplay.version.checker.patch_update=Patch update:
 cpsdisplay.version.checker.disabled=§eYou will not be informed of new releases
 cpsdisplay.version.checker.enabled=§eThe next version that will be communicated to you will be v{next_version} (or another higher)
 cpsdisplay.version.checker.button=Updater config
+
+cpsdisplay.version.auto_update=Auto update: 

@@ -12,4 +12,5 @@ then
     rm -rf build/"!(libs)"
 fi
 
+./mod_gradle.sh $1
 ./gradlew --build-file build.$1.gradle build
