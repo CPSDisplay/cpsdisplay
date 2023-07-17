@@ -19,12 +19,6 @@ minecraft {
     version = "1.10.2-12.18.3.2511"
     runDir = "run"
     
-    replace "{mod_id}", mod_id
-    replace "{mod_name}", mod_name
-    replace "{mod_version}", mod_version
-    replace "{mod_github_latest_release}", mod_github_latest_release
-    replaceIn "References.java"
-    
     mappings = "snapshot_20161111"
     makeObfSourceJar = true
 }
