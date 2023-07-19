@@ -23,7 +23,7 @@ minecraft {
     runDir = "run"
     
     mappings = "stable_20"
-    makeObfSourceJar = true // an Srg named sources jar is made by default
+    // makeObfSourceJar = true // an Srg named sources jar is made by default
 }
 
 dependencies {}

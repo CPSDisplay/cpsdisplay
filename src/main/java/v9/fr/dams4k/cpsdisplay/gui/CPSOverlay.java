@@ -6,19 +6,11 @@ import java.util.ArrayList;
 import org.lwjgl.opengl.GL11;
 
 import fr.dams4k.cpsdisplay.config.ModConfig;
-import fr.dams4k.cpsdisplay.renderer.ModFontRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.util.ResourceLocation;
 
 public class CPSOverlay extends Gui {
     private final Minecraft mc = Minecraft.getMinecraft();
-	private ModFontRenderer modFontRenderer;
-
-	public CPSOverlay() {
-		modFontRenderer = new ModFontRenderer(mc.gameSettings, new ResourceLocation("textures/font/ascii.png"), mc.renderEngine, mc.isUnicode());
-		modFontRenderer.onResourceManagerReload(null);
-    }
 
     public void renderOverlay(Integer attackClicks, Integer useClicks) {
 		if (ModConfig.showText) {
@@ -39,7 +31,8 @@ public class CPSOverlay extends Gui {
 				drawRect(x-margin, y-margin, positions.get(2)+margin, positions.get(3)+margin, backgroundColor.getRGB());
 			}
 			
-			modFontRenderer.drawString(text, x, y, textColor.getRGB(), ModConfig.showTextShadow);
+			// Styles aren't reset after drawing the shadow, so we force minecraft to reset them by adding §r at the beginning of the text
+			mc.fontRendererObj.drawString("§r" + text, x, y, textColor.getRGB(), ModConfig.showTextShadow);
 
 			GL11.glPopMatrix();
 		}

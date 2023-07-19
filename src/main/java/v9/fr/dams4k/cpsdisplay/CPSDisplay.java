@@ -1,8 +1,6 @@
 package fr.dams4k.cpsdisplay;
 
 import fr.dams4k.cpsdisplay.proxy.ClientProxy;
-import net.minecraft.client.Minecraft;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;

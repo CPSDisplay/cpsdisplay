@@ -20,7 +20,7 @@ minecraft {
     runDir = "run"
     
     mappings = "snapshot_20161111"
-    makeObfSourceJar = true
+    // makeObfSourceJar = true
 }
 
 dependencies {}
