@@ -29,7 +29,8 @@ public class VersionCheckerEvent {
 
                 ITextComponent modNameMessage = new TextComponentString(I18n.format("cpsdisplay.version.mod_name", new Object[0]));
                 
-                ITextComponent modInstalledMessage = new TextComponentString(I18n.format("cpsdisplay.version.installed", new Object[0]));
+                String modInstalledString = I18n.format("cpsdisplay.version.installed", new Object[0]);
+                ITextComponent modInstalledMessage = new TextComponentString(modInstalledString.replace("{version}", References.MOD_VERSION));
 
                 ITextComponent message = new TextComponentString("");
                 message.appendSibling(modNameMessage);
