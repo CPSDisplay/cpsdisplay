@@ -17,6 +17,7 @@ targetCompatibility = 1.8
 
 group = "fr.dams4k.cpsdisplay"
 version = "mc1.8.9-${mod_version}"
+archivesBaseName = "cpsdisplay"
 
 minecraft {
     version = "1.8.9-11.15.1.1722"

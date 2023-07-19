@@ -1,9 +1,10 @@
 package fr.dams4k.cpsdisplay.events;
 
-import fr.dams4k.cpsdisplay.VersionManager;
 import fr.dams4k.cpsdisplay.CPSDisplay;
 import fr.dams4k.cpsdisplay.References;
 import fr.dams4k.cpsdisplay.VersionChecker;
+import fr.dams4k.cpsdisplay.VersionManager;
+import fr.dams4k.cpsdisplay.config.VersionManagerConfig;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.text.ITextComponent;
@@ -19,11 +20,30 @@ public class VersionCheckerEvent {
     @SubscribeEvent
     public void onClientJoinWorld(EntityJoinWorldEvent event) {
         if (event.getEntity() instanceof EntityPlayerSP) {
+            EntityPlayerSP player = (EntityPlayerSP) event.getEntity();
+
+            // Check if a new version has been installed
+            if (!VersionManagerConfig.latestVersion.equals(References.MOD_VERSION)) {
+                VersionManagerConfig.latestVersion = References.MOD_VERSION;
+                VersionManagerConfig.saveConfig();
+
+                ITextComponent modNameMessage = new TextComponentString(I18n.format("cpsdisplay.version.mod_name", new Object[0]));
+                
+                String modInstalledString = I18n.format("cpsdisplay.version.installed", new Object[0]);
+                ITextComponent modInstalledMessage = new TextComponentString(modInstalledString.replace("{version}", References.MOD_VERSION));
+
+                ITextComponent message = new TextComponentString("");
+                message.appendSibling(modNameMessage);
+                message.appendText(" ");
+                message.appendSibling(modInstalledMessage);
+
+                player.sendMessage(message);
+            }
+
+            // Check if a new version available
             VersionManager versionManager = CPSDisplay.versionManager;
             VersionChecker versionChecker = new VersionChecker(References.MOD_VERSION);
             if (versionChecker.compareTo(versionManager.latestVersion) == VersionChecker.LOWER) {
-                EntityPlayerSP player = (EntityPlayerSP) event.getEntity();
-                
                 // MOD NAME
                 ITextComponent modNameMessage = new TextComponentString(I18n.format("cpsdisplay.version.mod_name", new Object[0]));
 

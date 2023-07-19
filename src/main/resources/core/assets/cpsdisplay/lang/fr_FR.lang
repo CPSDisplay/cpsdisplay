@@ -2,7 +2,7 @@ cpsdisplay.key.opengui=Ouvrir l'interface de configuration
 cpsdisplay.category.cpsdisplay=CPS Display
 
 cpsdisplay.button.show_text=
-cpsdisplay.button.update_manager=U
+cpsdisplay.button.update_manager=Gestionnaire de MàJ
 cpsdisplay.button.show_rainbow=Arc en ciel : 
 cpsdisplay.button.enable=§aActivé
 cpsdisplay.button.disable=§cDésactivé
@@ -37,6 +37,6 @@ cpsdisplay.version.checker.minor_update=MàJ mineur :
 cpsdisplay.version.checker.patch_update=MàJ de correction : 
 cpsdisplay.version.checker.disabled=§eVous ne serez pas informé des nouvelles versions
 cpsdisplay.version.checker.enabled=§eLa prochaine version qui vous sera communiquée sera v{next_version} (ou une autre supérieure)
-cpsdisplay.version.checker.button=MàJ config
+cpsdisplay.version.installed=§4v{version} §7a été installé
 
 cpsdisplay.version.auto_update=MàJ auto : 
