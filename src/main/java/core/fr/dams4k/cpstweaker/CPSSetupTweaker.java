@@ -8,6 +8,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.URI;
 import java.net.URL;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -39,7 +40,9 @@ public class CPSSetupTweaker implements ITweaker {
             Path newJarPath = Paths.get(modsFolder.toString(), Paths.get(versionManager.latestReleaseURL).getFileName().toString());
 
             File oldJarFile = currentJarPath.toFile();
-            oldJarFile.delete();
+
+            Files.createDirectories(Paths.get(modsFolder.toString(), "cpsdisplay_older"));
+            oldJarFile.renameTo(new File(modsFolder.toString(), "cpsdisplay_older/" + oldJarFile.getName()));
 
             try {
                 BufferedInputStream in = new BufferedInputStream(new URL(versionManager.latestReleaseURL).openStream());
@@ -211,7 +214,6 @@ public class CPSSetupTweaker implements ITweaker {
                 }
                 if (Launch.blackboard.get("mixin.initialised") != null)
                     return;
-                System.out.println("Injecting MixinTweaker from EssentialSetupTweaker");
                 List<ITweaker> tweaks = (List<ITweaker>) Launch.blackboard.get("Tweaks");
                 tweaks.add(initMixinTweaker());
             }
