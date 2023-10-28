@@ -1,4 +1,4 @@
-# CPS Display [1.8.9 - 1.12.2]
+# CPS Display [1.8.9 - 1.12.2] & [1.20.2](https://github.com/CPSDisplay/cpsdisplay3)
 
 **CPS Display/CPS Mod** is a forge mod for displaying your Clicks Per Seconds.
 
